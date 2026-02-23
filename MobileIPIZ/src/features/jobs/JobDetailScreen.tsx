@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Button } from '../../components/ui/Button';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../app/AppNavigator';
@@ -117,9 +118,7 @@ export const JobDetailScreen: FC = () => {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.applyButton} onPress={handleApply}>
-          <Text style={styles.applyButtonText}>Candidatar-me</Text>
-        </TouchableOpacity>
+        <Button title="Candidatar-me" onPress={handleApply} />
       </View>
     </View>
   );

@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../app/AppNavigator';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
 
 export const AdminDashboard: FC = () => {
   const { user, logout } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <ScrollView style={styles.container}>
@@ -40,7 +46,7 @@ export const AdminDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Gestão</Text>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('AlumniProfile')}>
           <Text style={styles.cardTitle}>Gestão de Usuários</Text>
           <Text style={styles.cardDescription}>
             Gerenciar alunos, professores e empresas
@@ -54,7 +60,7 @@ export const AdminDashboard: FC = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Certificate')}>
           <Text style={styles.cardTitle}>Validação de Certificados</Text>
           <Text style={styles.cardDescription}>
             Sistema de verificação de certificados

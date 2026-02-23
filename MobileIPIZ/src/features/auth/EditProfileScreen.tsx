@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native';
+import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -72,9 +73,7 @@ export const EditProfileScreen: FC = () => {
           keyboardType="phone-pad"
         />
 
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Salvar Alterações</Text>
-        </TouchableOpacity>
+        <Button title="Salvar Alterações" onPress={handleSave} />
       </View>
     </ScrollView>
   );

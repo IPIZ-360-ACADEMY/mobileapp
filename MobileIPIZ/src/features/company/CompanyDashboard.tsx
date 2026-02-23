@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../app/AppNavigator';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
 
 export const CompanyDashboard: FC = () => {
   const { user, logout } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <ScrollView style={styles.container}>
@@ -18,7 +24,7 @@ export const CompanyDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Publicar Vagas</Text>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PostJob')}>
           <Text style={styles.cardTitle}>Nova Vaga de Emprego</Text>
           <Text style={styles.cardDescription}>
             Publique oportunidades para estudantes e alumni
@@ -28,10 +34,10 @@ export const CompanyDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Candidaturas Recebidas</Text>
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('JobList')}>
           <Text style={styles.cardTitle}>Técnico em Manutenção</Text>
           <Text style={styles.cardDescription}>15 candidaturas</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.section}>

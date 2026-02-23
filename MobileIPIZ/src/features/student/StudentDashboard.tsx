@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../app/AppNavigator';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
 
 export const StudentDashboard: FC = () => {
   const { user, logout } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <ScrollView style={styles.container}>
@@ -30,7 +36,7 @@ export const StudentDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Oportunidades de Estágio</Text>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('JobList')}>
           <Text style={styles.cardTitle}>Técnico em Manutenção</Text>
           <Text style={styles.cardDescription}>Empresa Industrial XYZ</Text>
         </TouchableOpacity>
@@ -38,7 +44,7 @@ export const StudentDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Mentorias Disponíveis</Text>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Mentorship')}>
           <Text style={styles.cardTitle}>Conexão com Alumni</Text>
           <Text style={styles.cardDescription}>
             Conecte-se com ex-alunos para orientação profissional

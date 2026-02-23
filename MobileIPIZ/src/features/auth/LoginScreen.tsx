@@ -1,20 +1,25 @@
 import React, { FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { FeedScreen } from '../../screens';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../../app/AppNavigator';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
 
 
 export const LoginScreen: FC = () => {
   const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
   const handleLogin = async () => {
     try {
       await login(email, password);
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Login failed:', error);
       
@@ -24,57 +29,20 @@ export const LoginScreen: FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>IPIZ</Text>
         <Text style={styles.subtitle}>Instituto Politécnico Industrial do Zango</Text>
       </View>
 
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={colors.text.hint}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+        <Input label="Email" value={email} onChangeText={setEmail} placeholder="seu@email.com" keyboardType="email-address" />
+        <Input label="Senha" value={password} onChangeText={setPassword} placeholder="Senha de usuário" secureTextEntry />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Senha de Usuario"
-          placeholderTextColor={colors.text.hint}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <Button title="Entrar" onPress={handleLogin} loading={isLoading} />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleLogin}
-          disabled={isLoading}
-          
-           
-        >
-          <Text style={styles.buttonText} onPress={FeedScreen}>
-            {isLoading ? 'Entrando...' : 'Entrar' }
-            
-          </Text>
-         
-        </TouchableOpacity>
+          <Text style={styles.link} onPress={() => navigation.navigate('Profile')}>Esqueceu a senha?</Text>
 
-        <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkText} onPress={FeedScreen}>Esqueceu a senha? </Text>
-          
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkText} >Criar nova conta </Text>
-        </TouchableOpacity>
+          <Text style={styles.link} onPress={() => navigation.navigate('Profile')}>Criar nova conta</Text>
       </View>
     </View>
   );

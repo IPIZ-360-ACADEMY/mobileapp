@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native';
+import { Button } from '../../components/ui/Button';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../app/AppNavigator';
@@ -107,9 +108,7 @@ export const PostJobScreen: FC = () => {
           placeholderTextColor={colors.text.hint}
         />
 
-        <TouchableOpacity style={styles.postButton} onPress={handlePost}>
-          <Text style={styles.postButtonText}>Publicar Vaga</Text>
-        </TouchableOpacity>
+        <Button title="Publicar Vaga" onPress={handlePost} />
       </ScrollView>
     </View>
   );

@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../app/AppNavigator';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
 
 export const TeacherDashboard: FC = () => {
   const { user, logout } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <ScrollView style={styles.container}>
@@ -38,7 +44,7 @@ export const TeacherDashboard: FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Gestão de Estágios</Text>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('JobList')}>
           <Text style={styles.cardTitle}>Acompanhar Estagiários</Text>
           <Text style={styles.cardDescription}>
             Monitore o desempenho dos alunos em estágio

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -57,12 +58,9 @@ export const ProfileScreen: FC = () => {
         </View>
       </View>
 
-      <TouchableOpacity 
-        style={styles.editButton}
-        onPress={() => navigation.navigate('EditProfile')}
-      >
-        <Text style={styles.editButtonText}>Editar Perfil</Text>
-      </TouchableOpacity>
+      <View style={{ paddingHorizontal: 16, marginBottom: 32 }}>
+        <Button title="Editar Perfil" onPress={() => navigation.navigate('EditProfile')} />
+      </View>
     </ScrollView>
   );
 };
