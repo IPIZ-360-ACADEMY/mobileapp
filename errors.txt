@@ -471,3 +471,915 @@ Recomendações (opções; você escolhe)
    - Completar tipagem `useNavigation` em todas as telas;
    - Padronizar botões/inputs restantes e ajustar pequenos detalhes de UI/espacamento;
    - Rodar checagem estática (`npm run type-check`) — preciso que você autorize rodar comandos no seu ambiente.
+https://www.youtube.com/watch?v=UYPtatFRaXM&list=PL2b2uvKR5s-Hx3byi3qZY_HhPPw9U0e6x&index=2
+
+
+
+
+
+
+
+com base no que já está feito, aqui tem outro prompet, por favor dê sequemncia ao que já está sendo feito com acrescimo destas informações:
+You are a senior mobile software engineer and UI/UX architect.
+
+Create a modern, minimalistic, and scalable mobile application UI using React Native with Expo and follow clean code architecture and component-based design.
+
+The project name is IPIZ Mobile App, an academic platform for students and institutional services.
+
+1. Design Requirements
+
+Use the following color palette:
+
+Light Background
+#E9E5E8
+
+Dark Background
+#464444
+
+Primary Accent
+#F8F692
+
+The design must follow:
+
+minimalistic interface
+
+modern mobile UX
+
+smooth microinteractions
+
+clean layout
+
+strong visual hierarchy
+
+high usability
+
+responsive components
+
+Inspired by modern SaaS dashboards and high-end mobile apps.
+
+2. UI Architecture
+
+Follow Atomic Design methodology.
+
+Structure the UI components into:
+
+Atoms
+
+Button
+
+Input
+
+Icon
+
+Avatar
+
+Badge
+
+Text
+
+Molecules
+
+Form fields
+
+Search bars
+
+List items
+
+Notification cards
+
+Organisms
+
+Header
+
+Navigation bar
+
+Dashboard cards
+
+Profile sections
+
+Templates
+
+Dashboard layout
+
+Student profile layout
+
+Notifications layout
+
+Pages
+
+Login
+
+Dashboard
+
+Student profile
+
+Notifications
+
+Academic schedule
+
+Grades
+
+Announcements
+
+Settings
+
+3. Code Architecture
+
+Generate the project structure using best practices for scalable React Native apps.
+
+Example structure:
+
+src
+ ├── components
+ │   ├── atoms
+ │   ├── molecules
+ │   ├── organisms
+ │
+ ├── screens
+ │
+ ├── navigation
+ │
+ ├── theme
+ │   ├── colors.ts
+ │   ├── typography.ts
+ │   ├── spacing.ts
+ │
+ ├── services
+ │
+ ├── hooks
+ │
+ └── utils
+4. UI Style
+
+Use the following design specifications:
+
+Border radius
+
+small: 6px
+
+medium: 10px
+
+large: 16px
+
+Spacing system
+Use 8px grid spacing
+
+Typography
+Use a modern font similar to Inter
+
+Text hierarchy
+
+Title: 24px
+
+Section title: 20px
+
+Subtitle: 16px
+
+Body: 14px
+
+Caption: 12px
+
+5. Component Behavior
+
+Buttons must include:
+
+hover state
+
+pressed state
+
+loading state
+
+Inputs must include:
+
+validation state
+
+focus state
+
+error state
+
+Cards must include:
+
+subtle shadow
+
+rounded edges
+
+clear spacing
+
+6. Navigation
+
+Create a mobile-first navigation system.
+
+Include:
+
+Bottom Navigation with 4 sections
+
+Home
+
+Academic
+
+Notifications
+
+Profile
+
+Active icon color
+#F8F692
+
+Inactive icon color
+#B0B0B0
+
+Background
+#464444
+
+7. UX Enhancements
+
+Include:
+
+smooth transitions
+
+loading skeletons
+
+interactive feedback
+
+optimized layout for readability
+
+accessibility-friendly design
+
+8. Output Requirements
+
+Generate:
+
+React Native component code
+
+reusable UI components
+
+screen layouts
+
+theme configuration
+
+navigation setup
+
+clean and maintainable code
+
+Follow best practices used in production-level mobile apps.
+-------------------------------------------------------------------------------------------
+
+
+PS C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ> npm start
+
+> mobileipiz@1.0.0 start
+> expo start -c
+
+Starting project at C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+The following packages should be updated for best compatibility with the installed expo version:
+  react-native-worklets@0.7.4 - expected version: 0.5.1
+  babel-preset-expo@11.0.15 - expected version: ~54.0.10
+Your project may not work correctly until you install the expected versions of the packages.
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█ ▄▄▄▄▄ █▄▀▀▄▄▄▀█▄█ ▄▄▄▄▄ █
+█ █   █ ███▄█  ▀▀▀█ █   █ █
+█ █▄▄▄█ ██▄▀▄▀█▀███ █▄▄▄█ █
+█▄▄▄▄▄▄▄█ █ ▀▄▀▄▀▄█▄▄▄▄▄▄▄█
+█  ▀  ▀▄▀▀ ▄▄▀██ ▀█▄█▀█▀▀▄█
+█▀▀▄▄▀▄▄▀█▀  ▀▄  █▀███▄▀▀ █
+█▀  ▀▄ ▄   █▄▄█▄ █ ▄▀▀█▀ ██
+█ ▄█▄▀█▄████ ▄█▀ ▄▀ ██▄▀  █
+█▄█▄█▄▄▄▄▀ ▀▀   █ ▄▄▄  ▄▀▄█
+█ ▄▄▄▄▄ ██▄█▄▀  █ █▄█ ██▀ █
+█ █   █ █ ██▀▀██▄ ▄  ▄ █▀▀█
+█ █▄▄▄█ █▀    █▄ ▄█▀▀▄█   █
+█▄▄▄▄▄▄▄█▄█▄███▄▄▄▄█▄▄███▄█
+
+› Metro waiting on exp://192.168.63.253:8081
+› Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
+
+› Using Expo Go
+› Press s │ switch to development build
+
+› Press a │ open Android
+› Press w │ open web
+
+› Press j │ open debugger
+› Press r │ reload app
+› Press m │ toggle menu
+› shift+m │ more tools
+› Press o │ open project code in your editor
+
+› Press ? │ show all commands
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+|
+| <--- Last few GCs --->
+|
+| [25248:00000268BE200000]    49278 ms: Scavenge (interleaved) 30.4 (52.0) -> 24.5 (89.3) MB, pooled: 0 MB, 14.24 / 0.01 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: NewSpace::EnsureCurrentCapacity Allocation failed - JavaScript heap out of memory
+|
+| <--- Last few GCs --->
+|
+| [4808:000002A92C9A3000]    49300 ms: Scavenge (interleaved) 25.0 (51.3) -> 22.1 (53.6) MB, pooled: 0 MB, 86.94 / 0.01 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [22144:000001DA94884000]    48761 ms: Scavenge 20.6 (29.3) -> 18.5 (50.1) MB, pooled: 0 MB, 10.88 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [22144:000001DA94884000]    48789 ms: Mark-Compact 19.0 (50.1) -> 11.1 (50.8) MB, pooled: 0 MB, 6.77 / 0.00 ms  (+ 0.2 ms in 4 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 28 ms) (average mu = 1.000, current mu = 1.00
+|
+| <--- Last few GCs --->
+|
+| [22144:000001DA94884000]    48761 ms: Scavenge 20.6 (29.3) -> 18.5 (50.1) MB, pooled: 0 MB, 10.88 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [22144:000001DA94884000]    48789 ms: Mark-Compact 19.0 (50.1) -> 11.1 (50.8) MB, pooled: 0 MB, 6.77 / 0.00 ms  (+ 0.2 ms in 4 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 28 ms) (average mu = 1.000, current mu = 1.00
+|
+| <--- Last few GCs --->
+|
+| [22144:000001DA94884000]    48761 ms: Scavenge 20.6 (29.3) -> 18.5 (50.1) MB, pooled: 0 MB, 10.88 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [22144:000001DA94884000]    48789 ms: Mark-Compact 19.0 (50.1) -> 11.1 (50.8) MB, pooled: 0 MB, 6.77 / 0.00 ms  (+ 0.2 ms in 4 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 28 ms) (average mu = 1.000, current mu = 1.00
+|
+| <--- Last few GCs --->
+|
+| [22144:000001DA94884000]    48761 ms: Scavenge 20.6 (29.3) -> 18.5 (50.1) MB, pooled: 0 MB, 10.88 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [22144:000001DA94884000]    48789 ms: Mark-Compact 19.0 (50.1) -> 11.1 (50.8) MB, pooled: 0 MB, 6.77 / 0.00 ms  (+ 0.2 ms in 4 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 28 ms) (average mu = 1.000, current mu = 1.00
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [3716:00000275AA8C4000]    48826 ms: Scavenge 20.7 (29.3) -> 18.6 (50.3) MB, pooled: 0 MB, 8.58 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [3716:00000275AA8C4000]    48846 ms: Mark-Compact 18.9 (50.3) -> 11.1 (51.1) MB, pooled: 0 MB, 4.34 / 0.00 ms  (+ 0.3 ms in 2 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 20 ms) (average mu = 1.000, current mu = 1.000
+|
+| <--- Last few GCs --->
+|
+| [3716:00000275AA8C4000]    48826 ms: Scavenge 20.7 (29.3) -> 18.6 (50.3) MB, pooled: 0 MB, 8.58 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [3716:00000275AA8C4000]    48846 ms: Mark-Compact 18.9 (50.3) -> 11.1 (51.1) MB, pooled: 0 MB, 4.34 / 0.00 ms  (+ 0.3 ms in 2 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 20 ms) (average mu = 1.000, current mu = 1.000
+|
+| <--- Last few GCs --->
+|
+| [3716:00000275AA8C4000]    48826 ms: Scavenge 20.7 (29.3) -> 18.6 (50.3) MB, pooled: 0 MB, 8.58 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [3716:00000275AA8C4000]    48846 ms: Mark-Compact 18.9 (50.3) -> 11.1 (51.1) MB, pooled: 0 MB, 4.34 / 0.00 ms  (+ 0.3 ms in 2 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 20 ms) (average mu = 1.000, current mu = 1.000
+|
+| <--- Last few GCs --->
+|
+| [3716:00000275AA8C4000]    48826 ms: Scavenge 20.7 (29.3) -> 18.6 (50.3) MB, pooled: 0 MB, 8.58 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [3716:00000275AA8C4000]    48846 ms: Mark-Compact 18.9 (50.3) -> 11.1 (51.1) MB, pooled: 0 MB, 4.34 / 0.00 ms  (+ 0.3 ms in 2 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 20 ms) (average mu = 1.000, current mu = 1.000
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [14924:00000240F7CE3000]    48834 ms: Mark-Compact 19.0 (50.6) -> 11.1 (51.3) MB, pooled: 0 MB, 4.17 / 0.00 ms  (+ 0.1 ms in 3 steps since start of marking, biggest step 0.1 ms, walltime since start of marking 18 ms) (average mu = 1.000, current mu = 1.00[14924:00000240F7CE3000]    49293 ms: Scavenge (interleaved) 28.7 (51.6) -> 21.7 (51.6) MB, pooled: 0 MB, 5.67 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: AlignedAlloc Allocation failed - process out of memory
+| ----- Native stack trace -----
+|
+| ----- Native stack trace -----                                                                                                                  
+|
+|
+| <--- Last few GCs --->
+|
+| [26364:000001207BE64000]    55458 ms: Scavenge 40.1 (53.0) -> 34.4 (53.0) MB, pooled: 0 MB, 4.21 / 0.07 ms  (average mu = 0.971, current mu = 0.986) allocation failure;
+| [26364:000001207BE64000]    55619 ms: Scavenge 40.6 (53.0) -> 35.0 (53.0) MB, pooled: 0 MB, 4.19 / 0.03 ms  (average mu = 0.971, current mu = 0.986) task;
+| [26364:000001207BE64000]    55768 ms: Scavenge 42.6 (53.0) -> 36.6 (53.0) MB, pooled: 2 MB, 3.16 / 0.02 ms  (average mu = 0.971, current mu = 0.986) allocation failure;
+|
+| FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+Android .\index.js ▓▓░░░░░░░░░░░░░░ 14.1% ( 31/152)
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\cli\build\src\utils\errors.js:130
+    throw error;
+    ^
+
+Error: write after end
+    at _write (node:internal/streams/writable:487:11)
+    at PassThrough.Writable.write (node:internal/streams/writable:508:10)
+    at Socket.ondata (node:internal/streams/readable:1008:24)
+    at Socket.emit (node:events:520:35)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Socket.Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+Emitted 'error' event on PassThrough instance at:
+    at PassThrough.onerror (node:internal/streams/readable:1031:14)
+    at PassThrough.emit (node:events:508:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'ERR_STREAM_WRITE_AFTER_END'
+}
+
+Node.js v24.13.1
+PS C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ> 
+
+
+------------------------------------------------------------------------------------------------
+
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+Android Bundling failed 90946ms index.js (969 modules)
+ ERROR  SyntaxError: C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\src\features\admin\AdminDashboard.tsx: Identifier 'Pressable' has already been declared. (8:9)
+
+   6 | import { useAuth } from '../../contexts/AuthContext';
+   7 | import { useTheme } from '../../contexts/ThemeContext';
+>  8 | import { Pressable } from 'react-native';
+     |          ^
+   9 |
+  10 | type Props = NativeStackScreenProps<RootStackParamList, 'AdminDashboard'>;
+  11 |
+    at constructor (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:365:19)
+    at TypeScriptParserMixin.raise (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:6599:19)
+    at TypeScriptScopeHandler.declareName (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:4866:21)
+    at TypeScriptParserMixin.declareNameFromIdentifier (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7567:16)
+    at TypeScriptParserMixin.checkIdentifier (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7563:12)
+    at TypeScriptParserMixin.checkLVal (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7500:12)
+    at TypeScriptParserMixin.finishImportSpecifier (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14266:10)
+    at TypeScriptParserMixin.parseImportSpecifier (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14419:17)
+    at TypeScriptParserMixin.parseImportSpecifier (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:10148:18)
+    at TypeScriptParserMixin.parseNamedImportSpecifiers (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14398:36)
+    at TypeScriptParserMixin.parseImportSpecifiersAndAfter (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14242:37)
+    at TypeScriptParserMixin.parseImport (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14235:17)
+    at TypeScriptParserMixin.parseImport (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:9353:26)
+    at TypeScriptParserMixin.parseStatementContent (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12876:27)
+    at TypeScriptParserMixin.parseStatementContent (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:9508:18)
+    at TypeScriptParserMixin.parseStatementLike (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12767:17)
+    at TypeScriptParserMixin.parseModuleItem (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12744:17)
+    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:13316:36)
+    at TypeScriptParserMixin.parseBlockBody (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:13309:10)
+    at TypeScriptParserMixin.parseProgram (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12622:10)
+    at TypeScriptParserMixin.parseTopLevel (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12612:25)
+    at TypeScriptParserMixin.parse (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14488:25)
+    at TypeScriptParserMixin.parse (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:10126:18)
+    at parse (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14501:26)
+    at parser (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\parser\index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transformation\normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transformation\index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transform.js:22:33)
+    at transform.next (<anonymous>)
+    at evaluateSync (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\gensync\index.js:251:28)
+    at sync (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\gensync\index.js:89:14)
+    at stopHiding - secret - don't use this - v1 (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\errors\rewrite-stack-trace.js:47:12)
+    at Object.transformSync (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transform.js:40:76)
+    at parseWithBabel (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transformSync.js:75:18)
+    at transformSync (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transformSync.js:54:16)
+    at Object.transform (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\babel-transformer.js:127:58)
+    at transformJSWithBabel (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\metro-transform-worker.js:468:47)
+    at Object.transform (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\metro-transform-worker.js:583:12)
+    at Object.transform (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\transform-worker.js:178:19)
+    at transformFile (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro\src\DeltaBundler\Worker.flow.js:67:36)
+    at Object.transform (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro\src\DeltaBundler\Worker.flow.js:42:10)
+    at execFunction (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:149:17)
+    at execHelper (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:137:5)
+    at execMethod (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:140:5)
+    at process.messageListener (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:44:7)
+    at process.emit (node:events:508:28)
+    at emit (node:internal/child_process:949:14)
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+› Metro waiting on exp://192.168.181.49:8081
+› Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
+
+› Using Expo Go
+› Press s │ switch to development build
+
+› Press a │ open Android
+› Press w │ open web
+
+› Press j │ open debugger
+› Press r │ reload app
+› Press m │ toggle menu
+› shift+m │ more tools
+› Press o │ open project code in your editor
+
+› Press ? │ show all commands
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+|
+| <--- Last few GCs --->
+|
+| [33876:00000130EB20A000]    46728 ms: Scavenge 6.3 (8.3) -> 5.9 (10.3) MB, pooled: 0 MB, 1.83 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [33876:00000130EB20A000]    46775 ms: Scavenge 7.8 (10.8) -> 6.9 (10.8) MB, pooled: 0 MB, 2.03 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [33876:00000130EB20A000]    46849 ms: Scavenge 8.4 (11.3) -> 7.5 (15.8) MB, pooled: 0 MB, 2.78 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: NewSpace::EnsureCurrentCapacity Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|  1: 00007FF671D7B6AF
+|  2: 00007FF6729C3257
+|  3: 00007FF6727C3937
+|  4: 00007FF6727843D3
+|  5: 00007FF6727C5D3A
+|  6: 00007FF6727C5366
+|  7: 00007FF6727D62F2
+|  8: 00007FF6727D5E1B
+|  9: 00007FF673C54BAD
+| 10: 00007FF6727C1400
+| 11: 00007FF6728450D9
+| 12: 00007FF6723BAB32
+| 13: 00000130A7E7733A
+|
+| <--- Last few GCs --->
+|
+| [20524:000001BB11420000]    46782 ms: Scavenge 13.1 (18.3) -> 12.0 (27.6) MB, pooled: 0 MB, 3.27 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [20524:000001BB11420000]    46806 ms: Scavenge 18.2 (27.6) -> 16.6 (29.1) MB, pooled: 0 MB, 6.02 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [20524:000001BB11420000]    46986 ms: Scavenge 20.7 (29.1) -> 18.6 (34.3) MB, pooled: 4 MB, 8.91 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|  1: 00007FF671D7B6AF
+|  2: 00007FF6729C3257
+|  3: 00007FF6727C3937
+|  4: 00007FF67275C35B
+|  5: 00007FF6727846CA
+|  6: 00007FF6727C5D16
+|  7: 00007FF6727C5366
+|  8: 00007FF6727D62F2
+|  9: 00007FF6727D5E1B
+| 10: 00007FF673C54BAD
+| 11: 00007FF6727C1400
+| 12: 00007FF6728450D9
+| 13: 00007FF6723BAED8
+| 14: 000001BB49BB733A
+|
+| <--- Last few GCs --->
+|
+| [18616:000001582D901000]    46764 ms: Scavenge 6.3 (8.1) -> 5.9 (10.1) MB, pooled: 0 MB, 3.38 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18616:000001582D901000]    46820 ms: Scavenge 7.8 (10.6) -> 6.8 (10.8) MB, pooled: 0 MB, 2.16 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18616:000001582D901000]    46902 ms: Scavenge 8.4 (11.3) -> 7.5 (16.1) MB, pooled: 0 MB, 3.08 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [18616:000001582D901000]    46764 ms: Scavenge 6.3 (8.1) -> 5.9 (10.1) MB, pooled: 0 MB, 3.38 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18616:000001582D901000]    46820 ms: Scavenge 7.8 (10.6) -> 6.8 (10.8) MB, pooled: 0 MB, 2.16 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18616:000001582D901000]    46902 ms: Scavenge 8.4 (11.3) -> 7.5 (16.1) MB, pooled: 0 MB, 3.08 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: MarkCompactCollector: young object promotion failed Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|  1: 00007FF671D7B6AF
+|  2: 00007FF6729C3257
+|  3: 00007FF6727C3937
+|  4: 00007FF6727A324E
+|  5: 00007FF67279890D
+|  6: 00007FF6727985BC
+|  7: 00007FF672798201
+|  8: 00007FF6727AA6F8
+|  9: 00007FF67319C7DF
+| 10: 00007FF671CCC76E
+| 11: 00007FF672A185C6
+| 12: 00007FF673C70373
+| 13: 00007FFFEDB9E8D7
+| 14: 00007FFFEEF8C53C
+|
+|
+| #
+| # Fatal process out of memory: Re-embedded builtins: set permissions
+| #
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [18924:0000026B5908F000]      812 ms: Scavenge 13.1 (18.3) -> 12.0 (27.1) MB, pooled: 0 MB, 9.31 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18924:0000026B5908F000]      852 ms: Scavenge 18.2 (27.1) -> 16.6 (29.1) MB, pooled: 0 MB, 4.88 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [18924:0000026B5908F000]     1129 ms: Scavenge 20.7 (29.3) -> 18.6 (34.3) MB, pooled: 1 MB, 10.93 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: Zone Allocation failed - process out of memory
+| ----- Native stack trace -----
+|
+|  1: 00007FF671CD08AD
+|  2: 00007FF673129646
+|  3: 00007FF6729C3236
+|  4: 00007FF67282A1CE
+|  5: 00007FF67285D7AF
+|  6: 00007FF67285E262
+|  7: 00007FF67285EC42
+|  8: 00007FF67235C283
+|  9: 00007FF6729EE416
+| 10: 00007FF671E88CFD
+| 11: 00007FF671D0A8EE
+| 12: 00007FF671DD5FC4
+| 13: 00007FF672DF24C2
+| 14: 00007FF673C5E2B4
+| 15: 00007FFFEDB9E8D7 BaseThreadInitThunk+23
+| 16: 00007FFFEEF8C53C RtlUserThreadStart+44
+|
+| <--- Last few GCs --->
+|
+| [29748:000001C5EF4BE000]      219 ms: Scavenge 6.3 (7.8) -> 5.9 (10.3) MB, pooled: 0 MB, 1.50 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [29748:000001C5EF4BE000]      258 ms: Scavenge 7.8 (10.6) -> 6.8 (11.3) MB, pooled: 0 MB, 2.68 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [29748:000001C5EF4BE000]      333 ms: Scavenge 8.4 (11.3) -> 7.6 (12.3) MB, pooled: 0 MB, 12.19 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: Zone Allocation failed - process out of memory
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [13984:000001D79171E000]      144 ms: Scavenge 5.5 (7.6) -> 5.1 (7.8) MB, pooled: 0 MB, 1.80 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+| [13984:000001D79171E000]      194 ms: Scavenge 6.3 (8.1) -> 5.9 (8.3) MB, pooled: 0 MB, 1.49 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure;
+|
+| FATAL ERROR: Committing semi space failed. Allocation failed - JavaScript heap out of memory
+| ----- Native stack trace -----
+|
+|
+|
+| #
+| # Fatal process out of memory: Zone
+| #
+| ----- Native stack trace -----
+|
+|
+|
+| #
+| # Fatal process out of memory: Zone
+| #
+|
+| ----- Native stack trace -----
+|
+|
+|
+| #
+| # Fatal process out of memory: Zone
+| #
+| ----- Native stack trace -----
+|
+|  1: 00007FF671CD08AD
+|  2: 00007FF673129646
+|  3: 00007FF6729C31A5
+|  4: 00007FF67233E096
+|  5: 00007FF671EFF206
+|  6: 00007FF671EFF147
+|  7: 00007FF6735CDD11
+|  8: 00007FF6735CD798
+|  9: 00007FF6735CD2B3
+| 10: 00007FF6735AD5C7
+| 11: 00007FF6735DD4D0
+| 12: 00007FF6735A9CB0
+| 13: 00007FF6735A95FC
+| 14: 00007FF6735A8B81
+| 15: 00007FF6735A88DF
+| 16: 00007FF6733B66A6
+| 17: 00007FF6733B53C0
+| 18: 00007FF67318992B
+| 19: 00007FF672037956
+| 20: 00007FF672033093
+| 21: 00007FF672032979
+| 22: 00007FF67319C7DF
+| 23: 00007FF671CCC76E
+| 24: 00007FF672A185C6
+| 25: 00007FF673C70373
+| 26: 00007FFFEDB9E8D7
+| 27: 00007FFFEEF8C53C
+|
+|
+| #
+| # Fatal process out of memory: Zone
+| #
+| ----- Native stack trace -----
+|
+|
+| <--- Last few GCs --->
+|
+| [29488:000001C0ACCA4000]      781 ms: Mark-Compact 19.0 (50.1) -> 11.1 (50.1) MB, pooled: 0 MB, 5.94 / 0.00 ms  (+ 0.3 ms in 3 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 24 ms) (average mu = 0.992, current mu = 0.99[29488:000001C0ACCA4000]     1161 ms: Scavenge (interleaved) 28.7 (50.8) -> 21.7 (50.8) MB, pooled: 0 MB, 4.88 / 0.00 ms  (average mu = 0.992, current mu = 0.992) allocation failure;
+|
+|  1: 00007FF671CD08AD
+| FATAL ERROR: Zone Allocation failed - process out of memory
+|  2: 00007FF673129646
+| ----- Native stack trace -----
+|
+|  3: 00007FF6729C31A5
+|  4: 00007FF67233E096
+|  5: 00007FF6734BBD8F
+|  6: 00007FF6734BB7E6
+|  7: 00007FF6733B0DD6
+|  8: 00007FF6733B53ED
+|  9: 00007FF67318992B
+| 10: 00007FF672037956
+| 11: 00007FF672033093
+| 12: 00007FF672032979
+| 13: 00007FF67319C7DF
+| 14: 00007FF671CCC76E
+| 15: 00007FF672A185C6
+| 16: 00007FF673C70373
+| 17: 00007FFFEDB9E8D7 BaseThreadInitThunk+23
+| 18: 00007FFFEEF8C53C RtlUserThreadStart+44
+Android .\index.js ▓▓▓▓░░░░░░░░░░░░ 25.0% (20/40)
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\cli\build\src\utils\errors.js:130
+    throw error;
+    ^
+
+Error: write after end
+    at _write (node:internal/streams/writable:487:11)
+    at PassThrough.Writable.write (node:internal/streams/writable:508:10)
+    at Socket.ondata (node:internal/streams/readable:1008:24)
+    at Socket.emit (node:events:520:35)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Socket.Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+Emitted 'error' event on PassThrough instance at:
+    at PassThrough.onerror (node:internal/streams/readable:1031:14)
+    at PassThrough.emit (node:events:508:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'ERR_STREAM_WRITE_AFTER_END'
+}
+
+Node.js v24.13.1
+
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ>
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ>npm start
+
+> mobileipiz@1.0.0 start
+> expo start -c
+
+Starting project at C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ
+Using src/app as the root directory for Expo Router.
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Error loading Metro config at: C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\metro.config.js
+Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+Error: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:195:11)
+    at defaultLoadSync (node:internal/modules/esm/load:142:3)
+    at ModuleLoader.#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:796:12)
+    at ModuleLoader.#loadSync (node:internal/modules/esm/loader:816:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:781:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:526:31)
+    at ModuleLoader.#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:577:36)
+    at afterResolve (node:internal/modules/esm/loader:625:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:631:12)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:650:32)
+
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ>
+
+
+--------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+
+
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ>npm start
+
+> mobileipiz@1.0.0 start
+> expo start -c
+
+Starting project at C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+
+
+#
+# Fatal process out of memory: Zone
+#
+----- Native stack trace -----
+
+ 1: 00007FF61B4408AD
+ 2: 00007FF61C899646
+ 3: 00007FF61C1331A5
+ 4: 00007FF61BAAE096
+ 5: 00007FF61CD1AF6A
+ 6: 00007FF61CD1A65B
+C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\cli\build\src\utils\errors.js:130
+    throw error;
+    ^
+
+Error: UNKNOWN: unknown error, watch 'C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\react-native\src\private\renderer\errorhandling'
+    at FSWatcher.<computed> (node:internal/fs/watchers:254:19)
+    at Object.watch (node:fs:2536:36)
+    at FallbackWatcher._watchdir (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro-file-map\src\watchers\FallbackWatcher.js:119:33)
+    at C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro-file-map\src\watchers\FallbackWatcher.js:54:16
+    at Walker.<anonymous> (C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro-file-map\src\watchers\FallbackWatcher.js:358:5)
+    at Walker.emit (node:events:508:28)
+    at C:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\walker\lib\walker.js:69:16
+    at FSReqCallback.oncomplete (node:fs:184:23) {
+  errno: -4094,
+  syscall: 'watch',
+  code: 'UNKNOWN',
+  path: 'C:\\Projectos\\MobileDirectoryIPIZ\\MobileIPIZ\\node_modules\\react-native\\src\\private\\renderer\\errorhandling',
+  filename: 'C:\\Projectos\\MobileDirectoryIPIZ\\MobileIPIZ\\node_modules\\react-native\\src\\private\\renderer\\errorhandling'
+}
+ 7: 00007FF61CD19B1D
+ 8: 00007FF61CD195F4
+ 9: 00007FF61CD18B81
+
+Node.js v24.13.1
+10: 00007FF61CD188DF
+11: 00007FF61CB266A6
+12: 00007FF61CB253C0
+13: 00007FF61C8F992B
+14: 00007FF61B7A7956
+15: 00007FF61B7A3093
+16: 00007FF61B7A2979
+17: 00007FF61C90C7DF
+18: 00007FF61B43C76E
+19: 00007FF61C1885C6
+20: 00007FF61D3E0373
+21: 00007FFFEDB9E8D7 BaseThreadInitThunk+23
+22: 00007FFFEEF8C53C RtlUserThreadStart+44
+
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+Android Bundling failed 102497ms index.js (969 modules)
+ ERROR  SyntaxError: E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\src\features\company\CompanyDashboard.tsx: Identifier 'Pressable' has already been declared. (8:9)
+
+   6 | import { useAuth } from '../../contexts/AuthContext';
+   7 | import { useTheme } from '../../contexts/ThemeContext';
+>  8 | import { Pressable } from 'react-native';
+     |          ^
+   9 |
+  10 | type Props = NativeStackScreenProps<RootStackParamList, 'CompanyDashboard'>;
+  11 |
+    at constructor (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:365:19)
+    at TypeScriptParserMixin.raise (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:6599:19)
+    at TypeScriptScopeHandler.declareName (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:4866:21)
+    at TypeScriptParserMixin.declareNameFromIdentifier (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7567:16)
+    at TypeScriptParserMixin.checkIdentifier (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7563:12)
+    at TypeScriptParserMixin.checkLVal (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:7500:12)
+    at TypeScriptParserMixin.finishImportSpecifier (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14266:10)
+    at TypeScriptParserMixin.parseImportSpecifier (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14419:17)
+    at TypeScriptParserMixin.parseImportSpecifier (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:10148:18)
+    at TypeScriptParserMixin.parseNamedImportSpecifiers (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14398:36)
+    at TypeScriptParserMixin.parseImportSpecifiersAndAfter (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14242:37)
+    at TypeScriptParserMixin.parseImport (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14235:17)
+    at TypeScriptParserMixin.parseImport (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:9353:26)
+    at TypeScriptParserMixin.parseStatementContent (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12876:27)
+    at TypeScriptParserMixin.parseStatementContent (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:9508:18)
+    at TypeScriptParserMixin.parseStatementLike (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12767:17)
+    at TypeScriptParserMixin.parseModuleItem (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12744:17)
+    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:13316:36)
+    at TypeScriptParserMixin.parseBlockBody (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:13309:10)
+    at TypeScriptParserMixin.parseProgram (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12622:10)
+    at TypeScriptParserMixin.parseTopLevel (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:12612:25)
+    at TypeScriptParserMixin.parse (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14488:25)
+    at TypeScriptParserMixin.parse (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:10126:18)
+    at parse (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\parser\lib\index.js:14501:26)
+    at parser (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\parser\index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transformation\normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transformation\index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transform.js:22:33)
+    at transform.next (<anonymous>)
+    at evaluateSync (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\gensync\index.js:251:28)
+    at sync (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\gensync\index.js:89:14)
+    at stopHiding - secret - don't use this - v1 (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\errors\rewrite-stack-trace.js:47:12)
+    at Object.transformSync (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\@babel\core\lib\transform.js:40:76)
+    at parseWithBabel (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transformSync.js:75:18)
+    at transformSync (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transformSync.js:54:16)
+    at Object.transform (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\babel-transformer.js:127:58)
+    at transformJSWithBabel (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\metro-transform-worker.js:468:47)
+    at Object.transform (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\metro-transform-worker.js:583:12)
+    at Object.transform (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\expo\node_modules\@expo\metro-config\build\transform-worker\transform-worker.js:178:19)
+    at transformFile (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro\src\DeltaBundler\Worker.flow.js:67:36)
+    at Object.transform (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\metro\src\DeltaBundler\Worker.flow.js:42:10)
+    at execFunction (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:149:17)
+    at execHelper (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:137:5)
+    at execMethod (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:140:5)
+    at process.messageListener (E:\Projectos\MobileDirectoryIPIZ\MobileIPIZ\node_modules\jest-worker\build\workers\processChild.js:44:7)
+    at process.emit (node:events:508:28)
+    at emit (node:internal/child_process:949:14)

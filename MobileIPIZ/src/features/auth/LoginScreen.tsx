@@ -1,110 +1,189 @@
-import React, { FC } from 'react';
-import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+// IPIZ Mobile App - Login Screen
+// Modern minimalistic login with new design system
+
+import React, { FC, useState } from 'react';
+import { View, StyleSheet, Image, Pressable, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
-import { colors } from '../../theme/colors';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../../app/AppNavigator';
-import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
+import { useAppTheme } from '../../contexts/ThemeContext';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../../navigation/AppNavigator';
+import { Button, Input, Text } from '../../components';
 
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-export const LoginScreen: FC = () => {
+export const LoginScreen: FC<Props> = ({ navigation }) => {
   const { login, isLoading } = useAuth();
+  const { theme, colors } = useAppTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const validateForm = (): boolean => {
+    let isValid = true;
+    
+    if (!email) {
+      setEmailError('Email é obrigatório');
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError('Email inválido');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Senha é obrigatória');
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError('Senha deve ter pelo menos 6 caracteres');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    return isValid;
+  };
 
   const handleLogin = async () => {
+    if (!validateForm()) return;
+    
     try {
       await login(email, password);
-      navigation.navigate('Home');
+      navigation.navigate('MainTabs');
     } catch (error) {
       console.error('Login failed:', error);
-      
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title}>IPIZ</Text>
-        <Text style={styles.subtitle}>Instituto Politécnico Industrial do Zango</Text>
-      </View>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.header}>
+          <Image 
+            source={require('../../assets/logo.png')} 
+            style={styles.logo} 
+            resizeMode="contain" 
+          />
+          <Text variant="title" color="primary" center>IPIZ</Text>
+          <Text variant="body" color="secondary" center style={styles.subtitle}>
+            Instituto Politécnico Industrial do Zango
+          </Text>
+        </View>
 
-      <View style={styles.form}>
-        <Input label="Email" value={email} onChangeText={setEmail} placeholder="seu@email.com" keyboardType="email-address" />
-        <Input label="Senha" value={password} onChangeText={setPassword} placeholder="Senha de usuário" secureTextEntry />
+        <View style={styles.form}>
+          <Text variant="sectionTitle" color="primary" style={styles.welcomeText}>
+            Bem-vindo de volta
+          </Text>
+          <Text variant="body" color="muted" style={styles.instructionText}>
+            Entre com suas credenciais para continuar
+          </Text>
 
-        <Button title="Entrar" onPress={handleLogin} loading={isLoading} />
+          <Input
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="seu@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            error={emailError}
+          />
 
-          <Text style={styles.link} onPress={() => navigation.navigate('Profile')}>Esqueceu a senha?</Text>
+          <Input
+            label="Senha"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Senha de usuário"
+            secureTextEntry
+            error={passwordError}
+          />
 
-          <Text style={styles.link} onPress={() => navigation.navigate('Profile')}>Criar nova conta</Text>
-      </View>
-    </View>
+          <Pressable style={styles.forgotPassword} android_ripple={{ color: colors.border.dark }} onPress={() => {}}>
+            <Text variant="body" color="secondary">Esqueceu a senha?</Text>
+          </Pressable>
+
+          <Button 
+            title="Entrar" 
+            onPress={handleLogin} 
+            loading={isLoading} 
+            fullWidth
+            style={styles.loginButton}
+          />
+
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text variant="caption" color="muted" style={styles.dividerText}>ou</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <Button 
+            title="Criar nova conta" 
+            variant="outline" 
+            fullWidth
+            onPress={() => {}}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.default,
+  },
+  scrollContent: {
+    flexGrow: 1,
     padding: 24,
     justifyContent: 'center',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 40,
   },
   logo: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     marginBottom: 16,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 8,
-  },
   subtitle: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    textAlign: 'center',
+    marginTop: 8,
   },
   form: {
     width: '100%',
   },
-  input: {
-    backgroundColor: colors.background.paper,
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: colors.neutral[300],
+  welcomeText: {
+    marginBottom: 8,
   },
-  button: {
-    backgroundColor: colors.primary[700],
-    borderRadius: 8,
-    padding: 16,
-    alignItems: 'center',
+  instructionText: {
+    marginBottom: 24,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginBottom: 24,
+  },
+  loginButton: {
     marginBottom: 16,
   },
-  buttonText: {
-    color: colors.background.paper,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkButton: {
+  divider: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginVertical: 16,
   },
-  linkText: {
-    color: colors.primary[700],
-    fontSize: 14,
+  dividerLine: {
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    paddingHorizontal: 16,
   },
 });
+
+export default LoginScreen;

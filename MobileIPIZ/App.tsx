@@ -1,20 +1,20 @@
+import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from './src/contexts/ThemeContext';
+import AppNavigator from './src/navigation/AppNavigator';
 
-
-
-import React, { FC } from 'react';
-import { AuthProvider } from './src/contexts/AuthContext';
-import { AppNavigator } from './src/app/AppNavigator';
-
-
-
-const App: FC = () => {
+/**
+ * App Root - Providers
+ */
+const App = () => {
   return (
-    <AuthProvider>
-      <AppNavigator />
-
-    </AuthProvider>
-   
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <AppNavigator />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 };
 
 export default App;
+

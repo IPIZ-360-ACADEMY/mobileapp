@@ -1,0 +1,9 @@
+# Ignore stray okhttp file that breaks Metro
+okhttp3.internal.connection.RealCall$AsyncCall
+# Node modules and other usual ignores
+node_modules
+.expo
+.expo-shared
+android
+ios
+.git

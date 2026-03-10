@@ -1,19 +1,150 @@
 import React, { FC } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Button } from '../../components/ui/Button';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../app/AppNavigator';
-import { colors } from '../../theme/colors';
+import { View, Text, ScrollView, Pressable, StyleSheet, Alert } from 'react-native';
+import Button from '../../components/ui/Button';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { useAppTheme } from '../../contexts/ThemeContext';
 import { JobType } from '../../types/job.types';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-type RouteParams = RouteProp<RootStackParamList, 'JobDetail'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'JobDetail'>;
 
-export const JobDetailScreen: FC = () => {
-  const navigation = useNavigation<NavigationProp>();
-  const route = useRoute<RouteParams>();
+export const JobDetailScreen: FC<Props> = ({ navigation, route }) => {
   const { jobId } = route.params;
+  const { theme, colors } = useAppTheme();
+
+  const getStyles = () => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.default,
+    },
+    header: {
+      backgroundColor: colors.background.default,
+      paddingTop: 12,
+    },
+    backButton: {},
+    headerWrapper: {
+      paddingHorizontal: 16,
+      paddingTop: 12,
+      paddingBottom: 8,
+    },
+    headerCard: {
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      padding: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      elevation: 3,
+      justifyContent: 'flex-start',
+    },
+    headerTitle: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text.primary,
+      marginLeft: 12,
+    },
+    backButtonText: {
+      color: colors.background.paper,
+      fontSize: 16,
+    },
+    content: {
+      flex: 1,
+      padding: 16,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: colors.text.primary,
+      marginBottom: 8,
+    },
+    company: {
+      fontSize: 18,
+      color: colors.text.secondary,
+      marginBottom: 24,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.neutral[200],
+    },
+    infoLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    infoValue: {
+      fontSize: 14,
+      color: colors.text.primary,
+      fontWeight: '600',
+    },
+    section: {
+      marginTop: 24,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: colors.text.primary,
+      marginBottom: 12,
+    },
+    description: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      lineHeight: 22,
+    },
+    listItem: {
+      flexDirection: 'row',
+      marginBottom: 8,
+    },
+    bullet: {
+      fontSize: 14,
+      color: '#000',
+      marginRight: 8,
+      fontWeight: 'bold',
+    },
+    listText: {
+      flex: 1,
+      fontSize: 14,
+      color: colors.text.secondary,
+      lineHeight: 22,
+    },
+    skillsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    skillTag: {
+      backgroundColor: colors.neutral[100],
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 20,
+    },
+    skillText: {
+      fontSize: 14,
+      color: colors.text.primary,
+      fontWeight: '600',
+    },
+    footer: {
+      padding: 16,
+    },
+    applyButton: {
+      backgroundColor: colors.neutral[700],
+      padding: 16,
+      borderRadius: 12,
+      alignItems: 'center',
+    },
+    applyButtonText: {
+      color: colors.background.paper,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+  });
+
+  const styles = getStyles();
 
   const mockJob = {
     id: jobId,
@@ -51,19 +182,19 @@ export const JobDetailScreen: FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>← Voltar</Text>
-        </TouchableOpacity>
+    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+      <View style={styles.headerWrapper}>
+        <View style={[styles.headerCard, { backgroundColor: colors.background.paper }] }>
+          <Pressable style={styles.backButton} android_ripple={{ color: colors.shadow.light }} onPress={() => navigation.goBack()}>
+            <Text style={[styles.backButtonText, { color: colors.background.paper === '#FFFFFF' ? '#000' : colors.background.paper }]}>← Voltar</Text>
+          </Pressable>
+          <Text style={[styles.headerTitle, { color: colors.text.primary }]}>{mockJob.title}</Text>
+        </View>
       </View>
 
-      <ScrollView style={styles.content}>
-        <Text style={styles.title}>{mockJob.title}</Text>
-        <Text style={styles.company}>{mockJob.companyName}</Text>
+      <ScrollView style={styles.content} contentContainerStyle={{ paddingBottom: 24 }}>
+        <Text style={[styles.title, { color: colors.text.primary }]}>{mockJob.title}</Text>
+        <Text style={[styles.company, { color: colors.text.secondary }]}>{mockJob.companyName}</Text>
         
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>📍 Localização</Text>
@@ -81,8 +212,8 @@ export const JobDetailScreen: FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Descrição</Text>
-          <Text style={styles.description}>{mockJob.description}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>Descrição</Text>
+          <Text style={[styles.description, { color: colors.text.secondary }]}>{mockJob.description}</Text>
         </View>
 
         <View style={styles.section}>
@@ -123,114 +254,3 @@ export const JobDetailScreen: FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  header: {
-    backgroundColor: colors.primary[700],
-    padding: 24,
-    paddingTop: 48,
-  },
-  backButton: {},
-  backButtonText: {
-    color: colors.background.paper,
-    fontSize: 16,
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 8,
-  },
-  company: {
-    fontSize: 18,
-    color: colors.text.secondary,
-    marginBottom: 24,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.neutral[200],
-  },
-  infoLabel: {
-    fontSize: 14,
-    color: colors.text.secondary,
-  },
-  infoValue: {
-    fontSize: 14,
-    color: colors.text.primary,
-    fontWeight: '600',
-  },
-  section: {
-    marginTop: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-    marginBottom: 12,
-  },
-  description: {
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 22,
-  },
-  listItem: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  bullet: {
-    fontSize: 14,
-    color: colors.primary[700],
-    marginRight: 8,
-    fontWeight: 'bold',
-  },
-  listText: {
-    flex: 1,
-    fontSize: 14,
-    color: colors.text.secondary,
-    lineHeight: 22,
-  },
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  skillTag: {
-    backgroundColor: colors.primary[100],
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-  },
-  skillText: {
-    fontSize: 14,
-    color: colors.primary[700],
-    fontWeight: '600',
-  },
-  footer: {
-    padding: 16,
-    backgroundColor: colors.background.paper,
-    borderTopWidth: 1,
-    borderTopColor: colors.neutral[200],
-  },
-  applyButton: {
-    backgroundColor: colors.primary[700],
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  applyButtonText: {
-    color: colors.background.paper,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});

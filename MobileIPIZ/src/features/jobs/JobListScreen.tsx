@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../app/AppNavigator';
-import { colors } from '../../theme/colors';
+import { View, Text, ScrollView, Pressable, StyleSheet, TextInput } from 'react-native';
+import { useAppTheme } from '../../contexts/ThemeContext';
+import { Colors } from '../../theme/colors';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/AppNavigator';
 import { Job, JobType, JobStatus } from '../../types/job.types';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList, 'JobList'>;
 
 const mockJobs: Job[] = [
   {
@@ -56,10 +56,15 @@ const mockJobs: Job[] = [
   },
 ];
 
-export const JobListScreen: FC = () => {
-  const navigation = useNavigation<NavigationProp>();
+export const JobListScreen: FC<Props> = ({ navigation }) => {
+  // migrating to the new hook; we still grab colors for now since
+  // most styles rely on it.  eventually only `theme` should be used.
+  const { theme, colors } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'ALL' | 'FULL_TIME' | 'INTERNSHIP'>('ALL');
+
+  const styles = getStyles(colors);
+  // note: some day we can rewrite getStyles(theme) and drop colors
 
   const filteredJobs = mockJobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -69,20 +74,17 @@ export const JobListScreen: FC = () => {
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>← Voltar</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Oportunidades</Text>
+    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+      <View style={[styles.header, { backgroundColor: colors.primary, paddingTop: 48 }]}>
+        <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]} onPress={() => navigation.goBack()}>
+          <Text style={[styles.backButtonText, { color: colors.background.paper }]}>← Voltar</Text>
+        </Pressable>
+        <Text style={[styles.title, { color: colors.background.paper }]}>Oportunidades</Text>
       </View>
 
       <View style={styles.searchContainer}>
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { backgroundColor: colors.background.paper, borderColor: colors.neutral[300], color: colors.text.primary }]}
           placeholder="Buscar vagas..."
           placeholderTextColor={colors.text.hint}
           value={searchQuery}
@@ -91,68 +93,73 @@ export const JobListScreen: FC = () => {
       </View>
 
       <View style={styles.filterContainer}>
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'ALL' && styles.filterButtonActive]}
+        <Pressable
+          style={[styles.filterButton, filter === 'ALL' && styles.filterButtonActive, { borderColor: colors.primary }]}
+          android_ripple={{ color: colors.shadow.light }}
           onPress={() => setFilter('ALL')}
         >
-          <Text style={[styles.filterButtonText, filter === 'ALL' && styles.filterButtonTextActive]}>
+          <Text style={[styles.filterButtonText, filter === 'ALL' && styles.filterButtonTextActive, { color: filter === 'ALL' ? colors.background.paper : colors.primary }]}>
             Todas
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'FULL_TIME' && styles.filterButtonActive]}
+        <Pressable
+          style={[styles.filterButton, filter === 'FULL_TIME' && styles.filterButtonActive, { borderColor: colors.primary }]}
+          android_ripple={{ color: colors.shadow.light }}
           onPress={() => setFilter('FULL_TIME')}
         >
-          <Text style={[styles.filterButtonText, filter === 'FULL_TIME' && styles.filterButtonTextActive]}>
+          <Text style={[styles.filterButtonText, filter === 'FULL_TIME' && styles.filterButtonTextActive, { color: filter === 'FULL_TIME' ? colors.background.paper : colors.primary }]}>
             Tempo Integral
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'INTERNSHIP' && styles.filterButtonActive]}
+        <Pressable
+          style={[styles.filterButton, filter === 'INTERNSHIP' && styles.filterButtonActive, { borderColor: colors.primary }]}
+          android_ripple={{ color: colors.shadow.light }}
           onPress={() => setFilter('INTERNSHIP')}
         >
-          <Text style={[styles.filterButtonText, filter === 'INTERNSHIP' && styles.filterButtonTextActive]}>
+          <Text style={[styles.filterButtonText, filter === 'INTERNSHIP' && styles.filterButtonTextActive, { color: filter === 'INTERNSHIP' ? colors.background.paper : colors.primary }]}>
             Estágios
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <ScrollView style={styles.jobList}>
         {filteredJobs.map((job) => (
-          <TouchableOpacity
-            key={job.id}
-            style={styles.jobCard}
-            onPress={() => navigation.navigate('JobDetail', { jobId: job.id })}
-          >
+          <Pressable
+                key={job.id}
+                style={[styles.jobCard, { backgroundColor: colors.background.paper, borderColor: colors.neutral[200] }]}
+                android_ripple={{ color: colors.shadow.light }}
+                onPress={() => navigation.navigate('JobDetail', { jobId: job.id })}
+              >
             <View style={styles.jobHeader}>
-              <Text style={styles.jobTitle}>{job.title}</Text>
+              <Text style={[styles.jobTitle, { color: colors.text.primary }]}>{job.title}</Text>
               <View style={[
                 styles.jobTypeBadge,
-                job.type === JobType.INTERNSHIP && styles.internshipBadge
+                job.type === JobType.INTERNSHIP && styles.internshipBadge,
+                { backgroundColor: job.type === JobType.INTERNSHIP ? colors.warning.light : colors.neutral[100] }
               ]}>
                 <Text style={styles.jobTypeText}>
                   {job.type === JobType.FULL_TIME ? 'Tempo Integral' : 'Estágio'}
                 </Text>
               </View>
             </View>
-            <Text style={styles.companyName}>{job.companyName}</Text>
-            <Text style={styles.location}>{job.location}</Text>
-            <Text style={styles.salary}>{job.salaryRange}</Text>
+            <Text style={[styles.companyName, { color: colors.text.secondary }]}>{job.companyName}</Text>
+            <Text style={[styles.location, { color: colors.text.secondary }]}>{job.location}</Text>
+            <Text style={[styles.salary, { color: colors.success.main }]}>{job.salaryRange}</Text>
             <View style={styles.skillsContainer}>
               {job.skills.slice(0, 3).map((skill, index) => (
-                <View key={index} style={styles.skillTag}>
-                  <Text style={styles.skillTagText}>{skill}</Text>
+                <View key={index} style={[styles.skillTag, { backgroundColor: colors.neutral[100] }]}>
+                  <Text style={[styles.skillTagText, { color: colors.text.secondary }]}>{skill}</Text>
                 </View>
               ))}
             </View>
-          </TouchableOpacity>
+          </Pressable>
         ))}
 
         {filteredJobs.length === 0 && (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyStateText}>Nenhuma vaga encontrada</Text>
+            <Text style={[styles.emptyStateText, { color: colors.text.secondary }]}>Nenhuma vaga encontrada</Text>
           </View>
         )}
       </ScrollView>
@@ -160,13 +167,12 @@ export const JobListScreen: FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+
+const getStyles = (colors: Colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.default,
   },
   header: {
-    backgroundColor: colors.primary[700],
     padding: 24,
     paddingTop: 48,
   },
@@ -174,24 +180,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   backButtonText: {
-    color: colors.background.paper,
     fontSize: 16,
+  },
+  pressed: {
+    opacity: 0.7,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: colors.background.paper,
   },
   searchContainer: {
     padding: 16,
   },
   searchInput: {
-    backgroundColor: colors.background.paper,
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: colors.neutral[300],
   },
   filterContainer: {
     flexDirection: 'row',
@@ -204,13 +209,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.primary[700],
   },
   filterButtonActive: {
-    backgroundColor: colors.primary[700],
+    backgroundColor: colors.neutral[700],
   },
   filterButtonText: {
-    color: colors.primary[700],
     fontSize: 14,
     fontWeight: '600',
   },
@@ -222,12 +225,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   jobCard: {
-    backgroundColor: colors.background.paper,
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: colors.neutral[200],
   },
   jobHeader: {
     flexDirection: 'row',
@@ -238,37 +239,31 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: colors.text.primary,
     flex: 1,
     marginRight: 8,
   },
   jobTypeBadge: {
-    backgroundColor: colors.primary[100],
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
   },
   internshipBadge: {
-    backgroundColor: colors.secondary[100],
+    backgroundColor: colors.warning.light,
   },
   jobTypeText: {
     fontSize: 12,
-    color: colors.primary[700],
     fontWeight: '600',
   },
   companyName: {
     fontSize: 16,
-    color: colors.text.secondary,
     marginBottom: 4,
   },
   location: {
     fontSize: 14,
-    color: colors.text.secondary,
     marginBottom: 4,
   },
   salary: {
     fontSize: 14,
-    color: colors.success.main,
     fontWeight: '600',
     marginBottom: 12,
   },
@@ -278,14 +273,12 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   skillTag: {
-    backgroundColor: colors.neutral[100],
     paddingVertical: 4,
     paddingHorizontal: 12,
     borderRadius: 16,
   },
   skillTagText: {
     fontSize: 12,
-    color: colors.text.secondary,
   },
   emptyState: {
     padding: 32,
@@ -293,6 +286,5 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     fontSize: 16,
-    color: colors.text.secondary,
   },
 });

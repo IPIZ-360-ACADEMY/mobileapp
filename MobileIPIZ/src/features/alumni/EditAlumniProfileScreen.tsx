@@ -1,7 +1,11 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AlumniStackParamList } from '../../navigation/AppNavigator';
 
-export const EditAlumniProfileScreen: FC = () => {
+type Props = NativeStackScreenProps<AlumniStackParamList, 'EditAlumniProfile'>;
+
+export const EditAlumniProfileScreen: FC<Props> = () => {
   return (
     <View style={styles.container}>
       <Text>Edit Alumni Profile Screen</Text>

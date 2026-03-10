@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User, UserRole, AuthState } from '../types/user.types';
-
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -10,6 +9,7 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     token: null,
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (name: string, email: string, password: string, role: UserRole) => {
     void password;
     setAuthState(prev => ({ ...prev, isLoading: true }));
-    
+    //Trying block to make verification on this metod process
     try {
       const mockUser: User = {
         id: '1',
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         role,
         createdAt: new Date().toISOString(),
       };
-
+      //Its it the setup for atentication state
       setAuthState({
         user: mockUser,
         token: 'mock-token',
@@ -77,11 +77,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
+     //Returning the function that are being used in this section app page on auth context page
     <AuthContext.Provider value={{ ...authState, login, logout, register }}>
       {children}
+
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

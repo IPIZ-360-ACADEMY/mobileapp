@@ -1,105 +1,180 @@
-import React, { FC, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Header } from '../components';
-import { colors } from '../theme';
+import React from 'react';
+import { ScrollView, Pressable } from 'react-native';
+import { useAppTheme } from '../contexts/ThemeContext';
+import { Box, Text } from '../components/base';
+import { FeedHeader } from '../components/CustomHeader';
 
-interface FeedCardData {
-  id: string;
-  title: string;
-  description: string;
-}
+/**
+ * FeedScreen - Feed Social da Comunidade
+ * Posts de professores, alunos e notícias
+ */
+export const FeedScreen = () => {
+  const { theme } = useAppTheme();
 
-const FEED_CARDS: FeedCardData[] = [
-  {
-    id: '1',
-    title: 'Exemplo de Card',
-    description:
-      'Este é um exemplo de card no feed. Você pode personalizar este layout conforme necessário.',
-  },
-  {
-    id: '2',
-    title: 'Card 2',
-    description: 'Adicione mais conteúdo aqui.',
-  },
-  {
-    id: '3',
-    title: 'Card 3',
-    description: 'Continue construindo seu feed personalizado.',
-  },
-];
-
-const FeedCard: FC<FeedCardData> = ({ title, description }) => (
-  <View style={styles.card}>
-    <Text style={styles.cardTitle}>{title}</Text>
-    <Text style={styles.cardDescription}>{description}</Text>
-  </View>
-);
-
-export const FeedScreen: FC = () => {
-  const handleMenuPress = useCallback(() => {
-    console.log('Menu pressed');
-  }, []);
+  const feedPosts = [
+    {
+      id: 1,
+      author: 'Prof. Silva',
+      role: 'professor',
+      avatar: '👨‍🏫',
+      content: 'Novo material de apoio para Mecânica dos Fluidos disponível na plataforma. #EngenhariaCivil #ISPTEC',
+      image: null,
+      likes: 56,
+      comments: 12,
+      shares: 4,
+      timestamp: 'há 2h',
+    },
+    {
+      id: 2,
+      author: 'ISPTEC Parcerias',
+      role: 'institutional',
+      avatar: '🏢',
+      content: 'Oportunidade de estágio na SONANGOL. Inscreva-se até 30/10. #Estágio #Engenharia',
+      image: null,
+      likes: 120,
+      comments: 25,
+      shares: 10,
+      timestamp: 'há 4h',
+    },
+    {
+      id: 3,
+      author: 'Ana Costa (Estudante)',
+      role: 'student',
+      avatar: '👩‍🎓',
+      content: 'Finalizamos o projeto da ponte! Foi um desafio incrível. #Projeto #Engenharia',
+      image: null,
+      likes: 89,
+      comments: 15,
+      shares: 7,
+      timestamp: 'há 6h',
+    },
+  ];
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
+    <Box flex={1} style={{ backgroundColor: theme.background.primary }}>
+      <FeedHeader />
 
-      <Header onMenuPress={handleMenuPress} />
-
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.contentWrapper}>
-          <Text style={styles.title}>Feed</Text>
-          <Text style={styles.subtitle}>Bem-vindo ao MobileIPIZ</Text>
-
-          {FEED_CARDS.map(card => (
-            <FeedCard key={card.id} {...card} />
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 80 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Posts */}
+        <Box paddingH={16} paddingV={12} gap={12}>
+          {feedPosts.map((post) => (
+            <PostCard key={post.id} post={post} theme={theme} />
           ))}
-        </View>
+        </Box>
       </ScrollView>
-    </View>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingVertical: 16,
-  },
-  contentWrapper: {
-    paddingHorizontal: 16,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: '700',
-    marginBottom: 8,
-    color: colors.text.primary,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 24,
-    color: colors.text.secondary,
-  },
-  card: {
-    backgroundColor: colors.white,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
-    color: colors.text.primary,
-  },
-  cardDescription: {
-    fontSize: 14,
-    color: colors.text.secondary,
-  },
-});
+interface PostCardProps {
+  post: any;
+  theme: any;
+}
+
+const PostCard: React.FC<PostCardProps> = ({ post, theme }) => (
+  <Box
+    bg="secondary"
+    padding={16}
+    rounded="lg"
+    style={{
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 6,
+      elevation: 2,
+    }}
+  >
+    {/* Header do Post */}
+    <Box
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="flex-start"
+      marginBottom={12}
+    >
+      <Box flexDirection="row" gap={12} flex={1} alignItems="center">
+        <Box
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 999,
+            backgroundColor: theme.palette.primary.main,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text variant="h2">{post.avatar}</Text>
+        </Box>
+        <Box flex={1}>
+          <Text weight="bold" variant="body">
+            {post.author}
+          </Text>
+          <Text variant="caption" color="secondary">
+            {post.timestamp}
+          </Text>
+        </Box>
+      </Box>
+      <Pressable style={{ padding: 8 }}>
+        <Text variant="body" weight="bold">
+          ⋮
+        </Text>
+      </Pressable>
+    </Box>
+
+    {/* Conteúdo */}
+    <Text variant="body" marginBottom={12}>
+      {post.content}
+    </Text>
+
+    {/* Divider */}
+    <Box
+      style={{
+        height: 1,
+        backgroundColor: theme.border.light,
+        marginVertical: 12,
+      }}
+    />
+
+    {/* Engagement */}
+    <Box
+      flexDirection="row"
+      justifyContent="space-around"
+      alignItems="center"
+    >
+      <EngagementButton icon="❤️" label={post.likes} theme={theme} />
+      <EngagementButton icon="💬" label={post.comments} theme={theme} />
+      <EngagementButton icon="↗️" label={post.shares} theme={theme} />
+    </Box>
+  </Box>
+);
+
+interface EngagementButtonProps {
+  icon: string;
+  label: number;
+  theme: any;
+}
+
+const EngagementButton: React.FC<EngagementButtonProps> = ({
+  icon,
+  label,
+  theme,
+}) => (
+  <Pressable
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 8,
+    }}
+  >
+    <Text>{icon}</Text>
+    <Text variant="caption" weight="600" color="secondary">
+      {label}
+    </Text>
+  </Pressable>
+);

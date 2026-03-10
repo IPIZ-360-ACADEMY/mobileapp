@@ -3,7 +3,7 @@ import { View, Image, Text } from 'react-native';
 
 export const SplashScreen: FC = () => {
   return (
-    <View className="flex-1 justify-center items-center" style={{ backgroundColor: '#F5F5F5F7' }}>
+    <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'transparent' }}>
       <Image
         source={require('../assets/logo.png')}
         style={{ width: 250, height: 250 }}

@@ -1,43 +1,41 @@
+// IPIZ Mobile App Theme
+// Design System based on modern minimalistic UI
+
+// IPIZ Mobile App Theme
+// Design System based on modern minimalistic UI
+
 export const colors = {
-  primary: {
-    50: '#E3F2FD',
-    100: '#BBDEFB',
-    200: '#90CAF9',
-    300: '#64B5F6',
-    400: '#42A5F5',
-    500: '#2196F3',
-    600: '#1E88E5',
-    700: '#1976D2',
-    800: '#1565C0',
-    900: '#0D47A1',
+  // Light Background
+  light: '#E9E5E8',
+  
+  // Dark Background
+  dark: '#464444',
+  
+  // Primary Accent
+  primary: '#F8F692',
+  
+  // Primary Shades (for components that need specific shades)
+  primaryShades: {
+    50: '#FDFDE7',
+    100: '#FBFBC3',
+    200: '#F8F992',
+    300: '#F6F662',
+    400: '#F4F43D',
+    500: '#F2F223',
+    600: '#D4D41E',
+    700: '#B8B71A',
+    800: '#9B9916',
+    900: '#7E7C12',
   },
-  secondary: {
-    50: '#FFF3E0',
-    100: '#FFE0B2',
-    200: '#FFCC80',
-    300: '#FFB74D',
-    400: '#FFA726',
-    500: '#FF9800',
-    600: '#FB8C00',
-    700: '#F57C00',
-    800: '#EF6C00',
-    900: '#E65100',
+  
+  // Navigation Colors
+  nav: {
+    active: '#F8F692',
+    inactive: '#B0B0B0',
+    background: '#464444',
   },
-  success: {
-    light: '#4CAF50',
-    main: '#2E7D32',
-    dark: '#1B5E20',
-  },
-  warning: {
-    light: '#FFC107',
-    main: '#F57C00',
-    dark: '#E65100',
-  },
-  error: {
-    light: '#EF5350',
-    main: '#D32F2F',
-    dark: '#C62828',
-  },
+  
+  // Neutral palette
   neutral: {
     50: '#FAFAFA',
     100: '#F5F5F5',
@@ -50,23 +48,81 @@ export const colors = {
     800: '#424242',
     900: '#212121',
   },
-  background: {
-    default: '#F5F5F7',
-    paper: '#FFFFFF',
-    dark: '#1A1A1A',
+  
+  // Semantic colors
+  success: {
+    light: '#81C784',
+    main: '#4CAF50',
+    dark: '#2E7D32',
   },
+  warning: {
+    light: '#FFD54F',
+    main: '#FFC107',
+    dark: '#F57C00',
+  },
+  error: {
+    light: '#EF9A9A',
+    main: '#F44336',
+    dark: '#C62828',
+  },
+  info: {
+    light: '#64B5F6',
+    main: '#2196F3',
+    dark: '#1565C0',
+  },
+  
+  // Background colors
+  background: {
+    default: '#E9E5E8',
+    paper: '#FFFFFF',
+    dark: '#464444',
+    card: '#FFFFFF',
+    overlay: 'rgba(70, 68, 68, 0.5)',
+  },
+  
+  // Text colors
   text: {
     primary: '#212121',
-    secondary: '#757575',
+    secondary: '#616161',
     disabled: '#BDBDBD',
     hint: '#9E9E9E',
+    inverse: '#FFFFFF',
+    muted: '#757575',
   },
+  
+  // Border colors
+  border: {
+    light: '#E0E0E0',
+    medium: '#BDBDBD',
+    dark: '#424242',
+  },
+  
+  // Shadow
+  shadow: {
+    light: 'rgba(0, 0, 0, 0.05)',
+    medium: 'rgba(0, 0, 0, 0.1)',
+    dark: 'rgba(0, 0, 0, 0.2)',
+  },
+  
+  // Utility
   white: '#FFFFFF',
   black: '#000000',
-  gray: {
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#EEEEEE',
-    300: '#E0E0E0',
-  },
+  transparent: 'transparent',
+  
+  // Overlay for modals
+  backdrop: 'rgba(0, 0, 0, 0.5)',
 } as const;
+
+// Type exports for theme
+export type Colors = typeof colors;
+
+// A lightweight fallback that mirrors the full Colors type.  It is always
+// safe to use this object when the real theme file fails to load or while
+// tests/mock environments are running.  We intentionally specify the full
+// Colors type so the compiler can help keep it in sync with the real theme.
+export const fallbackColors: Colors = {
+  // keep the same values as the default `colors` above; if you change one,
+  // change the other.  In practice the fallback will rarely be used, but
+  // having the full shape prevents runtime "property does not exist" bugs.
+  ...colors,
+};
