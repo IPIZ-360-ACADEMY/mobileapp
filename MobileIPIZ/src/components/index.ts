@@ -16,6 +16,8 @@ export { Badge } from './atoms/Badge';
 export { SearchBar } from './molecules/SearchBar';
 export { ListItem } from './molecules/ListItem';
 export { NotificationCard } from './molecules/NotificationCard';
+export { PostCard } from './molecules/PostCard';
+export { SectionHeader } from './molecules/SectionHeader';
 
 // Organisms
 export { DashboardCard } from './organisms/DashboardCard';

@@ -10,7 +10,7 @@ interface TextProps extends RNTextProps {
   marginBottom?: number;
   marginTop?: number;
   flex?: number;
-  children: React.ReactNode;
+  children: React.ReactNode;  
 }
 
 export const Text = React.forwardRef<RNText, TextProps>(

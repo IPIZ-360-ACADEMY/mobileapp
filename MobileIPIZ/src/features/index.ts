@@ -11,11 +11,9 @@ export { ProfessionalDashboard } from './student/ProfessionalDashboard';
 export { StudentDashboard } from './student/StudentDashboard';
 
 // Teacher Screens
-export { ProfessionalTeacherDashboard } from './teacher/ProfessionalTeacherDashboard';
 export { TeacherDashboard } from './teacher/TeacherDashboard';
 
 // Admin Screens
-export { ProfessionalAdminDashboard } from './admin/ProfessionalAdminDashboard';
 export { AdminDashboard } from './admin/AdminDashboard';
 
 // Alumni Screens

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { TextInput, Pressable } from 'react-native';
 import { useTheme } from '@hooks/useTheme';
-import { Box, Text } from './index';
+import { Box } from './Box';
+import { Text } from './Text';
 
 interface InputProps {
   placeholder?: string;

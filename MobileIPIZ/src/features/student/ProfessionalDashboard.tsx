@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
-import { ScrollView, Pressable, Dimensions } from 'react-native';
+import { ScrollView, View, Pressable, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Box, Text, Button } from '../../components/base';
-
-const { width } = Dimensions.get('window');
+import { useTheme } from '../../hooks/useTheme';
+import { Button } from '../../components/base';
+import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
+import { SectionHeader } from '../../components';
 
 /**
- * ProfessionalDashboard - Dashboard minimalista e escalável
- * Design profissional seguindo tendências 2024+
+ * ProfessionalDashboard - Dashboard para alunos moderno e atraente
+ * Tailwind CSS + design profissional
  */
 export const ProfessionalDashboard = () => {
-  const { theme } = useAppTheme();
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Dados mock
-  const userStats = {
+  const studentStats = {
     name: 'João Silva',
-    role: 'Estudante',
-    avatar: '👥',
+    role: 'Aluno',
+    avatar: '👤',
     streak: 15,
     gpa: 8.5,
     completedCourses: 3,
@@ -26,10 +25,10 @@ export const ProfessionalDashboard = () => {
   };
 
   const courses = [
-    { id: 1, name: 'Programação Web', progress: 75, color: theme.palette.primary.main },
-    { id: 2, name: 'Mobile Dev', progress: 60, color: '#FF6B6B' },
-    { id: 3, name: 'Database', progress: 85, color: '#4ECDC4' },
-    { id: 4, name: 'DevOps', progress: 45, color: '#FFE66D' },
+    { id: 1, name: 'Programação Web', progress: 75, color: 'blue' },
+    { id: 2, name: 'Mobile Dev', progress: 60, color: 'purple' },
+    { id: 3, name: 'Database', progress: 85, color: 'emerald' },
+    { id: 4, name: 'DevOps', progress: 45, color: 'amber' },
   ];
 
   const announcements = [
@@ -39,342 +38,194 @@ export const ProfessionalDashboard = () => {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.primary }}>
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <ProfessionalNavBar />
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 32 }}
+        className="flex-1 px-4 py-6"
+        contentContainerStyle={{ paddingBottom: 60 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header - User Card */}
-        <Box
-          bg="secondary"
-          padding={20}
-          margin={16}
-          rounded="lg"
-          style={{
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 3,
-          }}
-        >
-          <Box
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-            marginBottom={16}
-          >
-            {/* Avatar e Nome */}
-            <Box flex={1}>
-              <Box
-                style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: theme.palette.primary.main,
-                  borderRadius: 999,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 12,
-                }}
-              >
-                <Text variant="h2" weight="bold" style={{ color: '#fff' }}>
-                  {userStats.avatar}
+        {/* Header - Student Card */}
+        <View className="bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-5 mb-6 shadow-sm">
+          <View className="flex-row items-center justify-between mb-4">
+            <View className="flex-row items-center space-x-4">
+              <View className="w-14 h-14 bg-blue-600 dark:bg-blue-700 rounded-full items-center justify-center">
+                <Text className="text-3xl">{studentStats.avatar}</Text>
+              </View>
+              <View>
+                <Text className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                  {studentStats.name}
                 </Text>
-              </Box>
-              <Text variant="h3" weight="bold">
-                {userStats.name}
-              </Text>
-              <Text variant="caption" color="secondary">
-                {userStats.role}
-              </Text>
-            </Box>
-
-            {/* Menu Icon */}
-            <Pressable style={{ padding: 8 }}>
-              <Text variant="h2">⋮</Text>
+                <Text className="text-sm text-gray-600 dark:text-gray-400">
+                  {studentStats.role}
+                </Text>
+              </View>
+            </View>
+            <Pressable className="p-2">
+              <Text className="text-xl">⚙️</Text>
             </Pressable>
-          </Box>
+          </View>
 
           {/* Quick Stats */}
-          <Box
-            flexDirection="row"
-            gap={12}
-          >
-            <StatCard
-              label="Sequência"
-              value={`${userStats.streak}d`}
-              color={theme.palette.primary.main}
-              theme={theme}
-            />
-            <StatCard
-              label="Média"
-              value={`${userStats.gpa}`}
-              color="#4ECDC4"
-              theme={theme}
-            />
-            <StatCard
-              label="Concluído"
-              value={userStats.completedCourses}
-              color="#FFE66D"
-              theme={theme}
-            />
-          </Box>
-        </Box>
+          <View className="flex-row gap-3">
+            <View className="flex-1 bg-white dark:bg-slate-800 rounded-lg p-3 items-center">
+              <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                {studentStats.streak}d
+              </Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400">Sequência</Text>
+            </View>
+            <View className="flex-1 bg-white dark:bg-slate-800 rounded-lg p-3 items-center">
+              <Text className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {studentStats.gpa}
+              </Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400">Média</Text>
+            </View>
+            <View className="flex-1 bg-white dark:bg-slate-800 rounded-lg p-3 items-center">
+              <Text className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {studentStats.completedCourses}
+              </Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400">Concluído</Text>
+            </View>
+          </View>
+        </View>
 
-        {/* Navigation Tabs */}
-        <Box
-          paddingH={16}
-          marginBottom={20}
-          flexDirection="row"
-          gap={8}
-        >
+        {/* Tab Navigation */}
+        <View className="flex-row gap-2 mb-6">
           {['overview', 'cursos', 'anuncios'].map((tab) => (
             <Pressable
               key={tab}
               onPress={() => setActiveTab(tab)}
-              style={{
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                backgroundColor: activeTab === tab ? theme.palette.primary.main : theme.background.secondary,
-                borderRadius: 20,
-              }}
+              className={`flex-1 py-3 px-4 rounded-full transition-colors ${
+                activeTab === tab
+                  ? 'bg-blue-600 dark:bg-blue-700'
+                  : 'bg-gray-100 dark:bg-slate-800'
+              }`}
             >
               <Text
-                variant="bodySmall"
-                weight="600"
-                style={{
-                  color: activeTab === tab ? '#fff' : theme.text.secondary,
-                  textTransform: 'capitalize',
-                }}
+                className={`text-center text-sm font-semibold capitalize ${
+                  activeTab === tab
+                    ? 'text-white'
+                    : 'text-gray-700 dark:text-gray-300'
+                }`}
               >
-                {tab}
+                {tab === 'overview' ? 'Visão Geral' : tab === 'cursos' ? 'Cursos' : 'Anúncios'}
               </Text>
             </Pressable>
           ))}
-        </Box>
+        </View>
 
-        {/* Content based on active tab */}
+        {/* Content */}
         {activeTab === 'overview' && (
           <>
-            {/* Recommended Actions */}
-            <Box paddingH={16} marginBottom={24}>
-              <Text variant="h3" weight="bold" marginBottom={12}>
-                Próximos Passos
-              </Text>
-              <ActionCard
-                title="Completar Aula 5"
-                subtitle="Programação Web"
-                icon="📚"
-                theme={theme}
-              />
-              <ActionCard
-                title="Revisar Feedback"
-                subtitle="Mobile Dev - Professor comentou"
-                icon="💡"
-                theme={theme}
-              />
-            </Box>
+            {/* Próximos Passos */}
+            <View className="mb-6">
+              <SectionHeader title="Próximos Passos" />
+              {[
+                { title: 'Completar Aula 5', subtitle: 'Programação Web', icon: '📚' },
+                { title: 'Revisar Feedback', subtitle: 'Mobile Dev - Professor comentou', icon: '💡' },
+              ].map((action, idx) => (
+                <Pressable
+                  key={idx}
+                  className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg mb-3 flex-row items-start border-l-4 border-blue-600"
+                >
+                  <Text className="text-2xl mr-3">{action.icon}</Text>
+                  <View className="flex-1">
+                    <Text className="font-semibold text-gray-900 dark:text-gray-100">
+                      {action.title}
+                    </Text>
+                    <Text className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {action.subtitle}
+                    </Text>
+                  </View>
+                  <Text className="text-gray-400">→</Text>
+                </Pressable>
+              ))}
+            </View>
 
-            {/* Quick Actions */}
-            <Box paddingH={16} marginBottom={24}>
-              <Text variant="h3" weight="bold" marginBottom={12}>
-                Ações Rápidas
-              </Text>
-              <Box flexDirection="row" gap={12}>
-                <QuickActionButton icon="📝" label="Tarefas" theme={theme} />
-                <QuickActionButton icon="📊" label="Notas" theme={theme} />
-                <QuickActionButton icon="🎯" label="Metas" theme={theme} />
-              </Box>
-            </Box>
+            {/* Ações Rápidas */}
+            <View className="mb-6">
+              <SectionHeader title="Ações Rápidas" />
+              <View className="flex-row gap-3">
+                {[
+                  { icon: '📝', label: 'Tarefas' },
+                  { icon: '📊', label: 'Notas' },
+                  { icon: '🎯', label: 'Metas' },
+                ].map((action, idx) => (
+                  <Pressable
+                    key={idx}
+                    className="flex-1 bg-gray-100 dark:bg-slate-800 p-4 rounded-lg items-center"
+                  >
+                    <Text className="text-3xl mb-2">{action.icon}</Text>
+                    <Text className="text-xs text-center text-gray-700 dark:text-gray-300 font-semibold">
+                      {action.label}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
           </>
         )}
 
         {activeTab === 'cursos' && (
-          <Box paddingH={16} marginBottom={24}>
-            <Text variant="h3" weight="bold" marginBottom={12}>
-              Seus Cursos
-            </Text>
-            {courses.map((course) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                theme={theme}
-              />
-            ))}
-          </Box>
+          <View className="mb-6">
+            <SectionHeader title="Seus Cursos" />
+            {courses.map((course, idx) => {
+              const colorMap = {
+                blue: 'blue-600',
+                purple: 'purple-600',
+                emerald: 'emerald-600',
+                amber: 'amber-600',
+              };
+              return (
+                <Pressable
+                  key={idx}
+                  className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg mb-3"
+                >
+                  <View className="flex-row items-center justify-between mb-2">
+                    <Text className="font-semibold text-gray-900 dark:text-gray-100 flex-1">
+                      {course.name}
+                    </Text>
+                    <Text className={`text-sm font-bold text-${colorMap[course.color]} dark:text-${colorMap[course.color]}`}>
+                      {course.progress}%
+                    </Text>
+                  </View>
+                  <View className="w-full h-2 bg-gray-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <View
+                      className={`h-full bg-${colorMap[course.color]} rounded-full`}
+                      style={{ width: `${course.progress}%` }}
+                    />
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
         )}
 
         {activeTab === 'anuncios' && (
-          <Box paddingH={16} marginBottom={24}>
-            <Text variant="h3" weight="bold" marginBottom={12}>
-              Anúncios Recentes
-            </Text>
-            {announcements.map((announcement) => (
-              <AnnouncementCard
-                key={announcement.id}
-                announcement={announcement}
-                theme={theme}
-              />
+          <View className="mb-6">
+            <SectionHeader title="Anúncios Recentes" />
+            {announcements.map((announcement, idx) => (
+              <Pressable
+                key={idx}
+                className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg mb-3 flex-row items-center"
+              >
+                <Text className="text-2xl mr-3">{announcement.icon}</Text>
+                <View className="flex-1">
+                  <Text className="font-semibold text-gray-900 dark:text-gray-100">
+                    {announcement.title}
+                  </Text>
+                  <Text className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {announcement.date}
+                  </Text>
+                </View>
+                <Text className="text-gray-400">→</Text>
+              </Pressable>
             ))}
-          </Box>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-// Components auxiliares
-
-interface StatCardProps {
-  label: string;
-  value: string | number;
-  color: string;
-  theme: any;
-}
-
-const StatCard: React.FC<StatCardProps> = ({ label, value, color, theme }) => (
-  <Box
-    flex={1}
-    alignItems="center"
-    padding={12}
-    rounded="md"
-    style={{ backgroundColor: `${color}15` }}
-  >
-    <Text variant="caption" color="secondary" marginBottom={4}>
-      {label}
-    </Text>
-    <Text
-      variant="h3"
-      weight="bold"
-      style={{ color }}
-    >
-      {value}
-    </Text>
-  </Box>
-);
-
-interface ActionCardProps {
-  title: string;
-  subtitle: string;
-  icon: string;
-  theme: any;
-}
-
-const ActionCard: React.FC<ActionCardProps> = ({ title, subtitle, icon, theme }) => (
-  <Pressable
-    style={{
-      marginBottom: 12,
-      backgroundColor: theme.background.secondary,
-      padding: 16,
-      borderRadius: 12,
-      borderLeftWidth: 4,
-      borderLeftColor: theme.palette.primary.main,
-    }}
-  >
-    <Box flexDirection="row" gap={12} alignItems="flex-start">
-      <Text variant="h2">{icon}</Text>
-      <Box flex={1}>
-        <Text variant="body" weight="600">
-          {title}
-        </Text>
-        <Text variant="caption" color="secondary" marginTop={4}>
-          {subtitle}
-        </Text>
-      </Box>
-      <Text variant="h3">→</Text>
-    </Box>
-  </Pressable>
-);
-
-interface QuickActionButtonProps {
-  icon: string;
-  label: string;
-  theme: any;
-}
-
-const QuickActionButton: React.FC<QuickActionButtonProps> = ({ icon, label, theme }) => (
-  <Pressable
-    style={{
-      flex: 1,
-      backgroundColor: theme.background.secondary,
-      paddingVertical: 16,
-      borderRadius: 12,
-      alignItems: 'center',
-    }}
-  >
-    <Text variant="h1" marginBottom={4}>{icon}</Text>
-    <Text variant="caption" weight="600">{label}</Text>
-  </Pressable>
-);
-
-interface CourseCardProps {
-  course: any;
-  theme: any;
-}
-
-const CourseCard: React.FC<CourseCardProps> = ({ course, theme }) => (
-  <Box
-    bg="secondary"
-    padding={16}
-    rounded="md"
-    marginBottom={12}
-  >
-    <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start" marginBottom={12}>
-      <Text variant="body" weight="bold" flex={1}>
-        {course.name}
-      </Text>
-      <Text variant="bodySmall" weight="bold" style={{ color: course.color }}>
-        {course.progress}%
-      </Text>
-    </Box>
-    <Box
-      style={{
-        height: 8,
-        backgroundColor: theme.background.tertiary,
-        borderRadius: 4,
-        overflow: 'hidden',
-      }}
-    >
-      <Box
-        style={{
-          height: '100%',
-          width: `${course.progress}%`,
-          backgroundColor: course.color,
-          borderRadius: 4,
-        }}
-      />
-    </Box>
-  </Box>
-);
-
-interface AnnouncementCardProps {
-  announcement: any;
-  theme: any;
-}
-
-const AnnouncementCard: React.FC<AnnouncementCardProps> = ({ announcement, theme }) => (
-  <Pressable
-    style={{
-      backgroundColor: theme.background.secondary,
-      padding: 16,
-      borderRadius: 12,
-      marginBottom: 12,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-    }}
-  >
-    <Text variant="h2">{announcement.icon}</Text>
-    <Box flex={1}>
-      <Text variant="body" weight="600">
-        {announcement.title}
-      </Text>
-      <Text variant="caption" color="secondary">
-        {announcement.date}
-      </Text>
-    </Box>
-    <Text variant="h3" style={{ color: theme.text.tertiary }}>
-      →
-    </Text>
-  </Pressable>
-);
+export default ProfessionalDashboard;

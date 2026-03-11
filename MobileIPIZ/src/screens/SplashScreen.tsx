@@ -1,7 +1,23 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { View, Image, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
+
+type SplashNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Splash'>;
 
 export const SplashScreen: FC = () => {
+  const navigation = useNavigation<SplashNavigationProp>();
+
+  useEffect(() => {
+    // Navigate to MainTab after 2 seconds
+    const timer = setTimeout(() => {
+      navigation.replace('MainTab');
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
     <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'transparent' }}>
       <Image

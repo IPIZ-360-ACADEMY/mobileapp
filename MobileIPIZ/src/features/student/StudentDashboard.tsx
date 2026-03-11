@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
-import { ScrollView, View, Pressable } from 'react-native';
+import { ScrollView, View, Pressable, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { MainDrawerParamList } from '../../navigation/AppNavigator';
 import { useTheme } from '../../hooks/useTheme';
-import { Text } from '../../components/base';
-import { StudentHeader } from '../../components/CustomHeader';
+import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
+import { DashboardCard, SectionHeader } from '../../components';
+
+// This screen is a legacy entrypoint but kept for compatibility. It now
+// uses the professional navbar and modern styling similar to
+// ProfessionalDashboard/Student.
 
 type Props = DrawerScreenProps<MainDrawerParamList, 'StudentDashboard'>;
 
@@ -12,10 +17,13 @@ export const StudentDashboard: FC<Props> = ({ navigation }) => {
   const { isDark } = useTheme();
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-900">
-      <StudentHeader />
-
-      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <ProfessionalNavBar />
+      <ScrollView
+        className="flex-1 px-4 py-6"
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
         {/* header saudação */}
         <View className="mb-8">
           <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -28,67 +36,58 @@ export const StudentDashboard: FC<Props> = ({ navigation }) => {
 
         {/* disciplinas */}
         <View className="mb-8">
-          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Minhas Disciplinas
-          </Text>
+          <SectionHeader title="Minhas Disciplinas" />
 
-          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
-            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Mecânica Industrial
-            </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Prof. João Silva
-            </Text>
-          </View>
+          <DashboardCard
+            title="Mecânica Industrial"
+            subtitle="Prof. João Silva"
+            icon="book"
+            variant="filled"
+            size="md"
+            className="mb-3"
+          />
 
-          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
-            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Eletrotécnica
-            </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Prof. Maria Santos
-            </Text>
-          </View>
+          <DashboardCard
+            title="Eletrotécnica"
+            subtitle="Prof. Maria Santos"
+            icon="book"
+            variant="filled"
+            size="md"
+            className="mb-3"
+          />
         </View>
 
         {/* oportunidades */}
         <View className="mb-8">
-          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Oportunidades de Estágio
-          </Text>
+          <SectionHeader title="Oportunidades de Estágio" />
 
-          <Pressable
+          <DashboardCard
+            title="Técnico em Manutenção"
+            subtitle="Empresa Industrial XYZ"
+            icon="briefcase"
+            variant="default"
+            size="md"
             onPress={() => navigation.navigate('Jobs')}
-            className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
-          >
-            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Técnico em Manutenção
-            </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Empresa Industrial XYZ
-            </Text>
-          </Pressable>
+            className="mb-3"
+          />
         </View>
 
         {/* mentorias */}
         <View className="mb-8">
-          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Mentorias Disponíveis
-          </Text>
+          <SectionHeader title="Mentorias Disponíveis" />
 
-          <Pressable
+          <DashboardCard
+            title="Conexão com Alumni"
+            subtitle="Conecte-se com ex-alunos para orientação profissional"
+            icon="users"
+            variant="default"
+            size="md"
             onPress={() => navigation.navigate('Alumni')}
-            className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
-          >
-            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Conexão com Alumni
-            </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Conecte-se com ex-alunos para orientação profissional
-            </Text>
-          </Pressable>
+            className="mb-3"
+          />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
+

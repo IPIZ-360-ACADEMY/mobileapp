@@ -2,11 +2,10 @@
 // Display student's academic schedule
 
 import React, { FC } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
-import { Text, ListItem, Icon } from '../../components';
+import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 interface ScheduleItem {
   id: string;
@@ -26,42 +25,51 @@ const scheduleData: ScheduleItem[] = [
   { id: '6', subject: 'Gestão da Produção', professor: 'Prof. Ricardo Alves', time: '10:00 - 11:30', day: 'Sexta', room: 'Sala 4' },
 ];
 
-type Props = NativeStackScreenProps<RootStackParamList, 'AcademicSchedule'>;
-
-export const AcademicScheduleScreen: FC<Props> = () => {
+export const AcademicScheduleScreen: FC = () => {
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-  const { isDark, componentTheme } = useTheme();
+  const { isDark } = useTheme();
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-900">
-      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
-        <Text variant="title" color="inverse">Horário Académico</Text>
-        <Text variant="body" color="secondary">Ano lectivo 2024/2025</Text>
-      </View>
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <ProfessionalNavBar />
 
-      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1 px-4 py-6"
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          🗓️ Horário Académico
+        </Text>
+
         {days.map((day) => (
-          <View key={day} className="mb-5">
-            <Text variant="sectionTitle" color="primary" className="mb-3 pb-2 border-b border-gray-300 dark:border-slate-700">
+          <View key={day} className="mb-6">
+            <Text className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
               {day}
             </Text>
             {scheduleData
               .filter((item) => item.day === day)
               .map((item) => (
-                <ListItem
+                <View
                   key={item.id}
-                  title={item.subject}
-                  subtitle={`${item.time} • ${item.room}`}
-                  leftIcon="book"
-                  showChevron={false}
-                />
+                  className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg mb-3 border border-gray-200 dark:border-slate-700"
+                >
+                  <Text className="text-base font-bold text-gray-900 dark:text-gray-100">
+                    {item.subject}
+                  </Text>
+                  <Text className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    {item.time} • {item.room}
+                  </Text>
+                  <Text className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    {item.professor}
+                  </Text>
+                </View>
               ))}
           </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default AcademicScheduleScreen;
-

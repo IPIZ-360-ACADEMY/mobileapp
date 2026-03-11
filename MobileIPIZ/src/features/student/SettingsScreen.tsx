@@ -4,10 +4,12 @@
 import React, { FC } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView, Switch } from 'react-native';
+import { View, ScrollView, Switch, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
-import { Text, ListItem } from '../../components';
+import { ListItem, SectionHeader } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
+import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -19,16 +21,15 @@ export const SettingsScreen: FC<Props> = () => {
   const [emailNotifications, setEmailNotifications] = React.useState(true);
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-900">
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <ProfessionalNavBar />
       <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
         <Text variant="title" color="inverse">Definições</Text>
         <Text variant="body" color="secondary">Gerir preferências e conta</Text>
       </View>
 
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
-          Conta
-        </Text>
+        <SectionHeader title="Conta" className="mt-4 mb-3" />
         
         <ListItem
           title="Perfil"
@@ -44,9 +45,7 @@ export const SettingsScreen: FC<Props> = () => {
           onPress={() => {}}
         />
 
-        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
-          Preferências
-        </Text>
+        <SectionHeader title="Preferências" className="mt-4 mb-3" />
 
         <View className="flex-row items-center justify-between bg-gray-50 dark:bg-slate-800 py-3 px-4 rounded-lg mb-2">
           <View className="flex-1 mr-3">
@@ -87,9 +86,7 @@ export const SettingsScreen: FC<Props> = () => {
           />
         </View>
 
-        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
-          Suporte
-        </Text>
+        <SectionHeader title="Suporte" className="mt-4 mb-3" />
 
         <ListItem
           title="Ajuda & FAQ"
@@ -112,9 +109,7 @@ export const SettingsScreen: FC<Props> = () => {
           onPress={() => {}}
         />
 
-        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
-          Sessão
-        </Text>
+        <SectionHeader title="Sessão" className="mt-4 mb-3" />
 
         <ListItem
           title="Terminar Sessão"
@@ -127,7 +122,7 @@ export const SettingsScreen: FC<Props> = () => {
           <Text variant="caption" color="muted">IPIZ Mobile App v1.0.0</Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

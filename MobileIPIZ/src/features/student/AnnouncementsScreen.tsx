@@ -2,11 +2,10 @@
 // Display institutional announcements
 
 import React, { FC } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
-import { Text, NotificationCard } from '../../components';
+import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 interface Announcement {
   id: string;
@@ -60,36 +59,58 @@ const announcementsData: Announcement[] = [
   },
 ];
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Announcements'>;
-
-export const AnnouncementsScreen: FC<Props> = () => {
+export const AnnouncementsScreen: FC = () => {
   const unreadCount = announcementsData.filter(a => !a.isRead).length;
-  const { isDark, componentTheme } = useTheme();
+  const { isDark } = useTheme();
+
+  const colorForType = (type: string) => {
+    switch (type) {
+      case 'success':
+        return 'bg-emerald-100 dark:bg-emerald-900 border-emerald-500';
+      case 'warning':
+        return 'bg-amber-100 dark:bg-amber-900 border-amber-500';
+      case 'error':
+        return 'bg-red-100 dark:bg-red-900 border-red-500';
+      default:
+        return 'bg-blue-100 dark:bg-blue-900 border-blue-500';
+    }
+  };
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-900">
-      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
-        <Text variant="title" color="inverse">Anúncios</Text>
-        <Text variant="body" color="secondary">
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <ProfessionalNavBar />
+
+      <ScrollView
+        className="flex-1 px-4 py-6"
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          📢 Anúncios
+        </Text>
+        <Text className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           {unreadCount > 0 ? `${unreadCount} não lido(s)` : 'Todos lidos'}
         </Text>
-      </View>
 
-      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
         {announcementsData.map((announcement) => (
-          <NotificationCard
+          <View
             key={announcement.id}
-            title={announcement.title}
-            message={announcement.message}
-            type={announcement.type}
-            time={announcement.time}
-            isRead={announcement.isRead}
-          />
+            className={`${colorForType(announcement.type)} border-l-4 p-4 rounded-lg mb-4`}
+          >
+            <Text className="font-bold text-gray-900 dark:text-gray-100 text-base">
+              {announcement.title}
+            </Text>
+            <Text className="text-sm text-gray-700 dark:text-gray-300 mt-1">
+              {announcement.message}
+            </Text>
+            <Text className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+              {announcement.time}
+            </Text>
+          </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default AnnouncementsScreen;
-

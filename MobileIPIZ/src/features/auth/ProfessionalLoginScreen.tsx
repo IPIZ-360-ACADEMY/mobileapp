@@ -1,182 +1,168 @@
 import React, { useState } from 'react';
-import { ScrollView, Image, Dimensions, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Box, Text, Button, Input } from '../../components/base';
+import { useTheme } from '../../hooks/useTheme';
+import { Button } from '../../components/base';
 
-const { height, width } = Dimensions.get('window');
-
+/**
+ * ProfessionalLoginScreen - Tela de login moderna e profissional
+ * Design corporativo com Tailwind CSS
+ */
 export const ProfessionalLoginScreen = () => {
-  const { theme } = useAppTheme();
+  const { isDark } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
     setIsLoading(true);
-    // Simular delay
     setTimeout(() => {
       setIsLoading(false);
+      Alert.alert('Sucesso', 'Login realizado com sucesso!');
     }, 1500);
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background.primary }}>
-      <ScrollView 
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* Hero Section - Logo e Branding */}
-        <Box
-          flex={0.4}
-          justifyContent="center"
-          alignItems="center"
-          padding={24}
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
         >
-          {/* Logo Placeholder - Substitua pela logo IPIZ real */}
-          <Box
-            style={{
-              width: 120,
-              height: 120,
-              backgroundColor: theme.palette.primary.main,
-              borderRadius: 999,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text 
-              variant="h1" 
-              weight="bold" 
-              color="primary"
-              style={{ color: '#fff' }}
-            >
-              IPIZ
+          {/* Hero Section */}
+          <View className="flex-1 justify-center items-center py-8">
+            <View className="w-28 h-28 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-700 dark:to-blue-900 rounded-full items-center justify-center mb-6 shadow-lg">
+              <Text className="text-6xl">🎓</Text>
+            </View>
+
+            <Text className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center mb-2">
+              IPIZ Academy
             </Text>
-          </Box>
-          
-          <Text 
-            variant="h2" 
-            weight="bold" 
-            center
-            marginTop={24}
-          >
-            InstitutoTécnico
-          </Text>
-          
-          <Text 
-            variant="body" 
-            color="secondary" 
-            center
-            marginTop={8}
-          >
-            Academia Digital
-          </Text>
-        </Box>
 
-        {/* Form Section */}
-        <Box
-          flex={0.6}
-          padding={24}
-          justifyContent="flex-start"
-        >
-          {/* Email Input */}
-          <Box marginBottom={20}>
-            <Input
-              label="Email"
-              placeholder="seu.email@ipiz.edu.br"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              size="md"
-              leftIcon={<Text variant="h3">✉️</Text>}
-            />
-          </Box>
-
-          {/* Password Input */}
-          <Box marginBottom={24}>
-            <Input
-              label="Senha"
-              placeholder="Sua senha segura"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              size="md"
-              leftIcon={<Text variant="h3">🔒</Text>}
-              rightIcon={
-                <Text variant="h3" style={{ opacity: 0.6 }}>
-                  {showPassword ? '👁️' : '👁️‍🗨️'}
-                </Text>
-              }
-              onRightIconPress={() => setShowPassword(!showPassword)}
-            />
-          </Box>
-
-          {/* Forgot Password */}
-          <Box marginBottom={32} alignItems="flex-end">
-            <Text 
-              variant="caption" 
-              color="primary"
-              weight="600"
-            >
-              Esqueceu a senha?
+            <Text className="text-base text-gray-600 dark:text-gray-400 text-center mb-8">
+              Instituto Técnico de Educação
             </Text>
-          </Box>
+          </View>
 
-          {/* Login Button */}
-          <Button
-            label={isLoading ? 'Entrando...' : 'Entrar'}
-            onPress={handleLogin}
-            size="lg"
-            fullWidth
-            disabled={isLoading || !email || !password}
-          />
-
-          {/* Divider */}
-          <Box
-            flexDirection="row"
-            alignItems="center"
-            marginV={24}
-            gap={12}
-          >
-            <Box style={{ flex: 1, height: 1, backgroundColor: theme.border.light }} />
-            <Text variant="caption" color="secondary">Ou continue com</Text>
-            <Box style={{ flex: 1, height: 1, backgroundColor: theme.border.light }} />
-          </Box>
-
-          {/* Social Login Buttons */}
-          <Box
-            flexDirection="row"
-            gap={12}
-            marginBottom={32}
-          >
-            {['Google', 'Microsoft'].map((provider) => (
-              <Button
-                key={provider}
-                label={provider}
-                onPress={() => console.log(`Login with ${provider}`)}
-                variant="outline"
-                size="md"
-                style={{ flex: 1 }}
-              />
-            ))}
-          </Box>
-
-          {/* Sign Up Link */}
-          <Box alignItems="center">
-            <Text variant="body" color="secondary">
-              Não tem conta?{' '}
-              <Text 
-                variant="body" 
-                weight="600"
-                color="primary"
-              >
-                Cadastre-se
+          {/* Form Section */}
+          <View className="px-4 pb-8">
+            {/* Email Input */}
+            <View className="mb-5">
+              <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Email
               </Text>
-            </Text>
-          </Box>
-        </Box>
-      </ScrollView>
+              <View className="flex-row items-center bg-gray-100 dark:bg-slate-800 rounded-lg px-4 py-3 border border-transparent">
+                <Text className="text-xl mr-3">✉️</Text>
+                <TextInput
+                  className="flex-1 text-gray-900 dark:text-gray-100"
+                  placeholder="seu.email@ipiz.edu.br"
+                  placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
+                  editable={!isLoading}
+                />
+              </View>
+            </View>
+
+            {/* Password Input */}
+            <View className="mb-6">
+              <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Senha
+              </Text>
+              <View className="flex-row items-center bg-gray-100 dark:bg-slate-800 rounded-lg px-4 py-3 border border-transparent">
+                <Text className="text-xl mr-3">🔒</Text>
+                <TextInput
+                  className="flex-1 text-gray-900 dark:text-gray-100"
+                  placeholder="Sua senha segura"
+                  placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                  editable={!isLoading}
+                />
+                <Pressable
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="p-2"
+                >
+                  <Text className="text-xl opacity-60">
+                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Forgot Password */}
+            <View className="items-end mb-8">
+              <Pressable>
+                <Text className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                  Esqueceu a senha?
+                </Text>
+              </Pressable>
+            </View>
+
+            {/* Login Button */}
+            <Pressable
+              onPress={handleLogin}
+              disabled={isLoading || !email || !password}
+              className={`w-full py-4 rounded-lg items-center mb-6 ${
+                isLoading || !email || !password
+                  ? 'bg-blue-400 dark:bg-blue-800'
+                  : 'bg-blue-600 dark:bg-blue-700'
+              }`}
+            >
+              <Text className="text-white font-bold text-lg">
+                {isLoading ? 'Entrando...' : 'Entrar'}
+              </Text>
+            </Pressable>
+
+            {/* Divider */}
+            <View className="flex-row items-center mb-6">
+              <View className="flex-1 h-px bg-gray-300 dark:bg-slate-700" />
+              <Text className="mx-3 text-sm text-gray-500 dark:text-gray-400">
+                Ou continue com
+              </Text>
+              <View className="flex-1 h-px bg-gray-300 dark:bg-slate-700" />
+            </View>
+
+            {/* Social Login */}
+            <View className="flex-row gap-3 mb-8">
+              {['Google', 'Microsoft'].map((provider) => (
+                <Pressable
+                  key={provider}
+                  className="flex-1 border border-gray-300 dark:border-slate-700 py-3 rounded-lg items-center"
+                >
+                  <Text className="text-gray-900 dark:text-gray-100 font-semibold">
+                    {provider === 'Google' ? '📱' : '🪟'} {provider}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+
+            {/* Sign Up Link */}
+            <View className="items-center">
+              <Text className="text-gray-600 dark:text-gray-400">
+                Não tem conta?{' '}
+                <Text className="font-bold text-blue-600 dark:text-blue-400">
+                  Cadastre-se
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
+
+export default ProfessionalLoginScreen;

@@ -1,8 +1,8 @@
 import React from 'react';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useAppTheme } from '@contexts/ThemeContext';
+import { Text } from 'react-native';
 
 // Import screens
 import { SplashScreen } from '../screens/SplashScreen';
@@ -126,22 +126,27 @@ const StudentStackNavigator = () => (
  * Main Tab Navigator
  */
 const MainTabNavigator = () => {
-  const { theme } = useAppTheme();
+  // Use simple fallback colors instead of theme
+  const tabBarBg = '#f8fafc';
+  const tabBarBorder = '#e2e8f0';
+  const activeColor = '#0ea5e9';
+  const inactiveColor = '#475569';
 
   return (
     <Tab.Navigator
+      initialRouteName="Feed"
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: theme.background.secondary,
-          borderTopColor: theme.border.light,
+          backgroundColor: tabBarBg,
+          borderTopColor: tabBarBorder,
           borderTopWidth: 1,
           height: 60,
           paddingBottom: 5,
           paddingTop: 5,
         },
-        tabBarActiveTintColor: theme.palette.primary.main,
-        tabBarInactiveTintColor: theme.text.secondary,
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '500',
@@ -153,7 +158,7 @@ const MainTabNavigator = () => {
         component={StudentStackNavigator}
         options={{
           title: 'Home',
-          tabBarIcon: () => '🏠',
+          tabBarIcon: () => <Text style={{ fontSize: 20 }}>🏠</Text>,
         }}
       />
       <Tab.Screen
@@ -161,7 +166,7 @@ const MainTabNavigator = () => {
         component={JobsStackNavigator}
         options={{
           title: 'Academic',
-          tabBarIcon: () => '🎓',
+          tabBarIcon: () => <Text style={{ fontSize: 20 }}>🎓</Text>,
         }}
       />
       <Tab.Screen
@@ -188,12 +193,9 @@ const MainTabNavigator = () => {
  * Root Stack Navigator
  */
 const RootStackNavigator = () => {
-  const { scheme } = useAppTheme();
-
-  const navigationTheme = scheme === 'dark' ? DarkTheme : DefaultTheme;
-
+  // Use React Navigation default theme instead of custom theme
   return (
-    <NavigationContainer theme={navigationTheme}>
+    <NavigationContainer theme={DefaultTheme}>
       <Stack.Navigator
         initialRouteName="Splash"
         screenOptions={{
