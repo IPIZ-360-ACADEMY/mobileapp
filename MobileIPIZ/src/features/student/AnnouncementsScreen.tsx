@@ -4,8 +4,8 @@
 import React, { FC } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { View, ScrollView } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
 import { Text, NotificationCard } from '../../components';
 
 interface Announcement {
@@ -64,18 +64,18 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Announcements'>;
 
 export const AnnouncementsScreen: FC<Props> = () => {
   const unreadCount = announcementsData.filter(a => !a.isRead).length;
-  const { colors } = useTheme();
+  const { isDark, componentTheme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.header, { backgroundColor: colors.primary }]}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
+      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
         <Text variant="title" color="inverse">Anúncios</Text>
         <Text variant="body" color="secondary">
           {unreadCount > 0 ? `${unreadCount} não lido(s)` : 'Todos lidos'}
         </Text>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
         {announcementsData.map((announcement) => (
           <NotificationCard
             key={announcement.id}
@@ -90,21 +90,6 @@ export const AnnouncementsScreen: FC<Props> = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  header: {
-    padding: 20,
-    backgroundColor: colors.dark,
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-});
 
 export default AnnouncementsScreen;
 

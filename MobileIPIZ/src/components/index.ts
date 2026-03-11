@@ -1,23 +1,24 @@
-// IPIZ Mobile App - Components Index
+// IPIZ Mobile App - Components Index with Tailwind CSS
 // Export all reusable components
 
+// Base Components
+export { Text, H1, H2, H3, H4, Body, Caption, Label } from './base/Text';
+export { Icon } from './atoms/Icon';
+export { Input } from './base/Input';
+export { Button, PrimaryButton, SecondaryButton, OutlineButton, GhostButton, SuccessButton, WarningButton, ErrorButton, GradientButton } from './base/Button';
+export { Box } from './base/Box';
+
 // Atoms
-export { default as Text } from './atoms/Text';
-export { default as Icon } from './atoms/Icon';
-export { default as Avatar } from './atoms/Avatar';
-export { default as Badge } from './atoms/Badge';
+export { Avatar } from './atoms/Avatar';
+export { Badge } from './atoms/Badge';
 
 // Molecules
-export { default as SearchBar } from './molecules/SearchBar';
-export { default as ListItem } from './molecules/ListItem';
-export { default as NotificationCard } from './molecules/NotificationCard';
+export { SearchBar } from './molecules/SearchBar';
+export { ListItem } from './molecules/ListItem';
+export { NotificationCard } from './molecules/NotificationCard';
 
 // Organisms
-export { default as DashboardCard } from './organisms/DashboardCard';
-
-// UI
-export { default as Button } from './ui/Button';
-export { default as Input } from './ui/Input';
+export { DashboardCard } from './organisms/DashboardCard';
 
 // Other components
 export { Header } from './Header';

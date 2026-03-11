@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useAppTheme } from '../contexts/ThemeContext';
+import { useAppTheme } from '@contexts/ThemeContext';
 
 // Import screens
 import { SplashScreen } from '../screens/SplashScreen';

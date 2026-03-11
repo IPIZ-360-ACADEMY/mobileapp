@@ -1,11 +1,12 @@
-// IPIZ Mobile App - Organism DashboardCard Component
+// IPIZ Mobile App - Organism DashboardCard Component with Tailwind CSS
 // Card component for dashboard with title, value, and icon
 
 import React, { FC } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
-import Text from '../atoms/Text';
-import Icon from '../atoms/Icon';
+import { Pressable } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
+import { Text } from '../atoms/Text';
+import { Icon } from '../atoms/Icon';
+import { Box } from '../base/Box';
 
 interface Props {
   title: string;
@@ -18,103 +19,126 @@ interface Props {
     value: number;
     isPositive: boolean;
   };
+  variant?: 'default' | 'elevated' | 'outlined' | 'filled';
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export const DashboardCard: FC<Props> = ({ 
-  title, 
-  value, 
+export const DashboardCard: FC<Props> = ({
+  title,
+  value,
   subtitle,
   icon,
   iconColor,
   onPress,
-  trend 
+  trend,
+  variant = 'default',
+  size = 'md',
 }) => {
-  const { colors } = useTheme();
+  const { isDark } = useTheme();
 
-  const getStyles = () => StyleSheet.create({
-    container: {
-      backgroundColor: colors.background.paper,
-      padding: 16,
-      borderRadius: 16,
-      minHeight: 100,
-      shadowColor: colors.shadow.light,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 4,
-      elevation: 2,
-    },
-    pressable: {
-      borderRadius: 16,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    iconContainer: {
-      width: 40,
-      height: 40,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 8,
-    },
-    value: {
-      marginBottom: 4,
-    },
-    trendContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 8,
-    },
-  });
+  // Classes base
+  const baseClasses = 'rounded-2xl min-h-24';
 
-  const styles = getStyles();
-  const resolvedIconColor = iconColor || colors.primary;
+  // Classes de variante
+  const variantClasses = {
+    default: `
+      bg-white dark:bg-gray-900
+      border border-gray-200 dark:border-gray-700
+    `,
+    elevated: `
+      bg-white dark:bg-gray-900
+      shadow-lg shadow-gray-200/50 dark:shadow-gray-900/50
+      border border-gray-100 dark:border-gray-800
+    `,
+    outlined: `
+      bg-transparent
+      border-2 border-gray-300 dark:border-gray-600
+    `,
+    filled: `
+      bg-gray-50 dark:bg-gray-800
+      border border-gray-200 dark:border-gray-700
+    `,
+  };
+
+  // Classes de tamanho
+  const sizeClasses = {
+    sm: 'p-4',
+    md: 'p-5',
+    lg: 'p-6',
+  };
+
+  // Classes do ícone
+  const iconContainerClasses = `
+    w-10 h-10 rounded-xl items-center justify-center mr-3
+    ${iconColor ? '' : 'bg-blue-100 dark:bg-blue-900/30'}
+  `;
+
+  // Classes da tendência
+  const trendClasses = `
+    flex-row items-center mt-3
+    ${trend?.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}
+  `;
 
   const content = (
-    <View style={[styles.container, { shadowColor: colors.shadow.light }]}>
-      <View style={styles.header}>
+    <Box className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`}>
+      <Box className="flex-row items-center mb-3">
         {icon && (
-          <View style={[styles.iconContainer, { backgroundColor: resolvedIconColor + '20' }]}>
-            <Icon name={icon as any} size="lg" color={resolvedIconColor} />
-          </View>
+          <Box className={iconContainerClasses} style={iconColor ? { backgroundColor: iconColor + '20' } : {}}>
+            <Icon
+              name={icon as any}
+              size="lg"
+              className={iconColor ? '' : 'text-blue-600 dark:text-blue-400'}
+              style={iconColor ? { color: iconColor } : {}}
+            />
+          </Box>
         )}
-        <Text variant="caption" color="secondary">{title}</Text>
-      </View>
-      
+        <Text
+          variant="caption"
+          className="text-gray-600 dark:text-gray-400 uppercase tracking-wide"
+        >
+          {title}
+        </Text>
+      </Box>
+
       {value && (
-        <Text variant="title" color="primary" style={styles.value}>{value}</Text>
+        <Text
+          variant="h3"
+          weight="bold"
+          className="text-gray-900 dark:text-white mb-1"
+        >
+          {value}
+        </Text>
       )}
-      
+
       {subtitle && (
-        <Text variant="body" color="secondary">{subtitle}</Text>
+        <Text
+          variant="body-small"
+          className="text-gray-600 dark:text-gray-400"
+        >
+          {subtitle}
+        </Text>
       )}
-      
+
       {trend && (
-        <View style={styles.trendContainer}>
-          <Icon 
-            name={trend.isPositive ? 'chevron-right' : 'chevron-right'} 
-            size="sm" 
-            color={trend.isPositive ? colors.success.main : colors.error.main} 
+        <Box className={trendClasses}>
+          <Icon
+            name={trend.isPositive ? 'trending-up' : 'trending-down'}
+            size="sm"
           />
-          <Text 
-            variant="caption" 
-            color={trend.isPositive ? 'success' : 'error'}
-          >
+          <Text variant="caption" weight="medium" className="ml-1">
             {trend.isPositive ? '+' : '-'}{Math.abs(trend.value)}%
           </Text>
-        </View>
+        </Box>
       )}
-    </View>
+    </Box>
   );
 
   if (onPress) {
-    return ( 
-      <Pressable onPress={onPress} style={({ pressed }) => [styles.pressable, pressed && { opacity: 0.9 }]}>
-        {content} 
-      </Pressable> 
-    ); 
+    return (
+      <Pressable onPress={onPress} className="active:scale-95 active:opacity-90 rounded-2xl">
+        {content}
+      </Pressable>
+    );
   }
 
   return content;

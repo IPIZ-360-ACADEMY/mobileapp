@@ -1,88 +1,81 @@
 import React, { FC } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, Pressable } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { MainDrawerParamList } from '../../navigation/AppNavigator';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Box, Text } from '../../components/base';
+import { useTheme } from '../../hooks/useTheme';
+import { Text } from '../../components/base';
 import { TeacherHeader } from '../../components/CustomHeader';
+
 
 type Props = DrawerScreenProps<MainDrawerParamList, 'TeacherDashboard'>;
 
 export const TeacherDashboard: FC<Props> = ({ navigation }) => {
-  const { theme } = useAppTheme();
+  const { isDark } = useTheme();
 
   return (
-    <Box flex={1} style={{ backgroundColor: theme.background.primary }}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
       <TeacherHeader />
 
-      <ScrollView style={{ flex: 1 }}>
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+        <View className="mb-8">
+          <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Minhas Turmas
           </Text>
+        </View>
 
-          <Box bg="secondary" padding={16} rounded="md" marginBottom={12}>
-            <Text variant="body" weight="600" marginBottom={4}>
+        <View className="mb-4">
+          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Mecânica Industrial - 3º Ano
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               25 alunos
             </Text>
-          </Box>
+          </View>
 
-          <Box bg="secondary" padding={16} rounded="md" marginBottom={12}>
-            <Text variant="body" weight="600" marginBottom={4}>
+          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Eletrotécnica - 2º Ano
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               30 alunos
             </Text>
-          </Box>
-        </Box>
+          </View>
+        </View>
 
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Avaliações Pendentes
           </Text>
 
-          <Box
-            bg="secondary"
-            padding={16}
-            rounded="md"
-            marginBottom={12}
-            style={{ cursor: 'pointer' }}
-          >
-            <Text variant="body" weight="600" marginBottom={4}>
+          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Prova Final - Mecânica
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               12 provas para corrigir
             </Text>
-          </Box>
-        </Box>
+          </View>
+        </View>
 
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Gestão de Estágios
           </Text>
 
-          <Box
-            bg="secondary"
-            padding={16}
-            rounded="md"
-            marginBottom={12}
-            style={{ cursor: 'pointer' }}
-            onTouchEnd={() => navigation.navigate('Jobs')}
+          <Pressable
+            onPress={() => navigation.navigate('Jobs')}
+            className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
           >
-            <Text variant="body" weight="600" marginBottom={4}>
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Acompanhar Estagiários
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               Monitore o desempenho dos alunos em estágio
             </Text>
-          </Box>
-        </Box>
+          </Pressable>
+        </View>
       </ScrollView>
-    </Box>
+    </View>
   );
 };

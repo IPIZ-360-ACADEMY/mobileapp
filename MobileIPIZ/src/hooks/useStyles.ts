@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../theme/colors';
-import { useTheme } from '../contexts/ThemeContext';
+import { useAppTheme } from '../contexts/ThemeContext';
 
 /**
  * A tiny helper that creates memoized styles based on the current theme
@@ -15,7 +15,7 @@ import { useTheme } from '../contexts/ThemeContext';
  * manually.
  */
 export function useStyles<T extends object>(builder: (colors: Colors) => T): T {
-  const { colors } = useTheme();
+  const { colors } = useAppTheme();
   // builder is expected to be stable (either defined outside the component
   // or memoized itself).  If not, callers can wrap it in useCallback.
   return React.useMemo(() => builder(colors), [builder, colors]);

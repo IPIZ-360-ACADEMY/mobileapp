@@ -1,89 +1,94 @@
 import React, { FC } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, Pressable } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { MainDrawerParamList } from '../../navigation/AppNavigator';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Box, Text } from '../../components/base';
+import { useTheme } from '../../hooks/useTheme';
+import { Text } from '../../components/base';
 import { StudentHeader } from '../../components/CustomHeader';
 
 type Props = DrawerScreenProps<MainDrawerParamList, 'StudentDashboard'>;
 
 export const StudentDashboard: FC<Props> = ({ navigation }) => {
-  const { theme } = useAppTheme();
+  const { isDark } = useTheme();
 
   return (
-    <Box flex={1} style={{ backgroundColor: theme.background.primary }}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
       <StudentHeader />
 
-      <ScrollView style={{ flex: 1 }}>
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+        {/* header saudação */}
+        <View className="mb-8">
+          <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Bem-vindo de volta 👋
+          </Text>
+          <Text className="text-base text-gray-500 dark:text-gray-400 mt-2">
+            Aqui estão suas atividades
+          </Text>
+        </View>
+
+        {/* disciplinas */}
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Minhas Disciplinas
           </Text>
 
-          <Box bg="secondary" padding={16} rounded="md" marginBottom={12}>
-            <Text variant="body" weight="600" marginBottom={4}>
+          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Mecânica Industrial
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               Prof. João Silva
             </Text>
-          </Box>
+          </View>
 
-          <Box bg="secondary" padding={16} rounded="md" marginBottom={12}>
-            <Text variant="body" weight="600" marginBottom={4}>
+          <View className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3">
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Eletrotécnica
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               Prof. Maria Santos
             </Text>
-          </Box>
-        </Box>
+          </View>
+        </View>
 
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        {/* oportunidades */}
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Oportunidades de Estágio
           </Text>
 
-          <Box
-            bg="secondary"
-            padding={16}
-            rounded="md"
-            marginBottom={12}
-            style={{ cursor: 'pointer' }}
-            onTouchEnd={() => navigation.navigate('Jobs')}
+          <Pressable
+            onPress={() => navigation.navigate('Jobs')}
+            className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
           >
-            <Text variant="body" weight="600" marginBottom={4}>
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Técnico em Manutenção
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               Empresa Industrial XYZ
             </Text>
-          </Box>
-        </Box>
+          </Pressable>
+        </View>
 
-        <Box padding={16}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        {/* mentorias */}
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Mentorias Disponíveis
           </Text>
 
-          <Box
-            bg="secondary"
-            padding={16}
-            rounded="md"
-            marginBottom={12}
-            style={{ cursor: 'pointer' }}
-            onTouchEnd={() => navigation.navigate('Alumni')}
+          <Pressable
+            onPress={() => navigation.navigate('Alumni')}
+            className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
           >
-            <Text variant="body" weight="600" marginBottom={4}>
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Conexão com Alumni
             </Text>
-            <Text variant="bodySmall" color="secondary">
+            <Text className="text-xs text-gray-500 dark:text-gray-400">
               Conecte-se com ex-alunos para orientação profissional
             </Text>
-          </Box>
-        </Box>
+          </Pressable>
+        </View>
       </ScrollView>
-    </Box>
+    </View>
   );
 };

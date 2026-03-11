@@ -1,164 +1,59 @@
 import React, { FC } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
-import Button from '../../components/ui/Button';
+import { View, Text, ScrollView, Pressable } from 'react-native';
+import Button from '../../components/base/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { useAppTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export const ProfileScreen: FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
-  const { theme, colors } = useAppTheme();
-
-  const getStyles = () => StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background.default,
-    },
-    header: {
-      backgroundColor: colors.background.default,
-      paddingTop: 12,
-    },
-    headerWrapper: {
-      paddingHorizontal: 16,
-      paddingTop: 12,
-      paddingBottom: 8,
-    },
-    headerCard: {
-      backgroundColor: colors.background.paper,
-      borderRadius: 14,
-      padding: 16,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
-      justifyContent: 'flex-start',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.04,
-      shadowRadius: 10,
-      elevation: 3,
-    },
-    backButton: {
-      marginBottom: 16,
-    },
-    backButtonText: {
-      color: colors.background.paper,
-      fontSize: 16,
-    },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.background.paper,
-    },
-    avatarContainer: {
-      alignItems: 'center',
-      padding: 32,
-    },
-    avatar: {
-      width: 120,
-      height: 120,
-      borderRadius: 60,
-      backgroundColor: colors.neutral[600],
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    avatarText: {
-      fontSize: 48,
-      fontWeight: 'bold',
-      color: colors.background.paper,
-    },
-    changeAvatarButton: {
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-    },
-    changeAvatarText: {
-      color: colors.neutral[700],
-      fontSize: 14,
-      fontWeight: '600',
-    },
-    section: {
-      padding: 16,
-      backgroundColor: colors.background.paper,
-      marginHorizontal: 16,
-      marginBottom: 16,
-      borderRadius: 12,
-    },
-    infoRow: {
-      paddingVertical: 16,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.neutral[200],
-    },
-    label: {
-      fontSize: 14,
-      color: colors.text.secondary,
-      marginBottom: 4,
-    },
-    value: {
-      fontSize: 16,
-      color: colors.text.primary,
-      fontWeight: '500',
-    },
-    editButton: {
-      backgroundColor: colors.neutral[700],
-      marginHorizontal: 16,
-      padding: 16,
-      borderRadius: 12,
-      alignItems: 'center',
-      marginBottom: 32,
-    },
-    editButtonText: {
-      color: colors.background.paper,
-      fontSize: 16,
-      fontWeight: '600',
-    },
-  });
-
-  const styles = getStyles();
+  const { isDark } = useTheme();
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background.default }]} contentContainerStyle={{ paddingBottom: 32 }}>
-      <View style={styles.headerWrapper}>
-        <View style={[styles.headerCard, { backgroundColor: colors.background.paper }]}>
-          <Pressable style={styles.backButton} android_ripple={{ color: colors.shadow.light }} onPress={() => navigation.goBack()}>
-            <Text style={[styles.backButtonText, { color: colors.text.primary }]}>← Voltar</Text>
+    <ScrollView className="bg-white dark:bg-slate-900" contentContainerStyle={{ paddingBottom: 32 }}>
+      <View className="px-4 pt-4 pb-2">
+        <View className="bg-white dark:bg-slate-800 rounded-xl p-4 flex-row items-center shadow-md">
+          <Pressable
+            onPress={() => navigation.goBack()}
+            android_ripple={{ color: '#cbd5e1' }}
+            className="mr-4"
+          >
+            <Text className="text-gray-900 dark:text-gray-100 text-base">← Voltar</Text>
           </Pressable>
-          <Text style={[styles.title, { color: colors.text.primary }]}>Meu Perfil</Text>
+          <Text className="text-gray-900 dark:text-gray-100 text-2xl font-bold">Meu Perfil</Text>
         </View>
       </View>
 
-      <View style={styles.avatarContainer}>
-        <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
-          <Text style={[styles.avatarText, { color: colors.background.paper }]}>{user?.name.charAt(0).toUpperCase()}</Text>
+      <View className="items-center py-8">
+        <View className="w-30 h-30 rounded-full bg-blue-500 items-center justify-center mb-4">
+          <Text className="text-4xl font-bold text-white">{user?.name.charAt(0).toUpperCase()}</Text>
         </View>
-        <Button title="Alterar Foto" variant="outline" onPress={() => {}} style={styles.changeAvatarButton} />
+        <Button title="Alterar Foto" variant="outline" onPress={() => {}} />
       </View>
 
-      <View style={[styles.section, { backgroundColor: colors.background.paper }] }>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Nome</Text>
-          <Text style={styles.value}>{user?.name}</Text>
+      <View className="bg-white dark:bg-slate-800 mx-4 mb-4 rounded-xl p-4">
+        <View className="border-b border-gray-200 dark:border-slate-700 py-4">
+          <Text className="text-sm text-gray-600 dark:text-gray-400">Nome</Text>
+          <Text className="text-base text-gray-900 dark:text-gray-100 font-medium">{user?.name}</Text>
         </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{user?.email}</Text>
+        <View className="border-b border-gray-200 dark:border-slate-700 py-4">
+          <Text className="text-sm text-gray-600 dark:text-gray-400">Email</Text>
+          <Text className="text-base text-gray-900 dark:text-gray-100 font-medium">{user?.email}</Text>
         </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Perfil</Text>
-          <Text style={styles.value}>{user?.role}</Text>
+        <View className="border-b border-gray-200 dark:border-slate-700 py-4">
+          <Text className="text-sm text-gray-600 dark:text-gray-400">Perfil</Text>
+          <Text className="text-base text-gray-900 dark:text-gray-100 font-medium">{user?.role}</Text>
         </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Telefone</Text>
-          <Text style={styles.value}>{user?.phone || 'Não informado'}</Text>
+        <View className="py-4">
+          <Text className="text-sm text-gray-600 dark:text-gray-400">Telefone</Text>
+          <Text className="text-base text-gray-900 dark:text-gray-100 font-medium">{user?.phone || 'Não informado'}</Text>
         </View>
       </View>
 
-      <View style={{ paddingHorizontal: 16, marginBottom: 32 }}>
+      <View className="px-4 mb-8">
         <Button title="Editar Perfil" onPress={() => navigation.navigate('EditProfile')} />
       </View>
     </ScrollView>

@@ -9,7 +9,6 @@ export { ProfessionalLoginScreen } from './auth/ProfessionalLoginScreen';
 // Student Screens
 export { ProfessionalDashboard } from './student/ProfessionalDashboard';
 export { StudentDashboard } from './student/StudentDashboard';
-export { NewStudentDashboard } from './student/NewStudentDashboard';
 
 // Teacher Screens
 export { ProfessionalTeacherDashboard } from './teacher/ProfessionalTeacherDashboard';

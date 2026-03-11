@@ -1,130 +1,73 @@
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView, Pressable, TextInput, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import Button from '../../components/ui/Button';
+import { View, Text, ScrollView, Pressable, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { Button } from '../../components/base/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditProfile'>;
 
 export const EditProfileScreen: FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
-  const { colors } = useTheme();
+  const { isDark } = useTheme();
   
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
 
-  const getStyles = () => StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background.default,
-    },
-    header: {
-      backgroundColor: colors.neutral[700],
-      padding: 24,
-      paddingTop: 48,
-    },
-    backButton: {
-      marginBottom: 16,
-    },
-    backButtonText: {
-      color: colors.background.paper,
-      fontSize: 16,
-    },
-    title: {
-      fontSize: 28,
-      fontWeight: 'bold',
-      color: colors.background.paper,
-    },
-    form: {
-      padding: 16,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: colors.text.primary,
-      marginBottom: 8,
-      marginTop: 16,
-    },
-    input: {
-      backgroundColor: colors.background.paper,
-      borderRadius: 8,
-      padding: 16,
-      fontSize: 16,
-      borderWidth: 1,
-      borderColor: colors.neutral[300],
-    },
-    saveButton: {
-      backgroundColor: colors.neutral[700],
-      padding: 16,
-      borderRadius: 12,
-      alignItems: 'center',
-      marginTop: 32,
-    },
-    saveButtonText: {
-      color: colors.background.paper,
-      fontSize: 16,
-      fontWeight: '600',
-    },
-  });
-
-  const styles = getStyles();
-
   const handleSave = () => {
     Alert.alert(
       'Sucesso',
       'Perfil atualizado com sucesso!',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
-        },
-      ]
+      [{ text: 'OK', onPress: () => navigation.goBack() }]
     );
   };
 
   return (
-    <KeyboardAvoidingView style={[styles.container, { backgroundColor: colors.background.default }]} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" style={[styles.container, { backgroundColor: colors.background.default }] }>
-        <View style={[styles.header, { backgroundColor: colors.primary, paddingTop: 48 }]}>
-          <Pressable style={styles.backButton} android_ripple={{ color: colors.shadow.light }} onPress={() => navigation.goBack()}>
-            <Text style={[styles.backButtonText, { color: colors.background.paper }]}>← Cancelar</Text>
+    <KeyboardAvoidingView className="flex-1 bg-white dark:bg-slate-900" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView className="flex-1 bg-white dark:bg-slate-900" contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+        <View className="bg-blue-600 dark:bg-blue-800 px-6 py-6 pt-12">
+          <Pressable
+            onPress={() => navigation.goBack()}
+            android_ripple={{ color: '#cbd5e1' }}
+            className="mb-4"
+          >
+            <Text className="text-white text-base">← Cancelar</Text>
           </Pressable>
-          <Text style={[styles.title, { color: colors.background.paper }]}>Editar Perfil</Text>
+          <Text className="text-white text-2xl font-bold">Editar Perfil</Text>
         </View>
 
-        <View style={styles.form}>
-        <Text style={[styles.label, { color: colors.text.primary }]}>Nome Completo</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="Digite seu nome"
-          placeholderTextColor={colors.text.hint}
-        />
+        <View className="p-4">
+          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Nome Completo</Text>
+          <TextInput
+            className="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-4 py-3 mb-4"
+            value={name}
+            onChangeText={setName}
+            placeholder="Digite seu nome"
+            placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
+          />
 
-        <Text style={[styles.label, { color: colors.text.primary }]}>Email</Text>
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          placeholder="Digite seu email"
-          placeholderTextColor={colors.text.hint}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Email</Text>
+          <TextInput
+            className="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-4 py-3 mb-4"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Digite seu email"
+            placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-        <Text style={[styles.label, { color: colors.text.primary }]}>Telefone</Text>
-        <TextInput
-          style={styles.input}
-          value={phone}
-          onChangeText={setPhone}
-          placeholder="Digite seu telefone"
-          placeholderTextColor={colors.text.hint}
-          keyboardType="phone-pad"
-        />
+          <Text className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Telefone</Text>
+          <TextInput
+            className="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-4 py-3 mb-6"
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="Digite seu telefone"
+            placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
+            keyboardType="phone-pad"
+          />
 
           <Button title="Salvar Alterações" onPress={handleSave} />
         </View>
@@ -132,3 +75,5 @@ export const EditProfileScreen: FC<Props> = ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
+
+export default EditProfileScreen;

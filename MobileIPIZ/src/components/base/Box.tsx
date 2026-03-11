@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { View, ViewProps } from 'react-native';
-import { useAppTheme } from '../../contexts/ThemeContext';
+import { useAppTheme } from '@contexts/ThemeContext';
 
 interface BoxProps extends ViewProps {
   children?: ReactNode;

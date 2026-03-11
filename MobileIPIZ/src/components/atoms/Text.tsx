@@ -1,74 +1,175 @@
-// IPIZ Mobile App - Atomic Text Component
-// Typography component following design system
+/**
+ * IPIZ Mobile App - Atomic Text Component
+ * Professional typography component with Tailwind CSS
+ */
 
 import React, { FC } from 'react';
-import { Text as RNText, TextStyle, StyleSheet } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { Text as RNText, TextStyle } from 'react-native';
 
-type TextVariant = 'title' | 'sectionTitle' | 'subtitle' | 'body' | 'caption';
-type TextColor = 'primary' | 'secondary' | 'inverse' | 'muted' | 'error' | 'success';
+type TextVariant =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'body'
+  | 'body-large'
+  | 'body-small'
+  | 'caption'
+  | 'label'
+  | 'button';
+
+type TextColor =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'disabled'
+  | 'inverse'
+  | 'accent'
+  | 'error'
+  | 'success'
+  | 'warning'
+  | 'info';
+
+type TextWeight =
+  | 'thin'
+  | 'light'
+  | 'normal'
+  | 'medium'
+  | 'semibold'
+  | 'bold'
+  | 'extrabold'
+  | 'black';
 
 interface Props {
   children: React.ReactNode;
   variant?: TextVariant;
   color?: TextColor;
+  weight?: TextWeight;
+  align?: 'left' | 'center' | 'right' | 'justify';
   style?: TextStyle;
   numberOfLines?: number;
-  center?: boolean;
+  className?: string;
 }
 
 export const Text: FC<Props> = ({
   children,
   variant = 'body',
   color = 'primary',
+  weight,
+  align = 'left',
   style,
   numberOfLines,
-  center = false,
+  className = '',
 }) => {
-  const getVariantStyle = (): TextStyle => {
+  // Variant styles mapping
+  const getVariantClasses = (): string => {
     switch (variant) {
-      case 'title':
-        return styles.title;
-      case 'sectionTitle':
-        return styles.sectionTitle;
-      case 'subtitle':
-        return styles.subtitle;
+      case 'h1':
+        return 'text-3xl font-bold';
+      case 'h2':
+        return 'text-2xl font-semibold';
+      case 'h3':
+        return 'text-xl font-semibold';
+      case 'h4':
+        return 'text-lg font-medium';
+      case 'body-large':
+        return 'text-lg';
+      case 'body-small':
+        return 'text-sm';
       case 'caption':
-        return styles.caption;
+        return 'text-xs';
+      case 'label':
+        return 'text-sm font-medium';
+      case 'button':
+        return 'text-base font-semibold';
       case 'body':
       default:
-        return styles.body;
+        return 'text-base';
     }
   };
 
-  const { colors } = useTheme();
-  const getColorStyle = (): TextStyle => {
+  // Color styles mapping
+  const getColorClasses = (): string => {
     switch (color) {
       case 'primary':
-        return { color: colors.text.primary };
+        return 'text-text-primary';
       case 'secondary':
-        return { color: colors.text.secondary };
+        return 'text-text-secondary';
+      case 'tertiary':
+        return 'text-text-tertiary';
+      case 'disabled':
+        return 'text-text-disabled';
       case 'inverse':
-        return { color: colors.text.inverse };
-      case 'muted':
-        return { color: colors.text.muted };
+        return 'text-text-inverse';
+      case 'accent':
+        return 'text-text-accent';
       case 'error':
-        return { color: colors.error.main };
+        return 'text-error-500';
       case 'success':
-        return { color: colors.success.main };
+        return 'text-success-500';
+      case 'warning':
+        return 'text-warning-500';
+      case 'info':
+        return 'text-info-500';
       default:
-        return { color: colors.text.primary };
+        return 'text-text-primary';
     }
   };
+
+  // Weight styles mapping
+  const getWeightClasses = (): string => {
+    if (!weight) return '';
+
+    switch (weight) {
+      case 'thin':
+        return 'font-thin';
+      case 'light':
+        return 'font-light';
+      case 'normal':
+        return 'font-normal';
+      case 'medium':
+        return 'font-medium';
+      case 'semibold':
+        return 'font-semibold';
+      case 'bold':
+        return 'font-bold';
+      case 'extrabold':
+        return 'font-extrabold';
+      case 'black':
+        return 'font-black';
+      default:
+        return '';
+    }
+  };
+
+  // Alignment styles mapping
+  const getAlignClasses = (): string => {
+    switch (align) {
+      case 'center':
+        return 'text-center';
+      case 'right':
+        return 'text-right';
+      case 'justify':
+        return 'text-justify';
+      case 'left':
+      default:
+        return 'text-left';
+    }
+  };
+
+  // Combine all classes
+  const combinedClasses = [
+    getVariantClasses(),
+    getColorClasses(),
+    getWeightClasses(),
+    getAlignClasses(),
+    className,
+  ].filter(Boolean).join(' ');
 
   return (
     <RNText
-      style={[
-        getVariantStyle(),
-        getColorStyle(),
-        center && styles.center,
-        style,
-      ]}
+      className={combinedClasses}
+      style={style}
       numberOfLines={numberOfLines}
     >
       {children}
@@ -76,36 +177,34 @@ export const Text: FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    lineHeight: 32,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
-  },
-  subtitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 22,
-  },
-  body: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 20,
-  },
-  caption: {
-    fontSize: 12,
-    fontWeight: '400',
-    lineHeight: 16,
-  },
-  center: {
-    textAlign: 'center',
-  },
-});
+// Export additional text components for convenience
+export const H1: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="h1" />
+);
+
+export const H2: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="h2" />
+);
+
+export const H3: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="h3" />
+);
+
+export const H4: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="h4" />
+);
+
+export const Body: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="body" />
+);
+
+export const Caption: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="caption" />
+);
+
+export const Label: FC<Omit<Props, 'variant'>> = (props) => (
+  <Text {...props} variant="label" />
+);
 
 export default Text;
 

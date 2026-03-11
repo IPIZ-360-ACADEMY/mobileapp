@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, Pressable } from 'react-native';
-import { useAppTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@hooks/useTheme';
 import { Box, Text } from './index';
 
 interface InputProps {
@@ -20,11 +20,12 @@ interface InputProps {
   disabled?: boolean;
   fullWidth?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'filled' | 'outlined';
 }
 
 /**
- * Input Component - Campo de entrada profissional
- * Suporta validação, ícones, e estados
+ * Input Component - Campo de entrada profissional com Tailwind CSS
+ * Suporta validação, ícones, estados e múltiplas variantes
  */
 export const Input = React.forwardRef<TextInput, InputProps>(
   (
@@ -45,78 +46,88 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       disabled = false,
       fullWidth = true,
       size = 'md',
+      variant = 'default',
     },
     ref,
   ) => {
-    const { theme } = useAppTheme();
+    const { isDark } = useTheme();
     const [isFocused, setIsFocused] = useState(false);
 
-    const sizeMap = {
-      sm: {
-        height: 40,
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        fontSize: 14,
-      },
-      md: {
-        height: 50,
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        fontSize: 16,
-      },
-      lg: {
-        height: 60,
-        paddingVertical: 16,
-        paddingHorizontal: 20,
-        fontSize: 18,
-      },
+    // Classes base para todos os tamanhos
+    const baseClasses = `
+      flex-row items-center border rounded-xl
+      ${fullWidth ? 'w-full' : 'w-auto'}
+      ${disabled ? 'opacity-60' : ''}
+      ${multiline ? 'items-start' : 'items-center'}
+    `;
+
+    // Classes de variante
+    const variantClasses = {
+      default: `
+        bg-white dark:bg-gray-900
+        border-gray-300 dark:border-gray-600
+        ${isFocused ? 'border-blue-500 dark:border-blue-400' : ''}
+        ${error ? 'border-red-500 dark:border-red-400' : ''}
+      `,
+      filled: `
+        bg-gray-100 dark:bg-gray-800
+        border-transparent
+        ${isFocused ? 'bg-gray-200 dark:bg-gray-700 border-blue-500 dark:border-blue-400' : ''}
+        ${error ? 'bg-red-50 dark:bg-red-900/20 border-red-500 dark:border-red-400' : ''}
+      `,
+      outlined: `
+        bg-transparent
+        border-gray-300 dark:border-gray-600
+        ${isFocused ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-500/20' : ''}
+        ${error ? 'border-red-500 dark:border-red-400 ring-2 ring-red-500/20' : ''}
+      `,
     };
 
-    const currentSize = sizeMap[size];
+    // Classes de tamanho
+    const sizeClasses = {
+      sm: `
+        h-10 px-3 py-2
+        ${multiline ? 'min-h-10 py-2' : ''}
+      `,
+      md: `
+        h-12 px-4 py-3
+        ${multiline ? 'min-h-12 py-3' : ''}
+      `,
+      lg: `
+        h-14 px-5 py-4
+        ${multiline ? 'min-h-14 py-4' : ''}
+      `,
+    };
 
-    const borderColor = error
-      ? theme.palette.error.main
-      : isFocused
-      ? theme.palette.primary.main
-      : theme.border.light;
+    // Classes do TextInput
+    const inputClasses = `
+      flex-1 text-gray-900 dark:text-white
+      ${size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-lg' : 'text-base'}
+      ${multiline ? 'text-left' : 'text-left'}
+    `;
+
+    // Classes do placeholder
+    const placeholderClasses = 'text-gray-500 dark:text-gray-400';
 
     return (
-      <Box style={{ width: fullWidth ? '100%' : 'auto' }}>
+      <Box className={`${fullWidth ? 'w-full' : 'w-auto'}`}>
         {label && (
           <Text
             variant="bodySmall"
             weight="600"
-            marginBottom={8}
-            style={{
-              color: error ? theme.palette.error.main : theme.text.primary,
-            }}
+            className={`mb-2 ${error ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300'}`}
           >
             {label}
           </Text>
         )}
 
-        <Box
-          style={{
-            flexDirection: 'row',
-            alignItems: multiline ? 'flex-start' : 'center',
-            borderWidth: 1,
-            borderColor,
-            borderRadius: 12,
-            backgroundColor: disabled
-              ? theme.background.tertiary
-              : theme.background.secondary,
-            paddingHorizontal: currentSize.paddingHorizontal,
-            paddingVertical: multiline ? currentSize.paddingVertical : 0,
-            gap: 8,
-            opacity: disabled ? 0.6 : 1,
-          }}
-        >
+        <Box className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} gap-2`}>
           {leftIcon && <Box>{leftIcon}</Box>}
 
           <TextInput
             ref={ref}
             placeholder={placeholder}
-            placeholderTextColor={theme.text.tertiary}
+            placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'}
             value={value}
             onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}
@@ -127,20 +138,15 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             editable={!disabled}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            style={[
-              {
-                flex: 1,
-                height: multiline ? undefined : currentSize.height,
-                fontSize: currentSize.fontSize,
-                color: theme.text.primary,
-                fontFamily: 'System',
-              },
-              multiline && { minHeight: currentSize.height, paddingVertical: 12 },
-            ]}
+            className={inputClasses}
+            style={{
+              fontFamily: 'System',
+              textAlignVertical: multiline ? 'top' : 'center',
+            }}
           />
 
           {rightIcon && (
-            <Pressable onPress={onRightIconPress} style={{ padding: 4 }}>
+            <Pressable onPress={onRightIconPress} className="p-1">
               <Box>{rightIcon}</Box>
             </Pressable>
           )}
@@ -149,10 +155,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         {error && (
           <Text
             variant="caption"
-            style={{
-              color: theme.palette.error.main,
-              marginTop: 4,
-            }}
+            className="text-red-600 dark:text-red-400 mt-1"
           >
             {error}
           </Text>

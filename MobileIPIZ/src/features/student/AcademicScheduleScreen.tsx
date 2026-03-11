@@ -4,8 +4,8 @@
 import React, { FC } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { View, ScrollView } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
 import { Text, ListItem, Icon } from '../../components';
 
 interface ScheduleItem {
@@ -30,19 +30,19 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AcademicSchedule'>;
 
 export const AcademicScheduleScreen: FC<Props> = () => {
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-  const { colors } = useTheme();
+  const { isDark, componentTheme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.header, { backgroundColor: colors.primary }]}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
+      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
         <Text variant="title" color="inverse">Horário Académico</Text>
         <Text variant="body" color="secondary">Ano lectivo 2024/2025</Text>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
         {days.map((day) => (
-          <View key={day} style={styles.daySection}>
-            <Text variant="sectionTitle" color="primary" style={styles.dayTitle}>
+          <View key={day} className="mb-5">
+            <Text variant="sectionTitle" color="primary" className="mb-3 pb-2 border-b border-gray-300 dark:border-slate-700">
               {day}
             </Text>
             {scheduleData
@@ -62,30 +62,6 @@ export const AcademicScheduleScreen: FC<Props> = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  header: {
-    padding: 20,
-    backgroundColor: colors.dark,
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  daySection: {
-    marginBottom: 20,
-  },
-  dayTitle: {
-    marginBottom: 12,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border.light,
-  },
-});
 
 export default AcademicScheduleScreen;
 

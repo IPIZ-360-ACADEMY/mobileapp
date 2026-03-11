@@ -4,8 +4,8 @@
 import React, { FC } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { View, ScrollView } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
 import { Text, DashboardCard, ListItem } from '../../components';
 
 interface Grade {
@@ -31,30 +31,30 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Grades'>;
 export const GradesScreen: FC<Props> = () => {
   const average = gradesData.reduce((acc, curr) => acc + curr.grade, 0) / gradesData.length;
 
-  const { colors } = useTheme();
+  const { isDark, componentTheme } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.header, { backgroundColor: colors.primary }]}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
+      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
         <Text variant="title" color="inverse">Minhas Notas</Text>
         <Text variant="body" color="secondary">Ano lectivo 2024/2025</Text>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.statsRow}>
-          <View style={[styles.statCard, { backgroundColor: colors.background.paper }]}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+        <View className="flex-row mb-6 gap-3">
+          <View className="flex-1 bg-gray-50 dark:bg-slate-800 px-4 py-4 rounded-2xl items-center">
             <Text variant="caption" color="secondary">Média Geral</Text>
             <Text variant="title" color="primary">{average.toFixed(1)}</Text>
             <Text variant="caption" color="muted">/ 20</Text>
           </View>
-          <View style={[styles.statCard, { backgroundColor: colors.background.paper }]}>
+          <View className="flex-1 bg-gray-50 dark:bg-slate-800 px-4 py-4 rounded-2xl items-center">
             <Text variant="caption" color="secondary">Disciplinas</Text>
             <Text variant="title" color="primary">{gradesData.length}</Text>
             <Text variant="caption" color="muted">cursadas</Text>
           </View>
         </View>
 
-        <Text variant="sectionTitle" color="primary" style={styles.sectionTitle}>
+        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
           Detalhe por Disciplina
         </Text>
 
@@ -72,36 +72,6 @@ export const GradesScreen: FC<Props> = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  header: {
-    padding: 20,
-    backgroundColor: colors.dark,
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    marginBottom: 24,
-    gap: 12,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: colors.background.paper,
-    padding: 16,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    marginBottom: 16,
-  },
-});
 
 export default GradesScreen;
 

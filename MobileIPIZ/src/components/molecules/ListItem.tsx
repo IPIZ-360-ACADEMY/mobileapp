@@ -1,11 +1,12 @@
-// IPIZ Mobile App - Molecule ListItem Component
+// IPIZ Mobile App - Molecule ListItem Component with Tailwind CSS
 // Reusable list item with icon, title, subtitle, and chevron
 
 import React, { FC } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
-import Icon from '../atoms/Icon';
-import Text from '../atoms/Text';
+import { Pressable } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
+import { Icon } from '../atoms/Icon';
+import { Text } from '../atoms/Text';
+import { Box } from '../base/Box';
 
 interface Props {
   title: string;
@@ -15,97 +16,137 @@ interface Props {
   onPress?: () => void;
   showChevron?: boolean;
   badge?: string;
+  variant?: 'default' | 'bordered' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
 }
 
-export const ListItem: FC<Props> = ({ 
-  title, 
-  subtitle, 
+export const ListItem: FC<Props> = ({
+  title,
+  subtitle,
   leftIcon,
   rightIcon,
-  onPress, 
+  onPress,
   showChevron = true,
-  badge 
+  badge,
+  variant = 'default',
+  size = 'md',
+  disabled = false,
 }) => {
+  const { isDark } = useTheme();
+
+  // Classes base
+  const baseClasses = `
+    flex-row items-center rounded-xl mb-2
+    ${disabled ? 'opacity-60' : ''}
+  `;
+
+  // Classes de variante
+  const variantClasses = {
+    default: `
+      bg-white dark:bg-gray-900
+      ${onPress ? 'active:bg-gray-50 dark:active:bg-gray-800' : ''}
+    `,
+    bordered: `
+      bg-white dark:bg-gray-900
+      border border-gray-200 dark:border-gray-700
+      ${onPress ? 'active:border-gray-300 dark:active:border-gray-600' : ''}
+    `,
+    ghost: `
+      bg-transparent
+      ${onPress ? 'active:bg-gray-100 dark:active:bg-gray-800' : ''}
+    `,
+  };
+
+  // Classes de tamanho
+  const sizeClasses = {
+    sm: 'py-3 px-4 gap-3',
+    md: 'py-4 px-5 gap-4',
+    lg: 'py-5 px-6 gap-5',
+  };
+
+  // Classes do ícone esquerdo
+  const leftIconClasses = `
+    w-10 h-10 rounded-full items-center justify-center
+    bg-gray-100 dark:bg-gray-800
+  `;
+
+  // Classes do badge
+  const badgeClasses = `
+    px-2 py-1 rounded-md
+    bg-blue-100 dark:bg-blue-900/30
+    ${isDark ? 'text-blue-300' : 'text-blue-800'}
+  `;
+
   const content = (
-    <View style={styles.container}>
+    <Box className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`}>
       {leftIcon && (
-        <View style={styles.iconContainer}>
-          <Icon name={leftIcon as any} size="md" color={undefined} />
-        </View>
+        <Box className={leftIconClasses}>
+          <Icon
+            name={leftIcon as any}
+            size="md"
+            className="text-gray-600 dark:text-gray-400"
+          />
+        </Box>
       )}
-      
-      <View style={styles.content}>
-        <View style={styles.titleRow}>
-          <Text variant="subtitle" color="primary">{title}</Text>
+
+      <Box className="flex-1">
+        <Box className="flex-row items-center justify-between">
+          <Text
+            variant="body"
+            weight="medium"
+            className="text-gray-900 dark:text-white flex-1"
+            numberOfLines={1}
+          >
+            {title}
+          </Text>
           {badge && (
-            <View style={styles.badge}>
-              <Text variant="caption" color="primary">{badge}</Text>
-            </View>
+            <Box className={badgeClasses}>
+              <Text variant="caption" weight="medium">
+                {badge}
+              </Text>
+            </Box>
           )}
-        </View>
+        </Box>
         {subtitle && (
-          <Text variant="caption" color="muted">{subtitle}</Text>
+          <Text
+            variant="body-small"
+            className="text-gray-600 dark:text-gray-400 mt-1"
+            numberOfLines={1}
+          >
+            {subtitle}
+          </Text>
         )}
-      </View>
-      
+      </Box>
+
       {rightIcon && (
-        <Icon name={rightIcon as any} size="md" color={undefined} />
+        <Icon
+          name={rightIcon as any}
+          size="md"
+          className="text-gray-500 dark:text-gray-400"
+        />
       )}
-      
+
       {showChevron && !rightIcon && (
-        <Icon name="chevron-right" size="sm" color={undefined} />
+        <Icon
+          name="chevron-right"
+          size="sm"
+          className="text-gray-400 dark:text-gray-500"
+        />
       )}
-    </View>
+    </Box>
   );
 
-  const { colors } = useTheme();
-
-  if (onPress) {
-      return (
-        <Pressable onPress={onPress} android_ripple={{ color: colors.shadow.light }} style={({ pressed }) => [styles.container, pressed && styles.pressed, { backgroundColor: colors.background.paper, borderColor: colors.primary + '10' }]}>
-          {content}
-        </Pressable>
+  if (onPress && !disabled) {
+    return (
+      <Pressable onPress={onPress} className="active:scale-95 active:opacity-90">
+        {content}
+      </Pressable>
     );
   }
 
   return content;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    marginBottom: 8,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  content: {
-    flex: 1,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  pressed: {
-    opacity: 0.9,
-    transform: [{ translateY: 0 }],
-  },
-});
 
 export default ListItem;
 

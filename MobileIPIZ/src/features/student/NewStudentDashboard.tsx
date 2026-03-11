@@ -1,65 +1,45 @@
 import React from 'react';
-import { ScrollView, SafeAreaView, StyleSheet } from 'react-native';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Box, Text, Button } from '../../components/base';
+import { ScrollView, SafeAreaView, View, Text } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
+import { Button } from '../../components/base';
 
-/**
- * StudentDashboard - Dashboard Moderno e Minimalista
- * Reconstruído do zero com clean code
- */
+// Dashboard estudantil modernizado usando Tailwind + theming
 export const StudentDashboard = () => {
-  const { theme } = useAppTheme();
+  const { isDark } = useTheme();
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: theme.background.primary },
-      ]}
-    >
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
+        className="flex-1 px-4 py-4"
+        contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header com Saudação */}
-        <Box marginBottom={32}>
-          <Text variant="h2" weight="bold">
+        {/* cabeçalho */}
+        <View className="mb-8">
+          <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Bem-vindo de volta 👋
           </Text>
-          <Text
-            variant="body"
-            color="secondary"
-            style={{ marginTop: 8 }}
-          >
+          <Text className="text-base text-gray-500 dark:text-gray-400 mt-2">
             Aqui estão suas atividades
           </Text>
-        </Box>
+        </View>
 
-        {/* Card de Progresso */}
-        <Box
-          bg="secondary"
-          padding={20}
-          rounded="lg"
-          marginBottom={24}
-        >
-          <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Box flex={1}>
-              <Text variant="caption" color="tertiary">
-                Progresso Este Mês
-              </Text>
-              <Text variant="h2" weight="bold" style={{ marginTop: 8 }}>
-                75%
-              </Text>
-            </Box>
-            <Text variant="h1" style={{ marginRight: 16 }}>
-              📊
+        {/* cartão de progresso */}
+        <View className="bg-gray-100 dark:bg-slate-800 p-5 rounded-lg mb-6 flex-row justify-between items-center">
+          <View className="flex-1">
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              Progresso Este Mês
             </Text>
-          </Box>
-        </Box>
+            <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+              75%
+            </Text>
+          </View>
+          <Text className="text-4xl mr-4">📊</Text>
+        </View>
 
-        {/* Cards de Disciplinas */}
-        <Box marginBottom={32}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        {/* disciplinas */}
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Minhas Disciplinas
           </Text>
 
@@ -83,11 +63,11 @@ export const StudentDashboard = () => {
             emoji="💻"
             style={{ marginTop: 12 }}
           />
-        </Box>
+        </View>
 
-        {/* Cards de Oportunidades */}
-        <Box marginBottom={32}>
-          <Text variant="h3" weight="bold" marginBottom={16}>
+        {/* oportunidades */}
+        <View className="mb-8">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Oportunidades 🚀
           </Text>
 
@@ -102,48 +82,30 @@ export const StudentDashboard = () => {
             salario="R$ 1.500/mês"
             style={{ marginTop: 12 }}
           />
-        </Box>
+        </View>
 
-        {/* Call to Action */}
-        <Box
-          padding={24}
-          rounded="lg"
-          marginBottom={40}
-          style={{ backgroundColor: theme.palette.primary[600] }}
-        >
-          <Text
-            variant="h3"
-            weight="bold"
-            color="inverse"
-            center
-          >
+        {/* call to action */}
+        <View className="p-6 rounded-lg mb-10 bg-blue-600 dark:bg-blue-800">
+          <Text className="text-xl font-bold text-white text-center">
             Comece uma Mentoria
           </Text>
-          <Text
-            variant="body"
-            color="inverse"
-            center
-            style={{ marginTop: 8, opacity: 0.9 }}
-          >
+          <Text className="text-base text-white text-center mt-2 opacity-90">
             Conecte-se com alumni experientes
           </Text>
-          <Box marginTop={16}>
+          <View className="mt-4">
             <Button
               label="Explorar Mentorias"
               fullWidth
               variant="outline"
               onPress={() => console.log('Mentorias')}
             />
-          </Box>
-        </Box>
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-/**
- * Card de Disciplina
- */
 interface CardDisciplinaProps {
   titulo: string;
   professor: string;
@@ -159,62 +121,39 @@ const CardDisciplina = ({
   emoji,
   style,
 }: CardDisciplinaProps) => {
-  const { theme } = useAppTheme();
-
   return (
-    <Box
-      bg="secondary"
-      padding={16}
-      rounded="lg"
+    <View
+      className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
       style={style}
     >
-      <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-        <Box flex={1}>
-          <Box flexDirection="row" alignItems="center" gap={8} marginBottom={8}>
-            <Text variant="h2">{emoji}</Text>
-            <Text variant="body" weight="600">
+      <View className="flex-row justify-between items-start">
+        <View className="flex-1">
+          <View className="flex-row items-center space-x-2 mb-2">
+            <Text className="text-2xl">{emoji}</Text>
+            <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
               {titulo}
             </Text>
-          </Box>
-          <Text variant="caption" color="secondary">
+          </View>
+          <Text className="text-xs text-gray-500 dark:text-gray-400">
             {professor}
           </Text>
-        </Box>
-      </Box>
+        </View>
+      </View>
 
-      {/* Progress Bar */}
-      <Box
-        marginTop={12}
-        rounded="full"
-        style={{
-          height: 6,
-          backgroundColor: theme.palette.neutral[300],
-          overflow: 'hidden',
-        }}
-      >
-        <Box
-          style={{
-            height: '100%',
-            width: `${progresso}%`,
-            backgroundColor: theme.palette.primary[600],
-          }}
+      {/* barra de progresso */}
+      <View className="mt-3 w-full h-1.5 bg-neutral-300 dark:bg-neutral-600 rounded-full overflow-hidden">
+        <View
+          className="h-full bg-blue-600"
+          style={{ width: `${progresso}%` }}
         />
-      </Box>
-
-      <Text
-        variant="caption"
-        color="tertiary"
-        style={{ marginTop: 8 }}
-      >
+      </View>
+      <Text className="text-xs text-gray-500 dark:text-gray-400 mt-2">
         {progresso}% concluído
       </Text>
-    </Box>
+    </View>
   );
 };
 
-/**
- * Card de Oportunidade
- */
 interface CardOportunidadeProps {
   titulo: string;
   empresa: string;
@@ -229,35 +168,26 @@ const CardOportunidade = ({
   style,
 }: CardOportunidadeProps) => {
   return (
-    <Box
-      bg="secondary"
-      padding={16}
-      rounded="lg"
+    <View
+      className="bg-gray-100 dark:bg-slate-800 p-4 rounded-lg mb-3"
       style={style}
     >
-      <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-        <Box flex={1}>
-          <Text variant="body" weight="600" marginBottom={4}>
+      <View className="flex-row justify-between items-start">
+        <View className="flex-1">
+          <Text className="text-base font-semibold text-gray-900 dark:text-gray-100">
             {titulo}
           </Text>
-          <Text variant="caption" color="secondary">
+          <Text className="text-xs text-gray-500 dark:text-gray-400">
             {empresa}
           </Text>
-          <Text
-            variant="body"
-            weight="bold"
-            color="primary"
-            style={{ marginTop: 8 }}
-          >
+          <Text className="text-base font-bold text-blue-600 dark:text-blue-400 mt-2">
             {salario}
           </Text>
-        </Box>
-        <Text variant="h3" style={{ marginLeft: 8 }}>
-          💼
-        </Text>
-      </Box>
+        </View>
+        <Text className="text-2xl ml-2">💼</Text>
+      </View>
 
-      <Box flexDirection="row" gap={8} marginTop={12}>
+      <View className="flex-row space-x-2 mt-3">
         <Button
           label="Candidatar"
           size="sm"
@@ -272,13 +202,7 @@ const CardOportunidade = ({
           onPress={() => console.log('Detalhes')}
           style={{ flex: 1 }}
         />
-      </Box>
-    </Box>
+      </View>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

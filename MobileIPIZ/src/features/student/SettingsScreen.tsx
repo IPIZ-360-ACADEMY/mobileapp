@@ -4,8 +4,8 @@
 import React, { FC } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import { View, ScrollView, StyleSheet, Switch } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { View, ScrollView, Switch } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
 import { Text, ListItem } from '../../components';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -13,20 +13,20 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
 export const SettingsScreen: FC<Props> = () => {
   const { logout, user } = useAuth();
-  const { colors } = useTheme();
+  const { isDark, componentTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = React.useState(false);
   const [emailNotifications, setEmailNotifications] = React.useState(true);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.header, { backgroundColor: colors.primary }]}>
+    <View className="flex-1 bg-white dark:bg-slate-900">
+      <View className="px-5 py-5 bg-blue-600 dark:bg-blue-800">
         <Text variant="title" color="inverse">Definições</Text>
         <Text variant="body" color="secondary">Gerir preferências e conta</Text>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text variant="sectionTitle" color="primary" style={styles.sectionTitle}>
+      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
           Conta
         </Text>
         
@@ -44,50 +44,50 @@ export const SettingsScreen: FC<Props> = () => {
           onPress={() => {}}
         />
 
-        <Text variant="sectionTitle" color="primary" style={styles.sectionTitle}>
+        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
           Preferências
         </Text>
 
-        <View style={styles.settingItem}>
-          <View style={styles.settingInfo}>
+        <View className="flex-row items-center justify-between bg-gray-50 dark:bg-slate-800 py-3 px-4 rounded-lg mb-2">
+          <View className="flex-1 mr-3">
             <Text variant="subtitle" color="primary">Notificações Push</Text>
             <Text variant="caption" color="secondary">Receber notificações no dispositivo</Text>
           </View>
           <Switch
             value={notificationsEnabled}
             onValueChange={setNotificationsEnabled}
-            trackColor={{ false: colors.neutral[300], true: colors.primary }}
-            thumbColor={colors.white}
+            trackColor={{ false: '#cbd5e1', true: '#2563eb' }}
+            thumbColor="#ffffff"
           />
         </View>
 
-        <View style={styles.settingItem}>
-          <View style={styles.settingInfo}>
+        <View className="flex-row items-center justify-between bg-gray-50 dark:bg-slate-800 py-3 px-4 rounded-lg mb-2">
+          <View className="flex-1 mr-3">
             <Text variant="subtitle" color="primary">Notificações por Email</Text>
             <Text variant="caption" color="secondary">Receber atualizações por email</Text>
           </View>
           <Switch
             value={emailNotifications}
             onValueChange={setEmailNotifications}
-            trackColor={{ false: colors.neutral[300], true: colors.primary }}
-            thumbColor={colors.white}
+            trackColor={{ false: '#cbd5e1', true: '#2563eb' }}
+            thumbColor="#ffffff"
           />
         </View>
 
-        <View style={styles.settingItem}>
-          <View style={styles.settingInfo}>
+        <View className="flex-row items-center justify-between bg-gray-50 dark:bg-slate-800 py-3 px-4 rounded-lg mb-2">
+          <View className="flex-1 mr-3">
             <Text variant="subtitle" color="primary">Modo Escuro</Text>
             <Text variant="caption" color="secondary">Alternar tema escuro</Text>
           </View>
           <Switch
             value={darkModeEnabled}
             onValueChange={setDarkModeEnabled}
-            trackColor={{ false: colors.neutral[300], true: colors.primary }}
-            thumbColor={colors.white}
+            trackColor={{ false: '#cbd5e1', true: '#2563eb' }}
+            thumbColor="#ffffff"
           />
         </View>
 
-        <Text variant="sectionTitle" color="primary" style={styles.sectionTitle}>
+        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
           Suporte
         </Text>
 
@@ -112,7 +112,7 @@ export const SettingsScreen: FC<Props> = () => {
           onPress={() => {}}
         />
 
-        <Text variant="sectionTitle" color="primary" style={styles.sectionTitle}>
+        <Text variant="sectionTitle" color="primary" className="mt-4 mb-3">
           Sessão
         </Text>
 
@@ -123,50 +123,13 @@ export const SettingsScreen: FC<Props> = () => {
           onPress={logout}
         />
 
-        <View style={styles.footer}>
+        <View className="items-center py-8">
           <Text variant="caption" color="muted">IPIZ Mobile App v1.0.0</Text>
         </View>
       </ScrollView>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  header: {
-    padding: 20,
-    backgroundColor: colors.dark,
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  sectionTitle: {
-    marginTop: 16,
-    marginBottom: 12,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.background.paper,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    marginBottom: 8,
-  },
-  settingInfo: {
-    flex: 1,
-    marginRight: 12,
-  },
-  footer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-  },
-});
 
 export default SettingsScreen;
 

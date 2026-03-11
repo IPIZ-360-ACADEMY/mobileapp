@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet, TextInput } from 'react-native';
-import { useAppTheme } from '../../contexts/ThemeContext';
-import { Colors } from '../../theme/colors';
+import { View, Text, ScrollView, Pressable, TextInput } from 'react-native';
+import { useTheme } from '../../hooks/useTheme';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { Job, JobType, JobStatus } from '../../types/job.types';
+
+// type Props unchanged
 
 type Props = NativeStackScreenProps<RootStackParamList, 'JobList'>;
 
@@ -57,14 +58,12 @@ const mockJobs: Job[] = [
 ];
 
 export const JobListScreen: FC<Props> = ({ navigation }) => {
-  // migrating to the new hook; we still grab colors for now since
-  // most styles rely on it.  eventually only `theme` should be used.
-  const { theme, colors } = useAppTheme();
+  // using new hook with dark mode support
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'ALL' | 'FULL_TIME' | 'INTERNSHIP'>('ALL');
 
-  const styles = getStyles(colors);
-  // note: some day we can rewrite getStyles(theme) and drop colors
+  // no more styles object, we use Tailwind classes
 
   const filteredJobs = mockJobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,54 +73,45 @@ export const JobListScreen: FC<Props> = ({ navigation }) => {
   });
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.header, { backgroundColor: colors.primary, paddingTop: 48 }]}>
-        <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]} onPress={() => navigation.goBack()}>
-          <Text style={[styles.backButtonText, { color: colors.background.paper }]}>← Voltar</Text>
+    <View className="flex-1 bg-white dark:bg-slate-900">
+
+      <View className="px-6 py-6 pt-12 bg-yellow-400 dark:bg-yellow-500">
+
+        <Pressable
+          className="mb-4"
+          onPress={() => navigation.goBack()}
+          style={({ pressed }) => pressed && { opacity: 0.7 }}
+        >
+          <Text className="text-white text-lg">← Voltar</Text>
         </Pressable>
-        <Text style={[styles.title, { color: colors.background.paper }]}>Oportunidades</Text>
+        <Text className="text-white text-2xl font-bold">Oportunidades</Text>
       </View>
 
-      <View style={styles.searchContainer}>
+      <View className="p-4">
         <TextInput
-          style={[styles.searchInput, { backgroundColor: colors.background.paper, borderColor: colors.neutral[300], color: colors.text.primary }]}
+          className="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-4 py-2 text-base text-gray-900 dark:text-gray-100"
           placeholder="Buscar vagas..."
-          placeholderTextColor={colors.text.hint}
+          placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
       </View>
 
-      <View style={styles.filterContainer}>
-        <Pressable
-          style={[styles.filterButton, filter === 'ALL' && styles.filterButtonActive, { borderColor: colors.primary }]}
-          android_ripple={{ color: colors.shadow.light }}
-          onPress={() => setFilter('ALL')}
-        >
-          <Text style={[styles.filterButtonText, filter === 'ALL' && styles.filterButtonTextActive, { color: filter === 'ALL' ? colors.background.paper : colors.primary }]}>
-            Todas
-          </Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.filterButton, filter === 'FULL_TIME' && styles.filterButtonActive, { borderColor: colors.primary }]}
-          android_ripple={{ color: colors.shadow.light }}
-          onPress={() => setFilter('FULL_TIME')}
-        >
-          <Text style={[styles.filterButtonText, filter === 'FULL_TIME' && styles.filterButtonTextActive, { color: filter === 'FULL_TIME' ? colors.background.paper : colors.primary }]}>
-            Tempo Integral
-          </Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.filterButton, filter === 'INTERNSHIP' && styles.filterButtonActive, { borderColor: colors.primary }]}
-          android_ripple={{ color: colors.shadow.light }}
-          onPress={() => setFilter('INTERNSHIP')}
-        >
-          <Text style={[styles.filterButtonText, filter === 'INTERNSHIP' && styles.filterButtonTextActive, { color: filter === 'INTERNSHIP' ? colors.background.paper : colors.primary }]}>
-            Estágios
-          </Text>
-        </Pressable>
+      <View className="flex-row px-4 py-2 space-x-2">
+        {['ALL','FULL_TIME','INTERNSHIP'].map(option => {
+          const active = filter === option;
+          const label = option === 'ALL' ? 'Todas' : option === 'FULL_TIME' ? 'Tempo Integral' : 'Estágios';
+          return (
+            <Pressable
+              key={option}
+              onPress={() => setFilter(option as any)}
+              className={`px-4 py-2 rounded-full border ${active ? 'bg-blue-600 border-blue-600' : 'border-blue-600'} ${active ? 'text-white' : 'text-blue-600'}`}
+              android_ripple={{ color: '#cbd5e1' }}
+            >
+              <Text className={`${active ? 'text-white' : 'text-blue-600'} text-sm font-semibold`}>{label}</Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       <ScrollView style={styles.jobList}>
@@ -167,124 +157,4 @@ export const JobListScreen: FC<Props> = ({ navigation }) => {
   );
 };
 
-
-const getStyles = (colors: Colors) => StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    padding: 24,
-    paddingTop: 48,
-  },
-  backButton: {
-    marginBottom: 16,
-  },
-  backButtonText: {
-    fontSize: 16,
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  searchContainer: {
-    padding: 16,
-  },
-  searchInput: {
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    borderWidth: 1,
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    gap: 8,
-    marginBottom: 16,
-  },
-  filterButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  filterButtonActive: {
-    backgroundColor: colors.neutral[700],
-  },
-  filterButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  filterButtonTextActive: {
-    color: colors.background.paper,
-  },
-  jobList: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  jobCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-  },
-  jobHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  jobTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    flex: 1,
-    marginRight: 8,
-  },
-  jobTypeBadge: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-  },
-  internshipBadge: {
-    backgroundColor: colors.warning.light,
-  },
-  jobTypeText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  companyName: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  location: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  salary: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  skillsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  skillTag: {
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    borderRadius: 16,
-  },
-  skillTagText: {
-    fontSize: 12,
-  },
-  emptyState: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  emptyStateText: {
-    fontSize: 16,
-  },
-});
+export default JobListScreen;
