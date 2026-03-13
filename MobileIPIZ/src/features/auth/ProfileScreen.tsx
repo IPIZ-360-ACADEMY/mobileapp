@@ -1,17 +1,26 @@
 import React, { FC } from 'react';
-import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
-import { Button } from '../../components/base';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Alert,
+  StyleSheet,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { useTheme } from '../../hooks/useTheme';
-import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+export const ProfileScreen: FC = () => {
+  const { user, logout } = useAuth();
 
-export const ProfileScreen: FC<Props> = ({ navigation }) => {
-  const { user } = useAuth();
-  const { isDark } = useTheme();
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join('')
+        .toUpperCase()
+    : 'JS';
 
   const handleLogout = () => {
     Alert.alert(
@@ -23,148 +32,323 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
           text: 'Sair',
           style: 'destructive',
           onPress: () => {
-            // Implementar logout
+            logout();
           },
         },
-      ]
+      ],
     );
   };
 
-  const profileSections = [
-    {
-      title: 'Informações Pessoais',
-      items: [
-        { label: 'Nome', value: user?.name || 'Não informado', icon: '👤' },
-        { label: 'Email', value: user?.email || 'Não informado', icon: '✉️' },
-        { label: 'Telefone', value: user?.phone || 'Não informado', icon: '📱' },
-        { label: 'Perfil', value: user?.role || 'Aluno', icon: '🎓' },
-      ],
-    },
-    {
-      title: 'Estatísticas',
-      items: [
-        { label: 'Cursos Completados', value: '3', icon: '✓' },
-        { label: 'Cursos Ativos', value: '5', icon: '📚' },
-        { label: 'Média Geral', value: '8.5', icon: '📊' },
-        { label: 'Pontos IPIZ', value: '2,450', icon: '⭐' },
-      ],
-    },
-  ];
+  const skills = ['Eletricidade Básica', 'Automação', 'Soldadura'];
+  const achievements = ['Melhor Projeto', 'Bolsa de Mérito'];
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-900">
-      <ProfessionalNavBar />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <View style={styles.logoBox}>
+            <Text style={styles.logoText}>IPIZ</Text>
+          </View>
+          <View style={styles.headerTitleBlock}>
+            <Text style={styles.headerInstitution}>IPIZ - Instituto</Text>
+            <Text style={styles.headerDate}>17 de Dezembro</Text>
+          </View>
+        </View>
+        <Text style={styles.headerScreenTitle}>Meu Perfil</Text>
+      </View>
+
       <ScrollView
-        className="flex-1 px-4 py-6"
-        contentContainerStyle={{ paddingBottom: 40 }}
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Profile Header */}
-        <View className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-6 mb-6 items-center">
-          <View className="w-24 h-24 bg-blue-600 dark:bg-blue-700 rounded-full items-center justify-center mb-4 shadow-lg">
-            <Text className="text-5xl">
-              {user?.name?.charAt(0).toUpperCase() || '👤'}
-            </Text>
+        {/* Avatar block */}
+        <View style={styles.avatarBlock}>
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarInitials}>{initials}</Text>
           </View>
-
-          <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100 text-center">
-            {user?.name || 'Usuário'}
-          </Text>
-          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            {user?.role === 'student' ? 'Aluno' : user?.role === 'teacher' ? 'Professor' : 'Administrador'}
-          </Text>
-
-          <Pressable className="bg-white dark:bg-slate-800 rounded-lg px-4 py-2 mt-4">
-            <Text className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
-              📷 Alterar Foto
-            </Text>
-          </Pressable>
+          <Text style={styles.userName}>{user?.name || 'João Silva'}</Text>
+          <Text style={styles.userSubtitle}>Técnico em Eletricidade</Text>
+          <View style={styles.yearBadge}>
+            <Text style={styles.yearBadgeText}>3º Ano</Text>
+          </View>
         </View>
 
-        {/* Profile Sections */}
-        {profileSections.map((section, sectionIdx) => (
-          <View key={sectionIdx} className="mb-6">
-            <Text className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-              {section.title}
-            </Text>
-            <View className="bg-gray-50 dark:bg-slate-800 rounded-lg overflow-hidden">
-              {section.items.map((item, itemIdx) => (
-                <View
-                  key={itemIdx}
-                  className={`flex-row items-center justify-between px-4 py-4 ${
-                    itemIdx < section.items.length - 1
-                      ? 'border-b border-gray-200 dark:border-slate-700'
-                      : ''
-                  }`}
-                >
-                  <View className="flex-row items-center flex-1">
-                    <Text className="text-2xl mr-3">{item.icon}</Text>
-                    <View className="flex-1">
-                      <Text className="text-xs text-gray-500 dark:text-gray-400">
-                        {item.label}
-                      </Text>
-                      <Text className="text-base font-semibold text-gray-900 dark:text-gray-100 mt-1">
-                        {item.value}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
+        {/* Info card - Matrícula */}
+        <View style={styles.infoCard}>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoIcon}>📅</Text>
+            <View style={styles.infoTextBlock}>
+              <Text style={styles.infoLabel}>Matrícula</Text>
+              <Text style={styles.infoValue}>2024001</Text>
             </View>
           </View>
-        ))}
-
-        {/* Action Buttons */}
-        <View className="mb-6 space-y-3">
-          <Pressable className="bg-blue-600 dark:bg-blue-700 rounded-lg py-4 items-center">
-            <Text className="text-white font-bold text-base">
-              ✏️ Editar Perfil
-            </Text>
-          </Pressable>
-
-          <Pressable className="bg-gray-100 dark:bg-slate-800 rounded-lg py-4 items-center">
-            <Text className="text-gray-900 dark:text-gray-100 font-bold text-base">
-              🔐 Alterar Senha
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onPress={handleLogout}
-            className="bg-red-100 dark:bg-red-900 rounded-lg py-4 items-center"
-          >
-            <Text className="text-red-600 dark:text-red-300 font-bold text-base">
-              🚪 Sair da Conta
-            </Text>
-          </Pressable>
         </View>
 
-        {/* Settings Actions */}
-        <View className="mb-6">
-          <Text className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Configurações
-          </Text>
-          {[
-            { icon: '🔔', label: 'Notificações' },
-            { icon: '🌙', label: 'Tema Escuro' },
-            { icon: '🌐', label: 'Idioma' },
-            { icon: '🛡️', label: 'Privacidade' },
-            { icon: '❓', label: 'Ajuda' },
-          ].map((setting, idx) => (
-            <Pressable
-              key={idx}
-              className="bg-gray-50 dark:bg-slate-800 flex-row items-center justify-between px-4 py-4 rounded-lg mb-2"
-            >
-              <View className="flex-row items-center">
-                <Text className="text-2xl mr-3">{setting.icon}</Text>
-                <Text className="text-gray-900 dark:text-gray-100 font-semibold">
-                  {setting.label}
-                </Text>
-              </View>
-              <Text className="text-gray-400">→</Text>
-            </Pressable>
+        {/* Info card - Contactos */}
+        <View style={styles.infoCard}>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoIcon}>🪪</Text>
+            <View style={styles.infoTextBlock}>
+              <Text style={styles.infoLabel}>Contactos</Text>
+              <Text style={styles.infoValue}>{user?.email || 'joao.silva@ipiz.ao'}</Text>
+              <Text style={styles.infoValue}>+244 923 456 789</Text>
+            </View>
+            <Text style={styles.phoneIcon}>📞</Text>
+          </View>
+        </View>
+
+        {/* Info card - Status Académico */}
+        <View style={styles.infoCard}>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoIcon}>🏆</Text>
+            <View style={styles.infoTextBlock}>
+              <Text style={styles.infoLabel}>Status Académico</Text>
+              <Text style={styles.infoValue}>Ativo  •  Média 16.5</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Editar button */}
+        <Pressable style={styles.editButton}>
+          <Text style={styles.editButtonText}>Editar</Text>
+        </Pressable>
+
+        {/* Competências */}
+        <Text style={styles.sectionTitle}>Competências</Text>
+        <View style={styles.chipRow}>
+          {skills.map((s) => (
+            <View key={s} style={styles.outlineChip}>
+              <Text style={styles.outlineChipText}>{s}</Text>
+            </View>
           ))}
         </View>
+
+        {/* Conquistas */}
+        <Text style={styles.sectionTitle}>Conquistas</Text>
+        <View style={styles.chipRow}>
+          {achievements.map((a) => (
+            <View key={a} style={styles.filledChip}>
+              <Text style={styles.filledChipText}>{a}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Logout */}
+        <Pressable style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Sair da Conta</Text>
+        </Pressable>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
+
+const TEAL = '#0D9488';
+const TEAL_LIGHT = '#CCFBF1';
+const BLUE = '#1E40AF';
+const BG = '#F0FDFA';
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: TEAL,
+  },
+  header: {
+    backgroundColor: TEAL,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  logoBox: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: TEAL,
+  },
+  headerTitleBlock: {
+    justifyContent: 'center',
+  },
+  headerInstitution: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  headerDate: {
+    fontSize: 11,
+    color: '#A7F3D0',
+  },
+  headerScreenTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: BG,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    paddingBottom: 40,
+  },
+  avatarBlock: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  avatarCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: TEAL,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  avatarInitials: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  userName: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginBottom: 4,
+  },
+  userSubtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 10,
+  },
+  yearBadge: {
+    backgroundColor: TEAL,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 4,
+  },
+  yearBadgeText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  infoCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoIcon: {
+    fontSize: 22,
+    marginRight: 12,
+  },
+  infoTextBlock: {
+    flex: 1,
+  },
+  infoLabel: {
+    fontSize: 11,
+    color: '#9CA3AF',
+    marginBottom: 2,
+  },
+  infoValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  phoneIcon: {
+    fontSize: 20,
+    marginLeft: 8,
+  },
+  editButton: {
+    backgroundColor: TEAL,
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginBottom: 24,
+    marginTop: 6,
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginBottom: 10,
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 20,
+  },
+  outlineChip: {
+    borderWidth: 1.5,
+    borderColor: TEAL,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  outlineChipText: {
+    fontSize: 13,
+    color: TEAL,
+    fontWeight: '500',
+  },
+  filledChip: {
+    backgroundColor: TEAL,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  filledChipText: {
+    fontSize: 13,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  logoutButton: {
+    borderWidth: 1.5,
+    borderColor: '#EF4444',
+    borderRadius: 10,
+    paddingVertical: 13,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  logoutButtonText: {
+    color: '#EF4444',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+});
+
+export default ProfileScreen;

@@ -1,84 +1,351 @@
-// IPIZ Mobile App - Grades Screen
-// Display student's grades and academic performance
-
 import React, { FC } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
-import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
+import { useAuth } from '../../contexts/AuthContext';
 
-interface Grade {
-  id: string;
-  subject: string;
+const TEAL = '#0D9488';
+const BG = '#F0FDFA';
+const GREEN = '#16A34A';
+const YELLOW = '#D97706';
+
+interface SubjectGrade {
+  name: string;
   grade: number;
-  maxGrade: number;
-  date: string;
-  type: string;
+  percent: number;
+  color: string;
 }
 
-const gradesData: Grade[] = [
-  { id: '1', subject: 'Mecânica Industrial', grade: 16, maxGrade: 20, date: '15/10/2024', type: 'Teste' },
-  { id: '2', subject: 'Eletrotécnica', grade: 14, maxGrade: 20, date: '18/10/2024', type: 'Teste' },
-  { id: '3', subject: 'Desenho Técnico', grade: 18, maxGrade: 20, date: '20/10/2024', type: 'Trabalho' },
-  { id: '4', subject: 'Metrologia', grade: 15, maxGrade: 20, date: '22/10/2024', type: 'Teste' },
-  { id: '5', subject: 'Segurança do Trabalho', grade: 17, maxGrade: 20, date: '25/10/2024', type: 'Frequência' },
-  { id: '6', subject: 'Gestão da Produção', grade: 13, maxGrade: 20, date: '28/10/2024', type: 'Teste' },
+const subjectGrades: SubjectGrade[] = [
+  { name: 'Eletrotecnia', grade: 17, percent: 0.85, color: GREEN },
+  { name: 'Matemática', grade: 14, percent: 0.7, color: YELLOW },
+  { name: 'Instalações', grade: 16, percent: 0.8, color: GREEN },
 ];
 
 export const GradesScreen: FC = () => {
-  const average = gradesData.reduce((acc, curr) => acc + curr.grade, 0) / gradesData.length;
-  const { isDark } = useTheme();
+  const { user } = useAuth();
+
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join('')
+        .toUpperCase()
+    : 'JS';
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
-      <ProfessionalNavBar />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <View style={styles.logoBox}>
+            <Text style={styles.logoText}>IPIZ</Text>
+          </View>
+          <Text style={styles.headerScreenTitle}>Desempenho Académico</Text>
+        </View>
+        <View style={styles.avatarSmall}>
+          <Text style={styles.avatarSmallText}>{initials}</Text>
+        </View>
+      </View>
 
       <ScrollView
-        className="flex-1 px-4 py-6"
-        contentContainerStyle={{ paddingBottom: 40 }}
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          📘 Minhas Notas
-        </Text>
-        <Text className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-          Ano lectivo 2024/2025
-        </Text>
-
-        <View className="flex-row mb-6 gap-3">
-          <View className="flex-1 bg-gray-50 dark:bg-slate-800 px-4 py-4 rounded-2xl items-center">
-            <Text className="text-xs text-gray-500 dark:text-gray-400">Média Geral</Text>
-            <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">{average.toFixed(1)}</Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">/ 20</Text>
-          </View>
-          <View className="flex-1 bg-gray-50 dark:bg-slate-800 px-4 py-4 rounded-2xl items-center">
-            <Text classname="text-xs text-gray-500 dark:text-gray-400">Disciplinas</Text>
-            <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">{gradesData.length}</Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">cursadas</Text>
+        {/* Circular ring chart - average */}
+        <View style={styles.ringContainer}>
+          <View style={styles.ringOuter}>
+            <View style={styles.ringInner}>
+              <Text style={styles.ringLabel}>Média Geral</Text>
+              <Text style={styles.ringValue}>15.8</Text>
+              <Text style={styles.ringSubLabel}>/ 20</Text>
+            </View>
           </View>
         </View>
 
-        {gradesData.map((grade) => (
-          <View
-            key={grade.id}
-            className="bg-gray-50 dark:bg-slate-800 p-4 rounded-lg mb-3 border border-gray-200 dark:border-slate-700"
-          >
-            <View className="flex-row justify-between items-center mb-2">
-              <Text className="font-bold text-gray-900 dark:text-gray-100">
-                {grade.subject}
-              </Text>
-              <Text className="text-sm text-gray-600 dark:text-gray-400">
-                {grade.grade}/{grade.maxGrade}
-              </Text>
+        {/* Notas do Semestre */}
+        <Text style={styles.sectionTitle}>Notas do Semestre</Text>
+        <View style={styles.subjectRow}>
+          {subjectGrades.map((s) => (
+            <View key={s.name} style={styles.subjectCard}>
+              <Text style={styles.subjectName}>{s.name}</Text>
+              <Text style={[styles.subjectGrade, { color: s.color }]}>{s.grade}</Text>
+              <View style={styles.progressTrack}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: `${s.percent * 100}%` as any, backgroundColor: s.color },
+                  ]}
+                />
+              </View>
+              <Text style={styles.subjectPercent}>{Math.round(s.percent * 100)}%</Text>
             </View>
-            <Text className="text-xs text-gray-600 dark:text-gray-400">
-              {grade.type} • {grade.date}
-            </Text>
+          ))}
+        </View>
+
+        {/* Outros Dados */}
+        <Text style={styles.sectionTitle}>Outros Dados</Text>
+        <View style={styles.otherDataRow}>
+          {/* Faltas */}
+          <View style={styles.otherCard}>
+            <Text style={styles.warningIcon}>⚠️</Text>
+            <Text style={styles.otherCardTitle}>Faltas</Text>
+            <Text style={[styles.otherCardValue, { color: YELLOW }]}>3</Text>
           </View>
-        ))}
+          {/* Progresso do Semestre */}
+          <View style={[styles.otherCard, { flex: 1.5 }]}>
+            <Text style={styles.otherCardTitle}>Progresso do Semestre</Text>
+            <View style={styles.progressTrackWide}>
+              <View style={[styles.progressFill, { width: '85%', backgroundColor: TEAL }]} />
+            </View>
+            <Text style={[styles.otherCardValue, { color: TEAL }]}>85% Completo</Text>
+          </View>
+        </View>
+
+        {/* Créditos Concluídos */}
+        <View style={styles.creditsCard}>
+          <View style={styles.creditsHeader}>
+            <Text style={styles.creditsTitle}>Créditos Concluídos</Text>
+            <Text style={styles.creditsValue}>45 / 60</Text>
+          </View>
+          <View style={styles.progressTrackFull}>
+            <View style={[styles.progressFill, { width: '75%', backgroundColor: TEAL }]} />
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: TEAL,
+  },
+  header: {
+    backgroundColor: TEAL,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+  },
+  logoBox: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: TEAL,
+  },
+  headerScreenTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#fff',
+    flexShrink: 1,
+  },
+  avatarSmall: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
+  avatarSmallText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: TEAL,
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: BG,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    paddingBottom: 40,
+  },
+  ringContainer: {
+    alignItems: 'center',
+    marginBottom: 28,
+  },
+  ringOuter: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    borderWidth: 10,
+    borderColor: GREEN,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    shadowColor: GREEN,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  ringInner: {
+    alignItems: 'center',
+  },
+  ringLabel: {
+    fontSize: 11,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  ringValue: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#1F2937',
+    lineHeight: 36,
+  },
+  ringSubLabel: {
+    fontSize: 12,
+    color: '#9CA3AF',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginBottom: 12,
+  },
+  subjectRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 24,
+  },
+  subjectCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  subjectName: {
+    fontSize: 11,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginBottom: 6,
+  },
+  subjectGrade: {
+    fontSize: 22,
+    fontWeight: '800',
+    marginBottom: 8,
+  },
+  progressTrack: {
+    width: '100%',
+    height: 6,
+    backgroundColor: '#E5E7EB',
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginBottom: 4,
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 3,
+  },
+  subjectPercent: {
+    fontSize: 10,
+    color: '#9CA3AF',
+    marginTop: 2,
+  },
+  otherDataRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  otherCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  warningIcon: {
+    fontSize: 22,
+    marginBottom: 4,
+  },
+  otherCardTitle: {
+    fontSize: 12,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  otherCardValue: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  progressTrackWide: {
+    width: '100%',
+    height: 8,
+    backgroundColor: '#E5E7EB',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginBottom: 6,
+  },
+  creditsCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  creditsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  creditsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  creditsValue: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: TEAL,
+  },
+  progressTrackFull: {
+    width: '100%',
+    height: 10,
+    backgroundColor: '#E5E7EB',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+});
 
 export default GradesScreen;

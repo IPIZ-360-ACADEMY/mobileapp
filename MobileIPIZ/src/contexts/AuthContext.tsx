@@ -1,95 +1,165 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import { User, UserRole, AuthState } from '../types/user.types';
-interface AuthContextType extends AuthState {
+
+// Re-export for convenience
+export { UserRole } from '../types/user.types';
+
+// -------------------------------------------------------------------
+// Context value shape
+// -------------------------------------------------------------------
+interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// -------------------------------------------------------------------
+// Reducer
+// -------------------------------------------------------------------
+type AuthAction =
+  | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'LOGIN_SUCCESS'; payload: { user: User; token: string } }
+  | { type: 'LOGOUT' };
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const initialState: AuthState = {
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  isLoading: false,
+};
 
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    isLoading: false,
-  });
+function authReducer(state: AuthState, action: AuthAction): AuthState {
+  switch (action.type) {
+    case 'SET_LOADING':
+      return { ...state, isLoading: action.payload };
 
-  const login = async (email: string, password: string) => {
-    void password;
-    setAuthState(prev => ({ ...prev, isLoading: true }));
-    
-    try {
-      const mockUser: User = {
-        id: '1',
-        name: 'Usuario Teste',
-        email,
-        role: UserRole.STUDENT,
-        createdAt: new Date().toISOString(),
-      };
-
-      setAuthState({
-        user: mockUser,
-        token: 'mock-token',
+    case 'LOGIN_SUCCESS':
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
         isAuthenticated: true,
         isLoading: false,
-      });
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, isLoading: false }));
-      throw error;
-    }
-  };
+      };
 
-  const logout = () => {
-    setAuthState({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
+    case 'LOGOUT':
+      return { ...initialState };
+
+    default:
+      return state;
+  }
+}
+
+// -------------------------------------------------------------------
+// Helpers
+// -------------------------------------------------------------------
+function resolveRole(email: string): UserRole {
+  const lower = email.toLowerCase();
+  if (lower.includes('professor')) return UserRole.TEACHER;
+  if (lower.includes('admin')) return UserRole.ADMIN;
+  if (lower.includes('alumni')) return UserRole.ALUMNI;
+  if (lower.includes('empresa')) return UserRole.COMPANY;
+  return UserRole.STUDENT;
+}
+
+function nameFromEmail(email: string): string {
+  const prefix = email.split('@')[0] ?? email;
+  return prefix
+    .replace(/[._-]/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 11);
+}
+
+function generateToken(): string {
+  return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+}
+
+// -------------------------------------------------------------------
+// Context
+// -------------------------------------------------------------------
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+// -------------------------------------------------------------------
+// Provider
+// -------------------------------------------------------------------
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
+  const login = useCallback(async (email: string, _password: string): Promise<void> => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+
+    // Mock async delay
+    await new Promise<void>((resolve) => setTimeout(resolve, 500));
+
+    const role = resolveRole(email);
+    const user: User = {
+      id: generateId(),
+      name: nameFromEmail(email),
+      email,
+      role,
+      createdAt: new Date().toISOString(),
+    };
+
+    dispatch({
+      type: 'LOGIN_SUCCESS',
+      payload: { user, token: generateToken() },
     });
-  };
+  }, []);
 
-  const register = async (name: string, email: string, password: string, role: UserRole) => {
-    void password;
-    setAuthState(prev => ({ ...prev, isLoading: true }));
-    //Trying block to make verification on this metod process
-    try {
-      const mockUser: User = {
-        id: '1',
+  const logout = useCallback((): void => {
+    dispatch({ type: 'LOGOUT' });
+  }, []);
+
+  const register = useCallback(
+    async (name: string, email: string, _password: string): Promise<void> => {
+      dispatch({ type: 'SET_LOADING', payload: true });
+
+      // Mock async delay
+      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+
+      const role = resolveRole(email);
+      const user: User = {
+        id: generateId(),
         name,
         email,
         role,
         createdAt: new Date().toISOString(),
       };
-      //Its it the setup for atentication state
-      setAuthState({
-        user: mockUser,
-        token: 'mock-token',
-        isAuthenticated: true,
-        isLoading: false,
+
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload: { user, token: generateToken() },
       });
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, isLoading: false }));
-      throw error;
-    }
+    },
+    [],
+  );
+
+  const value: AuthContextValue = {
+    ...state,
+    login,
+    logout,
+    register,
   };
 
-  return (
-     //Returning the function that are being used in this section app page on auth context page
-    <AuthContext.Provider value={{ ...authState, login, logout, register }}>
-      {children}
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
-    </AuthContext.Provider>
-  );
-};
-
-
-export const useAuth = () => {
+// -------------------------------------------------------------------
+// Hook
+// -------------------------------------------------------------------
+export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}
+
+export default AuthContext;

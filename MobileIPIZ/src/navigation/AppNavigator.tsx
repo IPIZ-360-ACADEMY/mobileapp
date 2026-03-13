@@ -2,9 +2,8 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-// Import screens
 import { SplashScreen } from '../screens/SplashScreen';
 import { LoginScreen } from '../features/auth/LoginScreen';
 import { StudentDashboard } from '../features/student/StudentDashboard';
@@ -24,9 +23,7 @@ import { AcademicScheduleScreen } from '../features/student/AcademicScheduleScre
 import { AnnouncementsScreen } from '../features/student/AnnouncementsScreen';
 import { GradesScreen } from '../features/student/GradesScreen';
 import { SettingsScreen } from '../features/student/SettingsScreen';
-
-// Import headers
-// Removed unused headers
+import { useAuth } from '../contexts/AuthContext';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -35,13 +32,20 @@ export type RootStackParamList = {
 };
 
 export type MainTabParamList = {
+  Home: undefined;
+  Cursos: undefined;
+  Rede: undefined;
+  Perfil: undefined;
+};
+
+export type HomeStackParamList = {
   StudentDashboard: undefined;
   TeacherDashboard: undefined;
   AdminDashboard: undefined;
-  Feed: undefined;
-  Jobs: undefined;
-  Alumni: undefined;
-  Profile: undefined;
+  AlumniDashboard: undefined;
+  AcademicSchedule: undefined;
+  Announcements: undefined;
+  Grades: undefined;
   Settings: undefined;
 };
 
@@ -59,44 +63,61 @@ export type AlumniStackParamList = {
   Mentorship: { alumniId: string };
 };
 
-export type StudentStackParamList = {
-  StudentDashboard: undefined;
-  AcademicSchedule: undefined;
-  Announcements: undefined;
-  Grades: undefined;
-  Settings: undefined;
-};
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 const JobsStack = createNativeStackNavigator<JobsStackParamList>();
 const AlumniStack = createNativeStackNavigator<AlumniStackParamList>();
-const StudentStack = createNativeStackNavigator<StudentStackParamList>();
 
-/**
- * Jobs Stack Navigator
- */
+const TabIcon = ({ name, focused }: { name: string; focused: boolean }) => {
+  const icons: Record<string, string> = {
+    Feed: '🏠',
+    Cursos: '📚',
+    Rede: '🔗',
+    Perfil: '👤',
+  };
+  return (
+    <View style={styles.tabIconContainer}>
+      <Text style={[styles.tabIconText, focused && styles.tabIconActive]}>
+        {icons[name] || '●'}
+      </Text>
+    </View>
+  );
+};
+
+const HomeStackNavigator = () => {
+  const { user } = useAuth();
+  const role = user?.role;
+
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      {role === 'teacher' ? (
+        <HomeStack.Screen name="TeacherDashboard" component={TeacherDashboard} />
+      ) : role === 'admin' ? (
+        <HomeStack.Screen name="AdminDashboard" component={AdminDashboard} />
+      ) : role === 'alumni' ? (
+        <HomeStack.Screen name="AlumniDashboard" component={AlumniDashboard} />
+      ) : (
+        <HomeStack.Screen name="StudentDashboard" component={StudentDashboard} />
+      )}
+      <HomeStack.Screen name="AcademicSchedule" component={AcademicScheduleScreen} />
+      <HomeStack.Screen name="Announcements" component={AnnouncementsScreen} />
+      <HomeStack.Screen name="Grades" component={GradesScreen} />
+      <HomeStack.Screen name="Settings" component={SettingsScreen} />
+    </HomeStack.Navigator>
+  );
+};
+
 const JobsStackNavigator = () => (
-  <JobsStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
+  <JobsStack.Navigator screenOptions={{ headerShown: false }}>
     <JobsStack.Screen name="JobList" component={JobListScreen} />
     <JobsStack.Screen name="JobDetail" component={JobDetailScreen} />
     <JobsStack.Screen name="PostJob" component={PostJobScreen} />
   </JobsStack.Navigator>
 );
 
-/**
- * Alumni Stack Navigator
- */
 const AlumniStackNavigator = () => (
-  <AlumniStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
+  <AlumniStack.Navigator screenOptions={{ headerShown: false }}>
     <AlumniStack.Screen name="AlumniDashboard" component={AlumniDashboard} />
     <AlumniStack.Screen name="AlumniProfile" component={AlumniProfileScreen} />
     <AlumniStack.Screen name="Certificate" component={CertificateScreen} />
@@ -105,103 +126,42 @@ const AlumniStackNavigator = () => (
   </AlumniStack.Navigator>
 );
 
-/**
- * Student Stack Navigator
- */
-const StudentStackNavigator = () => (
-  <StudentStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <StudentStack.Screen name="StudentDashboard" component={StudentDashboard} />
-    <StudentStack.Screen name="AcademicSchedule" component={AcademicScheduleScreen} />
-    <StudentStack.Screen name="Announcements" component={AnnouncementsScreen} />
-    <StudentStack.Screen name="Grades" component={GradesScreen} />
-    <StudentStack.Screen name="Settings" component={SettingsScreen} />
-  </StudentStack.Navigator>
-);
-
-/**
- * Main Tab Navigator
- */
 const MainTabNavigator = () => {
-  // Use simple fallback colors instead of theme
-  const tabBarBg = '#f8fafc';
-  const tabBarBorder = '#e2e8f0';
-  const activeColor = '#0ea5e9';
-  const inactiveColor = '#475569';
-
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
-      screenOptions={{
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: tabBarBg,
-          borderTopColor: tabBarBorder,
-          borderTopWidth: 1,
-          height: 60,
-          paddingBottom: 5,
-          paddingTop: 5,
-        },
-        tabBarActiveTintColor: activeColor,
-        tabBarInactiveTintColor: inactiveColor,
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
-        },
-      }}
+        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: '#0D9488',
+        tabBarInactiveTintColor: '#64748B',
+        tabBarLabelStyle: styles.tabLabel,
+        tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
+      })}
     >
-      <Tab.Screen
-        name="StudentDashboard"
-        component={StudentStackNavigator}
-        options={{
-          title: 'Home',
-          tabBarIcon: () => <Text style={{ fontSize: 20 }}>🏠</Text>,
-        }}
-      />
-      <Tab.Screen
-        name="Jobs"
-        component={JobsStackNavigator}
-        options={{
-          title: 'Academic',
-          tabBarIcon: () => <Text style={{ fontSize: 20 }}>🎓</Text>,
-        }}
-      />
-      <Tab.Screen
-        name="Feed"
-        component={FeedScreen}
-        options={{
-          title: 'Notifications',
-          tabBarIcon: () => '🔔',
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          title: 'Profile',
-          tabBarIcon: () => '👤',
-        }}
-      />
+      <Tab.Screen name="Home" component={HomeStackNavigator} options={{ title: 'Feed' }} />
+      <Tab.Screen name="Cursos" component={JobsStackNavigator} options={{ title: 'Cursos' }} />
+      <Tab.Screen name="Rede" component={AlumniStackNavigator} options={{ title: 'Rede' }} />
+      <Tab.Screen name="Perfil" component={ProfileScreen} options={{ title: 'Perfil' }} />
     </Tab.Navigator>
   );
 };
 
-/**
- * Root Stack Navigator
- */
-const RootStackNavigator = () => {
-  // Use React Navigation default theme instead of custom theme
+const AppNavigator = () => {
+  const ipizTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: '#F8FAFC',
+      card: '#FFFFFF',
+      text: '#0F172A',
+      border: '#E2E8F0',
+    },
+  };
+
   return (
-    <NavigationContainer theme={DefaultTheme}>
-      <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
+    <NavigationContainer theme={ipizTheme}>
+      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="MainTab" component={MainTabNavigator} />
@@ -210,4 +170,36 @@ const RootStackNavigator = () => {
   );
 };
 
-export default RootStackNavigator;
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: '#FFFFFF',
+    borderTopColor: '#E2E8F0',
+    borderTopWidth: 1,
+    height: 64,
+    paddingBottom: 8,
+    paddingTop: 8,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+  },
+  tabLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    marginTop: 2,
+  },
+  tabIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabIconText: {
+    fontSize: 20,
+    opacity: 0.5,
+  },
+  tabIconActive: {
+    opacity: 1,
+  },
+});
+
+export default AppNavigator;

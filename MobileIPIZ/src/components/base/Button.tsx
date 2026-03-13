@@ -1,6 +1,7 @@
 /**
- * IPIZ Mobile App - Base Button Component
- * Professional button component with Tailwind CSS
+ * IPIZ Mobile App - Professional Button Component
+ * Modern button with multiple variants, sizes, and states
+ * Tailwind CSS + NativeWind
  */
 
 import React from 'react';
@@ -8,17 +9,20 @@ import {
   Pressable,
   type PressableProps,
   ActivityIndicator,
+  View,
+  Text as RNText,
 } from 'react-native';
 
 type ButtonVariant =
   | 'primary'
   | 'secondary'
+  | 'tertiary'
   | 'outline'
   | 'ghost'
   | 'success'
   | 'warning'
   | 'error'
-  | 'gradient';
+  | 'accent';
 
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -35,6 +39,13 @@ interface ButtonProps extends PressableProps {
   className?: string;
 }
 
+/**
+ * Professional Button Component
+ * @example
+ * <Button variant="primary" size="lg" fullWidth>
+ *   Entrar
+ * </Button>
+ */
 export const Button = React.forwardRef<typeof Pressable, ButtonProps>(
   (
     {
@@ -55,65 +66,65 @@ export const Button = React.forwardRef<typeof Pressable, ButtonProps>(
   ) => {
     // Size classes mapping
     const getSizeClasses = (): string => {
-      switch (size) {
-        case 'xs':
-          return 'px-2 py-1 text-xs';
-        case 'sm':
-          return 'px-3 py-2 text-sm';
-        case 'md':
-          return 'px-4 py-3 text-base';
-        case 'lg':
-          return 'px-6 py-4 text-lg';
-        case 'xl':
-          return 'px-8 py-5 text-xl';
-        default:
-          return 'px-4 py-3 text-base';
-      }
+      const sizeMap: Record<ButtonSize, string> = {
+        xs: 'px-2 py-1 text-xs',
+        sm: 'px-3 py-2 text-sm',
+        md: 'px-4 py-3 text-base',
+        lg: 'px-6 py-4 text-lg',
+        xl: 'px-8 py-5 text-xl',
+      };
+      return sizeMap[size] || sizeMap.md;
     };
 
-    // Variant classes mapping
+    // Modern variant styling based on design system
     const getVariantClasses = (): string => {
-      const baseClasses = 'font-semibold transition-colors duration-200';
+      const baseClasses = 'font-semibold rounded-lg transition-all duration-200';
 
-      switch (variant) {
-        case 'primary':
-          return `${baseClasses} bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 border border-primary-500`;
-        case 'secondary':
-          return `${baseClasses} bg-secondary-500 text-white hover:bg-secondary-600 active:bg-secondary-700 border border-secondary-500`;
-        case 'outline':
-          return `${baseClasses} bg-transparent text-primary-500 border-2 border-primary-500 hover:bg-primary-50 active:bg-primary-100`;
-        case 'ghost':
-          return `${baseClasses} bg-transparent text-primary-500 hover:bg-primary-50 active:bg-primary-100 border border-transparent`;
-        case 'success':
-          return `${baseClasses} bg-success-500 text-white hover:bg-success-600 active:bg-success-700 border border-success-500`;
-        case 'warning':
-          return `${baseClasses} bg-warning-500 text-white hover:bg-warning-600 active:bg-warning-700 border border-warning-500`;
-        case 'error':
-          return `${baseClasses} bg-error-500 text-white hover:bg-error-600 active:bg-error-700 border border-error-500`;
-        case 'gradient':
-          return `${baseClasses} bg-gradient-to-r from-primary-500 to-accent-500 text-white hover:from-primary-600 hover:to-accent-600 border border-primary-500`;
-        default:
-          return `${baseClasses} bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 border border-primary-500`;
-      }
+      const variantMap: Record<ButtonVariant, string> = {
+        // Primary Solid (Blue → Teal gradient)
+        primary:
+          'bg-sky-600 active:bg-sky-700 text-white shadow-md active:shadow-sm',
+        // Secondary Solid (Teal)
+        secondary:
+          'bg-teal-600 active:bg-teal-700 text-white shadow-md active:shadow-sm',
+        // Tertiary with subtle background
+        tertiary:
+          'bg-sky-50 active:bg-sky-100 text-sky-700 border border-sky-200',
+        // Outline variant
+        outline:
+          'bg-transparent text-sky-600 border-2 border-sky-200 active:bg-sky-50',
+        // Ghost (no background)
+        ghost:
+          'bg-transparent text-sky-600 active:bg-sky-50 border border-transparent',
+        // Semantic success
+        success:
+          'bg-emerald-600 active:bg-emerald-700 text-white shadow-md active:shadow-sm',
+        // Semantic warning
+        warning:
+          'bg-amber-600 active:bg-amber-700 text-white shadow-md active:shadow-sm',
+        // Semantic error
+        error:
+          'bg-red-600 active:bg-red-700 text-white shadow-md active:shadow-sm',
+        // Accent (Orange for CTAs)
+        accent:
+          'bg-orange-600 active:bg-orange-700 text-white shadow-md active:shadow-sm',
+      };
+
+      return `${baseClasses} ${variantMap[variant] || variantMap.primary}`;
     };
 
     // State classes mapping
     const getStateClasses = (): string => {
       if (disabled || isLoading) {
-        return 'opacity-50 cursor-not-allowed';
+        return 'opacity-60';
       }
-      return 'active:scale-95';
+      return '';
     };
 
     // Layout classes
     const getLayoutClasses = (): string => {
-      const baseLayout = 'flex-row items-center justify-center gap-2';
-
-      if (fullWidth) {
-        return `${baseLayout} w-full`;
-      }
-
-      return baseLayout;
+      const base = 'flex flex-row items-center justify-center gap-2';
+      return fullWidth ? `${base} w-full` : base;
     };
 
     // Border radius classes
@@ -128,7 +139,6 @@ export const Button = React.forwardRef<typeof Pressable, ButtonProps>(
       getStateClasses(),
       getLayoutClasses(),
       getBorderRadiusClasses(),
-      'shadow-sm active:shadow-md',
       className,
     ].filter(Boolean).join(' ');
 
@@ -140,22 +150,28 @@ export const Button = React.forwardRef<typeof Pressable, ButtonProps>(
         style={style}
         {...props}
       >
-        {isLoading && (
-          <ActivityIndicator
-            size="small"
-            color={variant === 'outline' || variant === 'ghost' ? '#0ea5e9' : 'white'}
-          />
-        )}
+        <View className="flex-row items-center justify-center gap-2">
+          {isLoading && (
+            <ActivityIndicator
+              size="small"
+              color={
+                variant === 'outline' || variant === 'ghost' || variant === 'tertiary'
+                  ? '#0369A1'
+                  : '#FFFFFF'
+              }
+            />
+          )}
 
-        {!isLoading && icon && iconPosition === 'left' && icon}
+          {!isLoading && icon && iconPosition === 'left' && icon}
 
-        {!isLoading && (
-          <Pressable className="text-center font-semibold">
-            {children}
-          </Pressable>
-        )}
+          {!isLoading && typeof children === 'string' ? (
+            <RNText className="font-semibold">{children}</RNText>
+          ) : (
+            !isLoading && children
+          )}
 
-        {!isLoading && icon && iconPosition === 'right' && icon}
+          {!isLoading && icon && iconPosition === 'right' && icon}
+        </View>
       </Pressable>
     );
   },

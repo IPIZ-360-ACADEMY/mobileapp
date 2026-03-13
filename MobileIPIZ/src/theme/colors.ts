@@ -1,102 +1,130 @@
-// IPIZ Mobile App Theme
-// Design System based on modern minimalistic UI
-
-// IPIZ Mobile App Theme
-// Design System based on modern minimalistic UI
+/**
+ * IPIZ Mobile App - Design System Colors
+ * Professional color palette inspired by the design mockups
+ * Gradient: Dark Blue → Teal/Turquoise
+ */
 
 export const colors = {
-  // Light Background
-  light: '#E9E5E8',
-  
-  // Dark Background
-  dark: '#464444',
-  
-  // Primary Accent
-  primary: '#F8F692',
-  
-  // Primary Shades (for components that need specific shades)
-  primaryShades: {
-    50: '#FDFDE7',
-    100: '#FBFBC3',
-    200: '#F8F992',
-    300: '#F6F662',
-    400: '#F4F43D',
-    500: '#F2F223',
-    600: '#D4D41E',
-    700: '#B8B71A',
-    800: '#9B9916',
-    900: '#7E7C12',
+  // Primary Palette (Blue → Teal Gradient)
+  primary: {
+    50: '#F0F8FF',
+    100: '#E0F2FE',
+    200: '#BAE6FE',
+    300: '#7DD3FC',
+    400: '#38BDF8',
+    500: '#0EA5E9',
+    600: '#0284C7',
+    700: '#0369A1',
+    800: '#075985',
+    900: '#0C2D6B',
   },
-  
-  // Navigation Colors
+
+  // Teal/Accent Palette
+  teal: {
+    50: '#F0FDFA',
+    100: '#CCFBF1',
+    200: '#99F6E4',
+    300: '#5EE7DF',
+    400: '#2DD4BF',
+    500: '#14B8A6',
+    600: '#0D9488',
+    700: '#0F766E',
+    800: '#134E4A',
+    900: '#0F2F2E',
+  },
+
+  // Secondary (Gradient endpoint - darker teal)
+  secondary: '#0D7377',
+
+  // Accent (Orange for CTAs)
+  accent: {
+    50: '#FFF7ED',
+    100: '#FFEDD5',
+    200: '#FED7AA',
+    300: '#FDBA74',
+    400: '#FB923C',
+    500: '#F97316',
+    600: '#EA580C',
+    700: '#C2410C',
+    800: '#9A3412',
+    900: '#7C2D12',
+  },
+
+  // Navigation
   nav: {
-    active: '#F8F692',
-    inactive: '#B0B0B0',
-    background: '#464444',
+    active: '#14B8A6',
+    inactive: '#94A3B8',
+    background: '#1E3A8A',
   },
-  
-  // Neutral palette
+
+  // Neutral Palette (Grey scale)
   neutral: {
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#EEEEEE',
-    300: '#E0E0E0',
-    400: '#BDBDBD',
-    500: '#9E9E9E',
-    600: '#757575',
-    700: '#616161',
-    800: '#424242',
-    900: '#212121',
+    50: '#F8FAFC',
+    100: '#F1F5F9',
+    200: '#E2E8F0',
+    300: '#CBD5E1',
+    400: '#94A3B8',
+    500: '#64748B',
+    600: '#475569',
+    700: '#334155',
+    800: '#1E293B',
+    900: '#0F172A',
   },
-  
+
   // Semantic colors
   success: {
-    light: '#81C784',
-    main: '#4CAF50',
-    dark: '#2E7D32',
+    light: '#86EFAC',
+    main: '#22C55E',
+    dark: '#15803D',
   },
   warning: {
-    light: '#FFD54F',
-    main: '#FFC107',
-    dark: '#F57C00',
+    light: '#FCD34D',
+    main: '#EAB308',
+    dark: '#CA8A04',
   },
   error: {
-    light: '#EF9A9A',
-    main: '#F44336',
-    dark: '#C62828',
+    light: '#FCA5A5',
+    main: '#EF4444',
+    dark: '#DC2626',
   },
   info: {
-    light: '#64B5F6',
-    main: '#2196F3',
-    dark: '#1565C0',
+    light: '#93C5FD',
+    main: '#3B82F6',
+    dark: '#1D4ED8',
   },
-  
+
   // Background colors
   background: {
-    default: '#E9E5E8',
+    default: '#F8FAFC',
     paper: '#FFFFFF',
-    dark: '#464444',
+    light: '#F1F5F9',
     card: '#FFFFFF',
-    overlay: 'rgba(70, 68, 68, 0.5)',
+    overlay: 'rgba(15, 23, 42, 0.5)',
   },
-  
+
   // Text colors
   text: {
-    primary: '#212121',
-    secondary: '#616161',
-    disabled: '#BDBDBD',
-    hint: '#9E9E9E',
+    primary: '#0F172A',
+    secondary: '#475569',
+    disabled: '#CBD5E1',
+    hint: '#94A3B8',
     inverse: '#FFFFFF',
-    muted: '#757575',
+    muted: '#64748B',
   },
-  
+
   // Border colors
   border: {
-    light: '#E0E0E0',
-    medium: '#BDBDBD',
-    dark: '#424242',
+    light: '#E2E8F0',
+    medium: '#CBD5E1',
+    dark: '#475569',
   },
-  
+
+  // Gradient definitions
+  gradient: {
+    primary: ['#1E3A8A', '#0D7377'],
+    light: ['#0EA5E9', '#14B8A6'],
+  },
+
   // Shadow
   shadow: {
     light: 'rgba(0, 0, 0, 0.05)',

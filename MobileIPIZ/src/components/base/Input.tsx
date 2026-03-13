@@ -1,169 +1,159 @@
-import React, { useState } from 'react';
-import { TextInput, Pressable } from 'react-native';
-import { useTheme } from '@hooks/useTheme';
-import { Box } from './Box';
-import { Text } from './Text';
+/**
+ * IPIZ Mobile App - Professional Input Component
+ * Modern text input with validation states and icons
+ * Alinhado com o design system (Blue/Teal)
+ */
 
-interface InputProps {
-  placeholder?: string;
-  value?: string;
-  onChangeText?: (text: string) => void;
-  secureTextEntry?: boolean;
+import React, { useState } from 'react';
+import {
+  TextInput as RNTextInput,
+  View,
+  Text as RNText,
+  TouchableOpacity,
+  type TextInputProps,
+} from 'react-native';
+
+interface InputProps extends TextInputProps {
   label?: string;
-  error?: string;
-  leftIcon?: React.ReactNode;
+  placeholder?: string;
+  icon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  onRightIconPress?: () => void;
-  maxLength?: number;
-  multiline?: boolean;
-  numberOfLines?: number;
-  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
-  disabled?: boolean;
-  fullWidth?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  helperText?: string;
+  required?: boolean;
+  variant?: 'default' | 'outlined' | 'filled';
   size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'filled' | 'outlined';
+  disabled?: boolean;
+  className?: string;
+  containerClassName?: string;
+  onRightIconPress?: () => void;
 }
 
 /**
- * Input Component - Campo de entrada profissional com Tailwind CSS
- * Suporta validação, ícones, estados e múltiplas variantes
+ * Input Component
+ * Professional text input with validation and icons
+ * @example
+ * <Input
+ *   label="Email"
+ *   placeholder="seu@email.com"
+ *   icon={<EmailIcon />}
+ *   required
+ * />
  */
-export const Input = React.forwardRef<TextInput, InputProps>(
+export const Input = React.forwardRef<RNTextInput, InputProps>(
   (
     {
-      placeholder = 'Digite aqui...',
-      value,
-      onChangeText,
-      secureTextEntry = false,
       label,
-      error,
-      leftIcon,
+      placeholder,
+      icon,
       rightIcon,
-      onRightIconPress,
-      maxLength,
-      multiline = false,
-      numberOfLines = 1,
-      keyboardType = 'default',
-      disabled = false,
-      fullWidth = true,
+      error = false,
+      errorMessage,
+      helperText,
+      required = false,
+      variant = 'outlined',
       size = 'md',
-      variant = 'default',
+      disabled = false,
+      className = '',
+      containerClassName = '',
+      onRightIconPress,
+      ...props
     },
     ref,
   ) => {
-    const { isDark } = useTheme();
     const [isFocused, setIsFocused] = useState(false);
 
-    // Classes base para todos os tamanhos
-    const baseClasses = `
-      flex-row items-center border rounded-xl
-      ${fullWidth ? 'w-full' : 'w-auto'}
-      ${disabled ? 'opacity-60' : ''}
-      ${multiline ? 'items-start' : 'items-center'}
-    `;
-
-    // Classes de variante
-    const variantClasses = {
-      default: `
-        bg-white dark:bg-gray-900
-        border-gray-300 dark:border-gray-600
-        ${isFocused ? 'border-blue-500 dark:border-blue-400' : ''}
-        ${error ? 'border-red-500 dark:border-red-400' : ''}
-      `,
-      filled: `
-        bg-gray-100 dark:bg-gray-800
-        border-transparent
-        ${isFocused ? 'bg-gray-200 dark:bg-gray-700 border-blue-500 dark:border-blue-400' : ''}
-        ${error ? 'bg-red-50 dark:bg-red-900/20 border-red-500 dark:border-red-400' : ''}
-      `,
-      outlined: `
-        bg-transparent
-        border-gray-300 dark:border-gray-600
-        ${isFocused ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-500/20' : ''}
-        ${error ? 'border-red-500 dark:border-red-400 ring-2 ring-red-500/20' : ''}
-      `,
+    // Size classes
+    const getSizeClasses = (): string => {
+      switch (size) {
+        case 'sm':
+          return 'px-3 h-9';
+        case 'lg':
+          return 'px-5 h-14';
+        case 'md':
+        default:
+          return 'px-4 h-12';
+      }
     };
 
-    // Classes de tamanho
-    const sizeClasses = {
-      sm: `
-        h-10 px-3 py-2
-        ${multiline ? 'min-h-10 py-2' : ''}
-      `,
-      md: `
-        h-12 px-4 py-3
-        ${multiline ? 'min-h-12 py-3' : ''}
-      `,
-      lg: `
-        h-14 px-5 py-4
-        ${multiline ? 'min-h-14 py-4' : ''}
-      `,
+    // Variant classes
+    const getVariantClasses = (): string => {
+      const base = 'rounded-lg transition-all duration-200 flex-row items-center';
+      
+      if (error) {
+        return `${base} bg-white border-2 border-red-500`;
+      }
+
+      switch (variant) {
+        case 'filled':
+          return `${base} bg-slate-100 border-0 ${
+            isFocused ? 'bg-slate-50 border-b-2 border-sky-600' : ''
+          }`;
+        case 'outlined':
+          return `${base} bg-white border border-slate-200 ${
+            isFocused ? 'border-2 border-sky-600 shadow-sm' : ''
+          }`;
+        case 'default':
+        default:
+          return `${base} bg-white border border-slate-200 ${
+            isFocused ? 'border-sky-600 shadow-md' : ''
+          }`;
+      }
     };
 
-    // Classes do TextInput
-    const inputClasses = `
-      flex-1 text-gray-900 dark:text-white
-      ${size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-lg' : 'text-base'}
-      ${multiline ? 'text-left' : 'text-left'}
-    `;
-
-    // Classes do placeholder
-    const placeholderClasses = 'text-gray-500 dark:text-gray-400';
+    const disabledClass = disabled ? 'opacity-50' : '';
 
     return (
-      <Box className={`${fullWidth ? 'w-full' : 'w-auto'}`}>
+      <View className={`gap-2 ${containerClassName}`}>
         {label && (
-          <Text
-            variant="bodySmall"
-            weight="600"
-            className={`mb-2 ${error ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300'}`}
-          >
+          <RNText className="text-sm font-semibold text-slate-700">
             {label}
-          </Text>
+            {required && <RNText className="text-red-500"> *</RNText>}
+          </RNText>
         )}
 
-        <Box className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} gap-2`}>
-          {leftIcon && <Box>{leftIcon}</Box>}
+        <View className={`${getSizeClasses()} ${getVariantClasses()} ${disabledClass} gap-3`}>
+          {icon && (
+            <View className="justify-center items-center">
+              {icon}
+            </View>
+          )}
 
-          <TextInput
+          <RNTextInput
             ref={ref}
             placeholder={placeholder}
-            placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'}
-            value={value}
-            onChangeText={onChangeText}
-            secureTextEntry={secureTextEntry}
-            maxLength={maxLength}
-            multiline={multiline}
-            numberOfLines={numberOfLines}
-            keyboardType={keyboardType}
+            placeholderTextColor="#94A3B8"
             editable={!disabled}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            className={inputClasses}
-            style={{
-              fontFamily: 'System',
-              textAlignVertical: multiline ? 'top' : 'center',
-            }}
+            className={`flex-1 text-slate-900 font-medium ${className}`}
+            style={{ padding: 0 }}
+            {...props}
           />
 
           {rightIcon && (
-            <Pressable onPress={onRightIconPress} className="p-1">
-              <Box>{rightIcon}</Box>
-            </Pressable>
+            <TouchableOpacity activeOpacity={0.7} onPress={onRightIconPress}>
+              {rightIcon}
+            </TouchableOpacity>
           )}
-        </Box>
+        </View>
 
-        {error && (
-          <Text
-            variant="caption"
-            className="text-red-600 dark:text-red-400 mt-1"
-          >
-            {error}
-          </Text>
+        {error && errorMessage && (
+          <RNText className="text-xs text-red-500 font-medium">
+            {errorMessage}
+          </RNText>
         )}
-      </Box>
+
+        {!error && helperText && (
+          <RNText className="text-xs text-slate-500">
+            {helperText}
+          </RNText>
+        )}
+      </View>
     );
   },
 );
 
 Input.displayName = 'Input';
+

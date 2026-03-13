@@ -1,9 +1,9 @@
 export enum UserRole {
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
-  ADMIN = 'ADMIN',
-  COMPANY = 'COMPANY',
-  ALUMNI = 'ALUMNI',
+  STUDENT = 'student',
+  TEACHER = 'teacher',
+  ADMIN = 'admin',
+  ALUMNI = 'alumni',
+  COMPANY = 'company',
 }
 
 export enum AcademicLevel {
@@ -28,8 +28,8 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  avatar?: string;
   phone?: string;
+  avatar?: string;
   createdAt: string;
 }
 
