@@ -55,6 +55,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 // -------------------------------------------------------------------
 function resolveRole(email: string): UserRole {
   const lower = email.toLowerCase();
+  if (lower.includes('superroot') || lower.includes('root')) return UserRole.SUPER_ROOT;
   if (lower.includes('professor')) return UserRole.TEACHER;
   if (lower.includes('admin')) return UserRole.ADMIN;
   if (lower.includes('alumni')) return UserRole.ALUMNI;

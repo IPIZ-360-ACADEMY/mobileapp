@@ -28,12 +28,25 @@
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.d.ts"
+    "App.tsx",
+    "src/app/**/*.ts",
+    "src/app/**/*.tsx",
+    "src/core/**/*.ts",
+    "src/core/**/*.tsx",
+    "src/modules/**/*.ts",
+    "src/modules/**/*.tsx",
+    "src/types/nativewind.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/components",
+    "src/contexts",
+    "src/features",
+    "src/hooks",
+    "src/navigation",
+    "src/screens",
+    "src/theme",
+    "src/utils"
   ],
   "extends": "expo/tsconfig.base"
 }
