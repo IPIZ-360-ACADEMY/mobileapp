@@ -1,28 +1,32 @@
 import { Router } from 'express';
 import { CompanyController } from '../controllers/CompanyController';
+import { withAuthContext, requirePermission } from '../middlewares/authorize';
+import { Permission } from '../auth/rbac';
 
 const router = Router();
 const companyController = new CompanyController();
 
+router.use(withAuthContext);
+
 // POST /api/companies
-router.post('/', companyController.createCompany.bind(companyController));
+router.post('/', requirePermission(Permission.COMPANY_CREATE), companyController.createCompany.bind(companyController));
 
 // GET /api/companies
-router.get('/', companyController.getAllCompanies.bind(companyController));
+router.get('/', requirePermission(Permission.COMPANY_READ), companyController.getAllCompanies.bind(companyController));
 
 // GET /api/companies/search?q=query
-router.get('/search', companyController.searchCompanies.bind(companyController));
+router.get('/search', requirePermission(Permission.COMPANY_READ), companyController.searchCompanies.bind(companyController));
 
 // GET /api/companies/industry/:industry
-router.get('/industry/:industry', companyController.getCompaniesByIndustry.bind(companyController));
+router.get('/industry/:industry', requirePermission(Permission.COMPANY_READ), companyController.getCompaniesByIndustry.bind(companyController));
 
 // GET /api/companies/:id
-router.get('/:id', companyController.getCompany.bind(companyController));
+router.get('/:id', requirePermission(Permission.COMPANY_READ), companyController.getCompany.bind(companyController));
 
 // PUT /api/companies/:id
-router.put('/:id', companyController.updateCompany.bind(companyController));
+router.put('/:id', requirePermission(Permission.COMPANY_UPDATE), companyController.updateCompany.bind(companyController));
 
 // DELETE /api/companies/:id
-router.delete('/:id', companyController.deleteCompany.bind(companyController));
+router.delete('/:id', requirePermission(Permission.COMPANY_DELETE), companyController.deleteCompany.bind(companyController));
 
 export default router;

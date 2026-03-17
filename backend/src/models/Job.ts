@@ -32,6 +32,7 @@ export enum JobStatus {
 
 export interface CreateJobDTO {
   companyId: string;
+  companyName?: string;
   title: string;
   description: string;
   requirements: string[];
