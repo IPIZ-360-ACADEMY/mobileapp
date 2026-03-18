@@ -10,13 +10,8 @@ import { createSessionTokenPair, verifyRefreshToken } from '../auth/jwt';
 import { listPermissionsForRole } from '../auth/rbac';
 import { verifyPassword } from '../auth/password';
 import { config } from '../config/environment';
+import { dataStore, type RefreshSessionRecord } from '../storage/dataStore';
 import { userService } from './UserService';
-
-type RefreshSessionRecord = {
-  userId: string;
-  expiresAt: number;
-  revoked: boolean;
-};
 
 type AppError = Error & {
   statusCode?: number;
@@ -29,7 +24,55 @@ function createHttpError(statusCode: number, message: string): AppError {
 }
 
 export class AuthService {
-  private refreshSessions = new Map<string, RefreshSessionRecord>();
+  private getRefreshSession(tokenId: string): RefreshSessionRecord | undefined {
+    return dataStore
+      .getSnapshot()
+      .refreshSessions.find((session) => session.tokenId === tokenId);
+  }
+
+  private upsertRefreshSession(
+    tokenId: string,
+    userId: string,
+    expiresAt: number,
+    revoked: boolean,
+  ): void {
+    dataStore.update((state) => {
+      const index = state.refreshSessions.findIndex((session) => session.tokenId === tokenId);
+      const nextRecord: RefreshSessionRecord = {
+        tokenId,
+        userId,
+        expiresAt,
+        revoked,
+        updatedAt: new Date(),
+      };
+
+      if (index >= 0) {
+        state.refreshSessions[index] = nextRecord;
+      } else {
+        state.refreshSessions.push(nextRecord);
+      }
+
+      const now = Date.now();
+      state.refreshSessions = state.refreshSessions.filter(
+        (session) => !(session.revoked && session.expiresAt < now),
+      );
+    });
+  }
+
+  private revokeRefreshSession(tokenId: string): void {
+    dataStore.update((state) => {
+      const index = state.refreshSessions.findIndex((session) => session.tokenId === tokenId);
+      if (index === -1) {
+        return;
+      }
+
+      state.refreshSessions[index] = {
+        ...state.refreshSessions[index],
+        revoked: true,
+        updatedAt: new Date(),
+      };
+    });
+  }
 
   private buildIdentity(userId: string, email: string, role: SessionIdentity['role']): SessionIdentity {
     return {
@@ -47,11 +90,12 @@ export class AuthService {
       role: user.role,
     });
 
-    this.refreshSessions.set(session.tokenId, {
-      userId: user.id,
-      expiresAt: Date.now() + config.jwtRefreshTokenTtlSeconds * 1000,
-      revoked: false,
-    });
+    this.upsertRefreshSession(
+      session.tokenId,
+      user.id,
+      Date.now() + config.jwtRefreshTokenTtlSeconds * 1000,
+      false,
+    );
 
     return {
       accessToken: session.accessToken,
@@ -102,19 +146,17 @@ export class AuthService {
       throw createHttpError(401, 'Invalid refresh token');
     }
 
-    const sessionRecord = this.refreshSessions.get(payload.tokenId);
+    const sessionRecord = this.getRefreshSession(payload.tokenId);
     if (!sessionRecord || sessionRecord.revoked) {
       throw createHttpError(401, 'Refresh token is no longer valid');
     }
 
     if (sessionRecord.userId !== payload.sub || sessionRecord.expiresAt < Date.now()) {
-      sessionRecord.revoked = true;
-      this.refreshSessions.set(payload.tokenId, sessionRecord);
+      this.revokeRefreshSession(payload.tokenId);
       throw createHttpError(401, 'Refresh token has expired');
     }
 
-    sessionRecord.revoked = true;
-    this.refreshSessions.set(payload.tokenId, sessionRecord);
+    this.revokeRefreshSession(payload.tokenId);
 
     const user = await userService.getUserById(payload.sub);
     if (!user) {
@@ -139,13 +181,12 @@ export class AuthService {
       return;
     }
 
-    const existing = this.refreshSessions.get(payload.tokenId);
+    const existing = this.getRefreshSession(payload.tokenId);
     if (!existing) {
       return;
     }
 
-    existing.revoked = true;
-    this.refreshSessions.set(payload.tokenId, existing);
+    this.revokeRefreshSession(payload.tokenId);
   }
 
   async getIdentityByUserId(userId: string): Promise<SessionIdentity | null> {

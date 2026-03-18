@@ -36,6 +36,14 @@ export interface AcademicEvaluationRecord {
   updatedAt: Date;
 }
 
+export interface RefreshSessionRecord {
+  tokenId: string;
+  userId: string;
+  expiresAt: number;
+  revoked: boolean;
+  updatedAt: Date;
+}
+
 interface DataStoreCounters {
   userNextId: number;
   classGroupNextId: number;
@@ -53,6 +61,7 @@ export interface DataStoreState {
   posts: Post[];
   academicGrades: AcademicGradeRecord[];
   academicEvaluations: AcademicEvaluationRecord[];
+  refreshSessions: RefreshSessionRecord[];
 }
 
 type RawObject = Record<string, unknown>;
@@ -371,6 +380,29 @@ function mapAcademicEvaluation(raw: unknown): AcademicEvaluationRecord | null {
   };
 }
 
+function mapRefreshSession(raw: unknown): RefreshSessionRecord | null {
+  if (!raw || typeof raw !== 'object') {
+    return null;
+  }
+
+  const rawSession = raw as RawObject;
+  const tokenId = coerceString(rawSession.tokenId).trim();
+  const userId = coerceString(rawSession.userId).trim();
+  const expiresAt = Math.floor(coerceNumber(rawSession.expiresAt));
+
+  if (!tokenId || !userId || expiresAt <= 0) {
+    return null;
+  }
+
+  return {
+    tokenId,
+    userId,
+    expiresAt,
+    revoked: Boolean(rawSession.revoked),
+    updatedAt: parseDate(rawSession.updatedAt),
+  };
+}
+
 function getMaxNumericId(ids: string[]): number {
   return ids.reduce((maxValue, id) => {
     const parsed = Number.parseInt(id, 10);
@@ -407,6 +439,7 @@ function createEmptyState(): DataStoreState {
     posts: [],
     academicGrades: [],
     academicEvaluations: [],
+    refreshSessions: [],
   };
 }
 
@@ -456,6 +489,14 @@ function loadStateFromDisk(filePath: string): DataStoreState {
               Boolean(evaluation),
           )
       : [];
+    const refreshSessions = Array.isArray(rawState.refreshSessions)
+      ? rawState.refreshSessions
+          .map(mapRefreshSession)
+          .filter(
+            (session): session is RefreshSessionRecord =>
+              Boolean(session),
+          )
+      : [];
 
     const rawCounters =
       rawState.counters && typeof rawState.counters === 'object'
@@ -498,6 +539,7 @@ function loadStateFromDisk(filePath: string): DataStoreState {
       posts,
       academicGrades,
       academicEvaluations,
+      refreshSessions,
     };
   } catch {
     return createEmptyState();
