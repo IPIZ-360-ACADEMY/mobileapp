@@ -194,6 +194,16 @@ export function ProfileScreen({ navigation }: Props): React.JSX.Element {
         )}
       </Card>
 
+      <Button label="Abrir feed social" variant="secondary" onPress={() => navigation.navigate('Feed')} style={styles.secondaryAction} />
+      {isStudent && hasAppPermission(role, AppPermission.ACADEMIC_READ_SELF) ? (
+        <Button
+          label="Abrir painel academico"
+          variant="secondary"
+          onPress={() => navigation.navigate('Academic')}
+          style={styles.secondaryAction}
+        />
+      ) : null}
+
       <Button label="Explorar vagas" onPress={() => navigation.navigate('Jobs')} style={styles.primaryAction} />
       <Button
         label="Sair"
@@ -270,5 +280,8 @@ const styles = StyleSheet.create({
   primaryAction: {
     marginTop: 16,
     marginBottom: 4,
+  },
+  secondaryAction: {
+    marginTop: 12,
   },
 });

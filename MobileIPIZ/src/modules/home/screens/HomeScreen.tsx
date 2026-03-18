@@ -1,21 +1,20 @@
 import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { AppText, Button, Card, Screen } from '../../../core/ui';
-import { RootStackParamList, RootTabParamList } from '../../../app/navigation/types';
+import { RootTabParamList } from '../../../app/navigation/types';
 import { useSessionStore } from '../../../core/store/useSessionStore';
 import { useBackendHealth } from '../../../core/hooks/useBackendHealth';
 import { useJobsStore } from '../../jobs/store/useJobsStore';
+import { AppPermission, hasAppPermission } from '../../../core/rbac/policy';
 
 type Props = BottomTabScreenProps<RootTabParamList, 'Home'>;
 
 export function HomeScreen({ navigation }: Props): React.JSX.Element {
-  const rootNavigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { userName, roleLabel } = useSessionStore();
+  const { userName, roleLabel, role } = useSessionStore();
   const backendHealth = useBackendHealth();
   const { jobs, fetchJobs } = useJobsStore();
+  const canReadAcademic = hasAppPermission(role, AppPermission.ACADEMIC_READ_SELF);
 
   useEffect(() => {
     void fetchJobs();
@@ -64,21 +63,18 @@ export function HomeScreen({ navigation }: Props): React.JSX.Element {
       <Card style={styles.block}>
         <AppText variant="h3">Foco do dia</AppText>
         <AppText variant="body" tone="muted" style={styles.blockText}>
-          Revise vagas, atualize o perfil e mantenha o acompanhamento de candidaturas em um fluxo simples.
+          Publique no feed, acompanhe vagas e mantenha seu perfil sempre atualizado com um fluxo simples.
         </AppText>
-        <Button
-          label="Abrir painel estudante"
-          variant="secondary"
-          onPress={() => rootNavigation.navigate('StudentDashboard')}
-          style={styles.tertiaryCta}
-        />
+        <Button label="Abrir feed social" variant="secondary" onPress={() => navigation.navigate('Feed')} style={styles.tertiaryCta} />
         <Button label="Ver oportunidades" onPress={() => navigation.navigate('Jobs')} style={styles.cta} />
-        <Button
-          label="Abrir feed migrado"
-          variant="secondary"
-          onPress={() => rootNavigation.navigate('LegacyFeed')}
-          style={styles.secondaryCta}
-        />
+        {canReadAcademic ? (
+          <Button
+            label="Abrir painel academico"
+            variant="secondary"
+            onPress={() => navigation.navigate('Academic')}
+            style={styles.secondaryCta}
+          />
+        ) : null}
       </Card>
     </Screen>
   );

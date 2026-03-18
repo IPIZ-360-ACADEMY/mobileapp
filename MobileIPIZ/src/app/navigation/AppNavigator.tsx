@@ -14,6 +14,8 @@ import { AuthLoginScreen } from '../../modules/auth/screens/AuthLoginScreen';
 import { RootManagementScreen } from '../../modules/admin/screens/RootManagementScreen';
 import { AppText } from '../../core/ui';
 import { useAppTheme } from '../../core/theme';
+import { AppPermission, hasAppPermission } from '../../core/rbac/policy';
+import { useSessionStore } from '../../core/store/useSessionStore';
 import { RootStackParamList, RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -31,6 +33,8 @@ function TabLabel({ focused, label }: { focused: boolean; label: string }): Reac
 
 function TabsNavigator(): React.JSX.Element {
   const theme = useAppTheme();
+  const role = useSessionStore((state) => state.role);
+  const canReadAcademic = hasAppPermission(role, AppPermission.ACADEMIC_READ_SELF);
 
   return (
     <Tab.Navigator
@@ -55,10 +59,22 @@ function TabsNavigator(): React.JSX.Element {
         options={{ tabBarLabel: ({ focused }) => <TabLabel focused={focused} label="Inicio" /> }}
       />
       <Tab.Screen
+        name="Feed"
+        component={LegacyFeedScreen}
+        options={{ tabBarLabel: ({ focused }) => <TabLabel focused={focused} label="Feed" /> }}
+      />
+      <Tab.Screen
         name="Jobs"
         component={JobsScreen}
         options={{ tabBarLabel: ({ focused }) => <TabLabel focused={focused} label="Vagas" /> }}
       />
+      {canReadAcademic ? (
+        <Tab.Screen
+          name="Academic"
+          component={StudentDashboardScreen}
+          options={{ tabBarLabel: ({ focused }) => <TabLabel focused={focused} label="Academico" /> }}
+        />
+      ) : null}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}

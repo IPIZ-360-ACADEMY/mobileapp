@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../app/navigation/types';
 import { useSessionStore } from '../../../core/store/useSessionStore';
 import { AppText, Button, Card, Screen, StateView } from '../../../core/ui';
 import { getStudentAcademicOverview, StudentAcademicOverview } from '../services/studentApi';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'StudentDashboard'>;
 type AsyncStatus = 'idle' | 'loading' | 'success' | 'error';
 
 function formatDate(value: string): string {
@@ -22,7 +22,8 @@ function formatDate(value: string): string {
   }).format(date);
 }
 
-export function StudentDashboardScreen({ navigation }: Props): React.JSX.Element {
+export function StudentDashboardScreen(): React.JSX.Element {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { userName } = useSessionStore();
   const [status, setStatus] = useState<AsyncStatus>('idle');
   const [academicOverview, setAcademicOverview] = useState<StudentAcademicOverview | null>(null);
