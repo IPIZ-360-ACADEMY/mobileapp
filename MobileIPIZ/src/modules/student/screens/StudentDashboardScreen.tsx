@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../app/navigation/types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList, RootTabParamList } from '../../../app/navigation/types';
 import { useSessionStore } from '../../../core/store/useSessionStore';
 import { AppText, Button, Card, Screen, StateView } from '../../../core/ui';
 import { getStudentAcademicOverview, StudentAcademicOverview } from '../services/studentApi';
@@ -23,11 +22,22 @@ function formatDate(value: string): string {
 }
 
 export function StudentDashboardScreen(): React.JSX.Element {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList & RootTabParamList>>();
   const { userName } = useSessionStore();
   const [status, setStatus] = useState<AsyncStatus>('idle');
   const [academicOverview, setAcademicOverview] = useState<StudentAcademicOverview | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const navigateToMainArea = (screen: keyof RootTabParamList): void => {
+    const routeNames = navigation.getState().routeNames;
+
+    if (routeNames.includes(screen)) {
+      navigation.navigate(screen);
+      return;
+    }
+
+    navigation.navigate('MainTabs', { screen });
+  };
 
   const loadOverview = async (): Promise<void> => {
     setStatus('loading');
@@ -135,8 +145,8 @@ export function StudentDashboardScreen(): React.JSX.Element {
       <Card style={styles.actionsCard}>
         <AppText variant="h3">Acoes rapidas</AppText>
         <View style={styles.actionsWrap}>
-          <Button label="Abrir feed" variant="secondary" onPress={() => navigation.navigate('LegacyFeed')} />
-          <Button label="Ver vagas" onPress={() => navigation.navigate('MainTabs')} />
+          <Button label="Abrir feed" variant="secondary" onPress={() => navigateToMainArea('Feed')} />
+          <Button label="Ver vagas" onPress={() => navigateToMainArea('Jobs')} />
         </View>
       </Card>
 

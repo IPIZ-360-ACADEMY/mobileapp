@@ -1,3 +1,5 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
+
 export type RootTabParamList = {
   Home: undefined;
   Feed: undefined;
@@ -9,7 +11,7 @@ export type RootTabParamList = {
 export type RootStackParamList = {
   Splash: undefined;
   AuthLogin: undefined;
-  MainTabs: undefined;
+  MainTabs: NavigatorScreenParams<RootTabParamList> | undefined;
   RootManagement: undefined;
   JobDetails: { jobId: string };
   LegacyFeed: undefined;
