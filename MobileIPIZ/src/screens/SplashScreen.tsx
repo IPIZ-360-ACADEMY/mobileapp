@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,9 +11,9 @@ export const SplashScreen: FC = () => {
   const navigation = useNavigation<SplashNavigationProp>();
   const { isAuthenticated } = useAuth();
 
-  const dot1Opacity = useRef(new Animated.Value(0.2)).current;
-  const dot2Opacity = useRef(new Animated.Value(0.2)).current;
-  const dot3Opacity = useRef(new Animated.Value(0.2)).current;
+  const [dot1Opacity] = useState(() => new Animated.Value(0.2));
+  const [dot2Opacity] = useState(() => new Animated.Value(0.2));
+  const [dot3Opacity] = useState(() => new Animated.Value(0.2));
 
   useEffect(() => {
     const animateDots = () => {

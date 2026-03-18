@@ -37,7 +37,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   defaultTheme = 'light',
 }) => {
   const [themeName, setThemeName] = useState<ThemeName>(defaultTheme);
-  const [systemTheme, setSystemTheme] = useState<ThemeName>('light');
+  const [systemTheme, setSystemTheme] = useState<ThemeName>(
+    () => (Appearance.getColorScheme() === 'dark' ? 'dark' : 'light') as ThemeName,
+  );
 
   // Detect system theme changes
   useEffect(() => {
@@ -50,8 +52,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         setThemeName(newSystemTheme);
       }
     });
-    const initialSystemTheme = (Appearance.getColorScheme() === 'dark' ? 'dark' : 'light') as ThemeName;
-    setSystemTheme(initialSystemTheme);
 
     return () => listener.remove();
   }, [themeName]);

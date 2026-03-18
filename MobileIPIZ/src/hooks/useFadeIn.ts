@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated } from 'react-native';
 
 // Simple fade+translate-up entrance animation hook
 export const useFadeIn = (duration = 350, translateY = 6) => {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translate = useRef(new Animated.Value(translateY)).current;
+  const [opacity] = useState(() => new Animated.Value(0));
+  const [translate] = useState(() => new Animated.Value(translateY));
 
   useEffect(() => {
     const runner = Animated.parallel([
