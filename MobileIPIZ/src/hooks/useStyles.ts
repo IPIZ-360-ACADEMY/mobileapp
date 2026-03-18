@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { Colors } from '../theme/colors';
 import { useAppTheme } from '../contexts/ThemeContext';
 

@@ -71,9 +71,9 @@ export const Box = React.forwardRef<View, BoxProps>(
       full: 999,
     };
 
-    const bgColor = bg === 'primary' ? theme.background.primary : 
-                   bg === 'secondary' ? theme.background.secondary : 
-                   theme.background.tertiary;
+    const bgColor = bg === 'primary' ? theme.colors.background.primary : 
+                   bg === 'secondary' ? theme.colors.background.secondary : 
+                   theme.colors.background.tertiary;
 
     return (
       <View

@@ -3,7 +3,6 @@
 
 import React, { FC } from 'react';
 import { Pressable } from 'react-native';
-import { useTheme } from '../../hooks/useTheme';
 import { Text } from '../atoms/Text';
 import { Icon } from '../atoms/Icon';
 import { Box } from '../base/Box';
@@ -34,8 +33,6 @@ export const DashboardCard: FC<Props> = ({
   variant = 'default',
   size = 'md',
 }) => {
-  const { isDark } = useTheme();
-
   // Classes base
   const baseClasses = 'rounded-2xl min-h-24';
 
@@ -88,7 +85,6 @@ export const DashboardCard: FC<Props> = ({
               name={icon as any}
               size="lg"
               className={iconColor ? '' : 'text-blue-600 dark:text-blue-400'}
-              style={iconColor ? { color: iconColor } : {}}
             />
           </Box>
         )}
@@ -122,7 +118,7 @@ export const DashboardCard: FC<Props> = ({
       {trend && (
         <Box className={trendClasses}>
           <Icon
-            name={trend.isPositive ? 'trending-up' : 'trending-down'}
+            name={(trend.isPositive ? 'trending-up' : 'trending-down') as any}
             size="sm"
           />
           <Text variant="caption" weight="medium" className="ml-1">

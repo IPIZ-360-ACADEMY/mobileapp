@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
-import { useTheme } from '../../hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
 
 interface NavItem {
@@ -18,7 +17,6 @@ const navItems: NavItem[] = [
 ];
 
 export const ProfessionalNavBar = () => {
-  const { isDark } = useTheme();
   const navigation = useNavigation<any>();
   const [activeRoute, setActiveRoute] = useState('StudentDashboard');
 

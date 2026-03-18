@@ -1,9 +1,8 @@
-import type { Theme } from '../types/theme.types';
 import { colors } from './colors';
 import { spacing, borderRadius, fontSize, fontWeight, shadows } from './spacing';
 import { typography, textHierarchy } from './typography';
 
-export const theme: Theme = {
+export const theme = {
   colors,
   spacing,
   borderRadius,

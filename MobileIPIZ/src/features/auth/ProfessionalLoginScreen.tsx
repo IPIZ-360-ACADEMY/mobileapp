@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../hooks/useTheme';
-import { Button } from '../../components/base';
 
 /**
  * ProfessionalLoginScreen - Tela de login moderna e profissional

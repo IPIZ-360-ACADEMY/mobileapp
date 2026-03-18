@@ -3,7 +3,6 @@
 
 import React, { FC } from 'react';
 import { Pressable, View, Text } from 'react-native';
-import { useTheme } from '../../hooks/useTheme';
 
 export interface Post {
   id: number;
@@ -46,7 +45,6 @@ export const PostCard: FC<Props> = ({
   icon,
   onPress,
 }) => {
-  const { isDark } = useTheme();
   const roleColor = roleColorMap[role] || 'gray';
 
   const colorClasses: Record<string, { bg: string; text: string; border: string }> = {

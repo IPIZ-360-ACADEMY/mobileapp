@@ -6,7 +6,6 @@
  * with Tailwind CSS and provides advanced theming capabilities for React Native.
  */
 
-import { Colors } from './colors';
 
 // ============================================================================
 // THEME CONFIGURATION
@@ -640,6 +639,5 @@ export const useComponentTheme = () => {
 // EXPORT
 // ============================================================================
 
-export type { ThemeConfig };
 export { lightTheme as defaultTheme };
 export default lightTheme;

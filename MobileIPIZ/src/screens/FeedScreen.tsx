@@ -1,7 +1,6 @@
 import React from 'react';
-import { ScrollView, View, Text, Pressable } from 'react-native';
+import { ScrollView, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../hooks/useTheme';
 import { ProfessionalNavBar } from '../components/navigation/ProfessionalNavBar';
 import { PostCard, Post, SectionHeader } from '../components';
 
@@ -10,7 +9,6 @@ import { PostCard, Post, SectionHeader } from '../components';
  * Tailwind CSS + design moderno
  */
 export const FeedScreen = () => {
-  const { isDark } = useTheme();
 
   const feedPosts: Post[] = [
     {

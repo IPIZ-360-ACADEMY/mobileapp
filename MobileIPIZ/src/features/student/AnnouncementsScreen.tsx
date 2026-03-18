@@ -4,7 +4,6 @@
 import React, { FC } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 interface Announcement {
@@ -61,7 +60,6 @@ const announcementsData: Announcement[] = [
 
 export const AnnouncementsScreen: FC = () => {
   const unreadCount = announcementsData.filter(a => !a.isRead).length;
-  const { isDark } = useTheme();
 
   const colorForType = (type: string) => {
     switch (type) {

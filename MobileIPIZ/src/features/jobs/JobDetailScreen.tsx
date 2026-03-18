@@ -1,16 +1,13 @@
 import React, { FC } from 'react';
 import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
-import { Button } from '../../components/base/Button';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
-import { useTheme } from '../../hooks/useTheme';
+import { JobsStackParamList } from '../../navigation/AppNavigator';
 import { JobType } from '../../types/job.types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'JobDetail'>;
+type Props = NativeStackScreenProps<JobsStackParamList, 'JobDetail'>;
 
 export const JobDetailScreen: FC<Props> = ({ navigation, route }) => {
   const { jobId } = route.params;
-  const { isDark } = useTheme();
 
   const mockJob = {
     id: jobId,

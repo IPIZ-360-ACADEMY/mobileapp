@@ -1,14 +1,12 @@
 import React, { FC, useState } from 'react';
-import { ScrollView, View, Text, Pressable, FlatList } from 'react-native';
+import { ScrollView, View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 /**
  * CompanyDashboard - Painel da Empresa para Recrutadoras
  */
 export const CompanyDashboard: FC = () => {
-  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<'overview' | 'vagas' | 'candidatos'>('overview');
 
   const companyStats = {

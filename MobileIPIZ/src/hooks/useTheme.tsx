@@ -35,7 +35,6 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   defaultTheme = 'light',
-  storageKey = 'ipiz-theme',
 }) => {
   const [themeName, setThemeName] = useState<ThemeName>(defaultTheme);
   const [systemTheme, setSystemTheme] = useState<ThemeName>('light');
@@ -47,12 +46,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       setSystemTheme(newSystemTheme);
 
       // Auto-switch to system theme if current theme is 'auto'
-      if (themeName === 'auto') {
+      if ((themeName as string) === 'auto') {
         setThemeName(newSystemTheme);
       }
     });
-
-    // Initial system theme detection
     const initialSystemTheme = (Appearance.getColorScheme() === 'dark' ? 'dark' : 'light') as ThemeName;
     setSystemTheme(initialSystemTheme);
 
@@ -61,7 +58,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
   // Get current theme configuration
   const theme = React.useMemo(() => {
-    if (themeName === 'auto') {
+    if ((themeName as string) === 'auto') {
       return getTheme(systemTheme);
     }
     return getTheme(themeName);
@@ -76,7 +73,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   }, []);
 
   const toggleTheme = React.useCallback(() => {
-    const current = themeName === 'auto' ? systemTheme : themeName;
+    const current = (themeName as string) === 'auto' ? systemTheme : themeName;
     const next = current === 'light' ? 'dark' : 'light';
     setThemeName(next);
   }, [themeName, systemTheme]);
@@ -166,7 +163,7 @@ export const useResponsive = () => {
 /**
  * Get theme-aware styles for components
  */
-export const getThemeStyles = (theme: ThemeConfig) => ({
+export const getThemeStyles = (_theme: ThemeConfig) => ({
   // Button variants
   button: {
     primary: `bg-primary-500 text-white px-4 py-2 rounded-lg font-medium`,

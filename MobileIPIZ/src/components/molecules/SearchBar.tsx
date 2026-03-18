@@ -2,7 +2,7 @@
 // Search input with icon and clear button
 
 import React, { FC, useState } from 'react';
-import { View, TextInput, Pressable } from 'react-native';
+import { TextInput, Pressable } from 'react-native';
 import { useTheme } from '@hooks/useTheme';
 import { Icon } from '@atoms/Icon';
 import { Box } from '@base/Box';

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Pressable, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
-import { Button } from '../../components/base';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 import { SectionHeader } from '../../components';
 
@@ -11,7 +9,6 @@ import { SectionHeader } from '../../components';
  * Tailwind CSS + design profissional
  */
 export const ProfessionalDashboard = () => {
-  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('overview');
 
   const studentStats = {
@@ -170,7 +167,7 @@ export const ProfessionalDashboard = () => {
           <View className="mb-6">
             <SectionHeader title="Seus Cursos" />
             {courses.map((course, idx) => {
-              const colorMap = {
+              const colorMap: Record<string, string> = {
                 blue: 'blue-600',
                 purple: 'purple-600',
                 emerald: 'emerald-600',

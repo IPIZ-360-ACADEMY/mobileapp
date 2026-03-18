@@ -63,7 +63,7 @@ export const ProfessionalHeader: React.FC<ProfessionalHeaderProps> = ({
 
   return (
     <LinearGradient
-      colors={getGradientColors()}
+      colors={getGradientColors() as [string, string]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       className="pb-6"

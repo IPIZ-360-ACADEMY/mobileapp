@@ -41,10 +41,10 @@ export const Text = React.forwardRef<RNText, TextProps>(
     };
 
     const colorMap = {
-      primary: theme.text.primary,
-      secondary: theme.text.secondary,
-      tertiary: theme.text.tertiary,
-      inverse: theme.text.inverse,
+      primary: theme.colors.text.primary,
+      secondary: theme.colors.text.secondary,
+      tertiary: theme.colors.text.tertiary,
+      inverse: theme.colors.text.inverse,
       error: '#ef4444',
       success: '#10b981',
       white: '#ffffff',
@@ -83,3 +83,11 @@ export const Text = React.forwardRef<RNText, TextProps>(
 );
 
 Text.displayName = 'Text';
+
+export const H1: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="h1" />;
+export const H2: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="h2" />;
+export const H3: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="h3" />;
+export const H4: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="h3" />;
+export const Body: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="body" />;
+export const Caption: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="caption" />;
+export const Label: React.FC<TextProps & { children: React.ReactNode }> = (props) => <Text {...props} variant="body" />;

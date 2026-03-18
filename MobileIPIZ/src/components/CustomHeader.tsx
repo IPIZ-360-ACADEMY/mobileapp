@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Pressable, Dimensions, Alert, View } from 'react-native';
+import React from 'react';
+import { Pressable, Dimensions, Alert } from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useAppTheme } from '../contexts/ThemeContext';
-import { Box, Text, Button } from '../components/base';
+import { Box, Text } from '../components/base';
 
 const { width } = Dimensions.get('window');
 
@@ -39,27 +39,26 @@ export const CustomHeader: React.FC<CustomHeaderProps> = ({
   variant = 'primary',
   showThemeToggle = true,
 }) => {
-  const { theme, scheme, toggleScheme } = useAppTheme();
+  const { theme, themeName, toggleTheme } = useAppTheme();
   const navigation = useNavigation();
-  const [showMenu, setShowMenu] = useState(false);
 
   const headerStyles = {
     primary: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.colors.primary,
       textColor: '#fff',
       subtitleColor: 'rgba(255,255,255,0.8)',
       borderColor: 'transparent',
     },
     secondary: {
-      backgroundColor: theme.background.secondary,
-      textColor: theme.text.primary,
-      subtitleColor: theme.text.secondary,
-      borderColor: theme.border.light,
+      backgroundColor: theme.colors.background.secondary,
+      textColor: theme.colors.text.primary,
+      subtitleColor: theme.colors.text.secondary,
+      borderColor: theme.colors.border.light,
     },
     transparent: {
       backgroundColor: 'transparent',
-      textColor: theme.text.primary,
-      subtitleColor: theme.text.secondary,
+      textColor: theme.colors.text.primary,
+      subtitleColor: theme.colors.text.secondary,
       borderColor: 'transparent',
     },
   };
@@ -91,7 +90,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = ({
   };
 
   const handleThemeToggle = () => {
-    toggleScheme();
+    toggleTheme();
   };
 
   return (
@@ -204,7 +203,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = ({
                     position: 'absolute',
                     top: 4,
                     right: 4,
-                    backgroundColor: theme.palette.error.main,
+                    backgroundColor: theme.colors.error,
                     borderRadius: 999,
                     minWidth: 18,
                     height: 18,
@@ -241,7 +240,7 @@ export const CustomHeader: React.FC<CustomHeaderProps> = ({
                 variant="h2"
                 style={{ color: currentStyle.textColor }}
               >
-                {scheme === 'dark' ? '☀️' : '🌙'}
+                {themeName === 'dark' ? '☀️' : '🌙'}
               </Text>
             </Pressable>
           )}

@@ -4,7 +4,6 @@
 import React, { FC } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 interface ScheduleItem {
@@ -27,7 +26,6 @@ const scheduleData: ScheduleItem[] = [
 
 export const AcademicScheduleScreen: FC = () => {
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-  const { isDark } = useTheme();
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
