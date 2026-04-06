@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, Dimensions, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '../contexts/ThemeContext';
-import { Box, Text, Button } from './base';
+import { Box, Text } from './base';
 
 const { width } = Dimensions.get('window');
 
@@ -45,19 +44,19 @@ export const ProfessionalHeader: React.FC<ProfessionalHeaderProps> = ({
 
   const headerStyles = {
     primary: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.colors.primary,
       textColor: '#fff',
       subtitleColor: 'rgba(255,255,255,0.8)',
     },
     secondary: {
-      backgroundColor: theme.background.secondary,
-      textColor: theme.text.primary,
-      subtitleColor: theme.text.secondary,
+      backgroundColor: theme.colors.background.secondary,
+      textColor: theme.colors.text.primary,
+      subtitleColor: theme.colors.text.secondary,
     },
     transparent: {
       backgroundColor: 'transparent',
-      textColor: theme.text.primary,
-      subtitleColor: theme.text.secondary,
+      textColor: theme.colors.text.primary,
+      subtitleColor: theme.colors.text.secondary,
     },
   };
 
@@ -70,7 +69,7 @@ export const ProfessionalHeader: React.FC<ProfessionalHeaderProps> = ({
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderBottomWidth: variant === 'transparent' ? 0 : 1,
-        borderBottomColor: theme.border.light,
+        borderBottomColor: theme.colors.border.light,
       }}
     >
       {/* Top Row */}
@@ -155,7 +154,7 @@ export const ProfessionalHeader: React.FC<ProfessionalHeaderProps> = ({
                     position: 'absolute',
                     top: 4,
                     right: 4,
-                    backgroundColor: theme.palette.error.main,
+                    backgroundColor: theme.colors.error,
                     borderRadius: 999,
                     minWidth: 18,
                     height: 18,
@@ -288,7 +287,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
             position: 'absolute',
             top: 70,
             right: 16,
-            backgroundColor: theme.background.secondary,
+            backgroundColor: theme.colors.background.secondary,
             borderRadius: 12,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 4 },
@@ -307,9 +306,9 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
               style={{
                 padding: 16,
                 borderBottomWidth: screen.id === screens[screens.length - 1].id ? 0 : 1,
-                borderBottomColor: theme.border.light,
+                borderBottomColor: theme.colors.border.light,
                 backgroundColor: currentScreen === screen.id
-                  ? theme.palette.primary.main + '20'
+                  ? theme.colors.primary + '20'
                   : 'transparent',
               }}
             >
@@ -320,15 +319,15 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
                   weight={currentScreen === screen.id ? 'bold' : 'normal'}
                   style={{
                     color: currentScreen === screen.id
-                      ? theme.palette.primary.main
-                      : theme.text.primary,
+                      ? theme.colors.primary
+                      : theme.colors.text.primary,
                   }}
                 >
                   {screen.label}
                 </Text>
                 {currentScreen === screen.id && (
                   <Box style={{ marginLeft: 'auto' }}>
-                    <Text variant="body" style={{ color: theme.palette.primary.main }}>
+                    <Text variant="body" style={{ color: theme.colors.primary }}>
                       ✓
                     </Text>
                   </Box>
@@ -341,7 +340,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
           <Box
             style={{
               height: 1,
-              backgroundColor: theme.border.light,
+              backgroundColor: theme.colors.border.light,
               marginVertical: 8,
             }}
           />

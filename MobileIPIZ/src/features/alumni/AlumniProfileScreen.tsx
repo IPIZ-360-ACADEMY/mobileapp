@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 /**
@@ -9,7 +8,6 @@ import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavB
  * Mostra trajetória profissional
  */
 export const AlumniProfileScreen: FC = () => {
-  const { isDark } = useTheme();
 
   const alumni = {
     name: 'Carlos Silva',

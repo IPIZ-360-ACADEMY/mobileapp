@@ -10,8 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {
   Button,
   Input,
-  Logo,
-} from '../components';
+} from '../../components';
 
 /**
  * Professional Login Screen

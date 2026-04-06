@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { View, Text, ViewProps } from 'react-native';
+import { ViewProps } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface GradientCardProps extends ViewProps {
@@ -52,7 +52,7 @@ export const GradientCard: React.FC<GradientCardProps> = ({
 
   return (
     <LinearGradient
-      colors={getGradientColors()}
+      colors={getGradientColors() as [string, string]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       className={`${padding} ${roundedClass} ${shadowClass} ${className} overflow-hidden`}

@@ -2,10 +2,10 @@ import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button } from '../../components/base/Button';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
+import { JobsStackParamList } from '../../navigation/AppNavigator';
 import { useTheme } from '../../hooks/useTheme';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'PostJob'>;
+type Props = NativeStackScreenProps<JobsStackParamList, 'PostJob'>;
 
 export const PostJobScreen: FC<Props> = ({ navigation }) => {
   const { isDark } = useTheme();
@@ -106,7 +106,7 @@ export const PostJobScreen: FC<Props> = ({ navigation }) => {
             placeholderTextColor={isDark ? '#9ca3af' : '#6b7280'}
           />
 
-          <Button title="Publicar Vaga" onPress={handlePost} />
+          <Button onPress={handlePost}>Publicar Vaga</Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

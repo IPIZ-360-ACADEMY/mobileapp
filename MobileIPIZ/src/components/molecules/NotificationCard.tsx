@@ -3,7 +3,6 @@
 
 import React, { FC } from 'react';
 import { Pressable } from 'react-native';
-import { useTheme } from '../../hooks/useTheme';
 import { Text } from '../atoms/Text';
 import { Icon } from '../atoms/Icon';
 import { Box } from '../base/Box';
@@ -59,7 +58,6 @@ export const NotificationCard: FC<Props> = ({
   isRead = false,
   showBorder = true,
 }) => {
-  const { isDark } = useTheme();
   const colors = typeColors[type];
   const iconName = typeIcons[type] as any;
 

@@ -1,10 +1,8 @@
 import React, {
   createContext,
-  useContext,
-  useState,
   ReactNode,
 } from 'react';
-import { lightTheme, darkTheme, type ThemeConfig } from '@theme/advancedTheme';
+import { lightTheme, type ThemeConfig } from '@theme/advancedTheme';
 import { colors as staticColors } from '@theme/colors';
 
 type ThemeName = 'light' | 'dark';

@@ -1,14 +1,12 @@
 import React, { FC } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
 /**
  * CertificateScreen - Certificados e Diplomas
  */
 export const CertificateScreen: FC = () => {
-  const { isDark } = useTheme();
 
   const certificates = [
     {

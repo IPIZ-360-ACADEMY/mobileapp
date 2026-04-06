@@ -22,7 +22,8 @@ type ButtonVariant =
   | 'success'
   | 'warning'
   | 'error'
-  | 'accent';
+  | 'accent'
+  | 'gradient';
 
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -108,6 +109,9 @@ export const Button = React.forwardRef<typeof Pressable, ButtonProps>(
         // Accent (Orange for CTAs)
         accent:
           'bg-orange-600 active:bg-orange-700 text-white shadow-md active:shadow-sm',
+        // Gradient
+        gradient:
+          'bg-sky-600 active:bg-sky-700 text-white shadow-md active:shadow-sm',
       };
 
       return `${baseClasses} ${variantMap[variant] || variantMap.primary}`;

@@ -27,6 +27,7 @@ export { SearchBar } from './molecules/SearchBar';
 export { ListItem } from './molecules/ListItem';
 export { NotificationCard } from './molecules/NotificationCard';
 export { PostCard } from './molecules/PostCard';
+export type { Post } from './molecules/PostCard';
 export { SectionHeader } from './molecules/SectionHeader';
 export { Card } from './molecules/Card';
 export { GradientCard } from './molecules/GradientCard';

@@ -1,15 +1,12 @@
 import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { Button } from '../../components/base';
+import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/AuthContext';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
 import { useTheme } from '../../hooks/useTheme';
 import { ProfessionalNavBar } from '../../components/navigation/ProfessionalNavBar';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'EditProfile'>;
-
-export const EditProfileScreen: FC<Props> = ({ navigation }) => {
+export const EditProfileScreen: FC = () => {
+  const navigation = useNavigation();
   const { user } = useAuth();
   const { isDark } = useTheme();
   
@@ -34,7 +31,14 @@ export const EditProfileScreen: FC<Props> = ({ navigation }) => {
     }, 1500);
   };
 
-  const inputFields = [
+  const inputFields: Array<{
+    label: string;
+    value: string;
+    onChangeText: (t: string) => void;
+    icon: string;
+    placeholder: string;
+    keyboardType?: import('react-native').KeyboardTypeOptions;
+  }> = [
     { label: 'Nome Completo', value: name, onChangeText: setName, icon: '👤', placeholder: 'Seu nome' },
     { label: 'Email', value: email, onChangeText: setEmail, icon: '✉️', placeholder: 'seu@email.com', keyboardType: 'email-address' },
     { label: 'Telefone', value: phone, onChangeText: setPhone, icon: '📱', placeholder: '(11) 99999-9999', keyboardType: 'phone-pad' },

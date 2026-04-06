@@ -145,8 +145,6 @@ export const ProfileScreen: FC = () => {
 };
 
 const TEAL = '#0D9488';
-const TEAL_LIGHT = '#CCFBF1';
-const BLUE = '#1E40AF';
 const BG = '#F0FDFA';
 
 const styles = StyleSheet.create({

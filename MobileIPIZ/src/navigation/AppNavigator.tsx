@@ -9,7 +9,6 @@ import { LoginScreen } from '../features/auth/LoginScreen';
 import { StudentDashboard } from '../features/student/StudentDashboard';
 import { TeacherDashboard } from '../features/teacher/TeacherDashboard';
 import { AdminDashboard } from '../features/admin/AdminDashboard';
-import { FeedScreen } from '../screens/FeedScreen';
 import { JobListScreen } from '../features/jobs/JobListScreen';
 import { JobDetailScreen } from '../features/jobs/JobDetailScreen';
 import { PostJobScreen } from '../features/jobs/PostJobScreen';
