@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from '../services/UserService';
-import { CreateUserDTO, UpdateUserDTO, UserRole } from '../models/User';
-
-const userService = new UserService();
+import { userService } from '../services/UserService';
+import { CreateUserDTO, UpdateUserDTO, UserRole, sanitizeUser } from '../models/User';
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -11,7 +9,7 @@ export class UserController {
       const user = await userService.createUser(dto);
       res.status(201).json({
         success: true,
-        data: user,
+        data: sanitizeUser(user),
       });
     } catch (error) {
       next(error);
@@ -33,7 +31,7 @@ export class UserController {
 
       res.json({
         success: true,
-        data: user,
+        data: sanitizeUser(user),
       });
     } catch (error) {
       next(error);
@@ -46,7 +44,7 @@ export class UserController {
       const users = await userService.getUsersByRole(role as UserRole);
       res.json({
         success: true,
-        data: users,
+        data: users.map(sanitizeUser),
       });
     } catch (error) {
       next(error);
@@ -69,7 +67,39 @@ export class UserController {
 
       res.json({
         success: true,
-        data: user,
+        data: sanitizeUser(user),
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async assignUserRole(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { role } = req.body as { role?: UserRole };
+
+      if (!role) {
+        res.status(400).json({
+          success: false,
+          error: 'Role is required',
+        });
+        return;
+      }
+
+      const user = await userService.assignUserRole(id, role);
+
+      if (!user) {
+        res.status(404).json({
+          success: false,
+          error: 'User not found',
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        data: sanitizeUser(user),
       });
     } catch (error) {
       next(error);
@@ -103,7 +133,7 @@ export class UserController {
       const users = await userService.getAllUsers();
       res.json({
         success: true,
-        data: users,
+        data: users.map(sanitizeUser),
       });
     } catch (error) {
       next(error);

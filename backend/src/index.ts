@@ -1,14 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { config } from './src/config/environment';
-import { errorHandler } from './src/middlewares/errorHandler';
-import { notFoundHandler } from './src/middlewares/notFoundHandler';
+import { config } from './config/environment';
+import { errorHandler } from './middlewares/errorHandler';
+import { notFoundHandler } from './middlewares/notFoundHandler';
 
 // Import routes
-import userRoutes from './src/routes/userRoutes';
-import jobRoutes from './src/routes/jobRoutes';
-import companyRoutes from './src/routes/companyRoutes';
+import userRoutes from './routes/userRoutes';
+import jobRoutes from './routes/jobRoutes';
+import companyRoutes from './routes/companyRoutes';
+import authRoutes from './routes/authRoutes';
+import classGroupRoutes from './routes/classGroupRoutes';
+import subjectRoutes from './routes/subjectRoutes';
+import postRoutes from './routes/postRoutes';
+import studentAcademicRoutes from './routes/studentAcademicRoutes';
 
 const app = express();
 
@@ -35,9 +40,14 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/companies', companyRoutes);
+app.use('/api/classes', classGroupRoutes);
+app.use('/api/subjects', subjectRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/students', studentAcademicRoutes);
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);

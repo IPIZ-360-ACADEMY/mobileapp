@@ -4,6 +4,7 @@ export enum UserRole {
   ADMIN = 'admin',
   ALUMNI = 'alumni',
   COMPANY = 'company',
+  SUPER_ROOT = 'super_root',
 }
 
 export enum AcademicLevel {

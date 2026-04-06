@@ -32,6 +32,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permita ao IPIZ selecionar uma imagem para a sua publicacao.",
+          "cameraPermission": "Permita ao IPIZ aceder a camara para anexar imagens as publicacoes."
+        }
+      ]
+    ]
   }
 }

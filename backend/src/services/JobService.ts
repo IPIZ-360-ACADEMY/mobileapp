@@ -9,6 +9,7 @@ export class JobService {
     const job: Job = {
       id: this.nextId.toString(),
       ...dto,
+      companyName: dto.companyName || 'Empresa Parceira',
       status: JobStatus.OPEN,
       postedAt: new Date(),
       createdAt: new Date(),

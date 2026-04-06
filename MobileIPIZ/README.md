@@ -13,7 +13,7 @@ Plataforma mobile full-stack para o Instituto Politécnico Industrial do Zango, 
 - **Linguagem**: TypeScript 5.9.3
 - **Navegação**: React Navigation 7.x
 - **Styling**: NativeWind (Tailwind CSS)
-- **Gerenciamento de Estado**: Context API
+- **Gerenciamento de Estado**: Zustand + Context API (legado em transicao)
 
 ### Estrutura de Diretórios
 
@@ -59,12 +59,27 @@ enum UserRole {
   ADMIN     // Administração
   COMPANY   // Empresa Parceira
   ALUMNI    // Ex-Aluno
+  SUPER_ROOT // Super administrador global
 }
 ```
 
 Cada perfil possui dashboard dedicado e permissões específicas.
 
+### Blueprint SSO + RBAC Unificado
+
+- Login unico para todos os perfis no mesmo endpoint/tela.
+- SSO com sessao unica (access token + refresh token).
+- Claims da sessao com `role` e `permissions`.
+- SUPER_ROOT define papéis, ativa/desativa contas e faz gestao global.
+- RBAC aplicado por permissao no backend e refletido por guardas de interface no app.
+
 ## Módulos Principais
+
+### 0. Bootstrap e Health Check
+- Splash screen modular no novo stack de navegacao
+- Verificacao de conectividade com o backend antes do carregamento de vagas
+- Indicador visual de conectividade em Home e Profile
+- Fallback opcional para modo mock via variavel de ambiente
 
 ### 1. Autenticação
 - Login seguro
@@ -75,6 +90,7 @@ Cada perfil possui dashboard dedicado e permissões específicas.
 ### 2. Dashboard por Perfil
 
 #### Estudante
+- Painel modular StudentDashboard migrado para nova arquitetura
 - Disciplinas matriculadas
 - Oportunidades de estágio
 - Conexão com mentores alumni
@@ -190,6 +206,26 @@ npm run android
 npm run ios
 ```
 
+### Configuracao da API (mobile -> backend)
+
+Defina as variaveis em ambiente Expo para controlar de onde as vagas serao carregadas:
+
+```bash
+EXPO_PUBLIC_API_BASE_URL=http://localhost:3000
+EXPO_PUBLIC_USE_MOCK_API=false
+```
+
+Notas praticas:
+
+- Android emulator: use `http://10.0.2.2:3000`.
+- Dispositivo fisico: use o IP local da maquina (ex.: `http://192.168.1.20:3000`).
+- Para desenvolver somente UI sem backend, use `EXPO_PUBLIC_USE_MOCK_API=true`.
+
+### Configuracao de staging
+
+- Use [`.env.staging.example`](.env.staging.example) como base.
+- Mantenha `EXPO_PUBLIC_USE_MOCK_API=false` para validar autenticação e RBAC reais.
+
 ### Dependências Principais
 
 ```json
@@ -283,6 +319,7 @@ npm run type-check  # Verifica tipos TypeScript
 - [ ] PostgreSQL + Prisma
 - [ ] JWT real
 - [ ] Integração com serviços
+- [x] Health check backend no app mobile
 
 ### Fase 3 - Features Avançadas
 - [ ] Sistema de mensagens
